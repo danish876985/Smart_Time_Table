@@ -225,6 +225,35 @@
         .prov-card-detail a:hover{text-decoration:underline;}
         .free-badge{background:#e6f4ea;color:var(--green);font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;text-transform:uppercase;letter-spacing:.04em;margin-left:4px;}
 
+        /* ── SETTINGS MODAL ── */
+        .settings-sheet{background:var(--surface);border-radius:28px 28px 0 0;width:100%;max-width:560px;max-height:88vh;overflow-y:auto;transform:translateY(30px);transition:transform .3s cubic-bezier(.4,0,.2,1);}
+        .mover.open .settings-sheet{transform:translateY(0);}
+        .settings-section{margin-bottom:20px;}
+        .settings-label{font-size:11px;font-weight:500;color:var(--t3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+        .settings-label .material-symbols-outlined{font-size:14px;}
+        .cid-wrap{position:relative;display:flex;align-items:center;}
+        .cid-input{width:100%;border:1.5px solid var(--border);border-radius:var(--r);padding:11px 44px 11px 14px;font-family:'Roboto Mono',monospace;font-size:12px;color:var(--t1);background:var(--surface);outline:none;transition:border-color .15s,box-shadow .15s;}
+        .cid-input:focus{border-color:var(--blue);box-shadow:0 0 0 2px rgba(26,115,232,.15);}
+        .cid-input.valid{border-color:#ceead6;}
+        .cid-input.invalid{border-color:#f5c6c2;}
+        .cid-eye{position:absolute;right:12px;background:none;border:none;cursor:pointer;color:var(--t3);display:flex;align-items:center;padding:0;}
+        .cid-eye:hover{color:var(--blue);}
+        .cid-eye .material-symbols-outlined{font-size:18px;}
+        .cid-status{display:flex;align-items:center;gap:6px;font-size:12px;margin-top:6px;min-height:18px;}
+        .cid-status.ok{color:var(--green);}
+        .cid-status.err{color:var(--red);}
+        .cid-status.hint{color:var(--t3);}
+        .cid-status .material-symbols-outlined{font-size:14px;}
+        .settings-hint-box{background:#f8f9fa;border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;font-size:12px;color:var(--t2);line-height:1.6;margin-top:10px;}
+        .settings-hint-box strong{color:var(--t1);}
+        .settings-hint-box a{color:var(--blue);text-decoration:none;}
+        .settings-hint-box a:hover{text-decoration:underline;}
+        .settings-hint-box code{background:#e8f0fe;color:var(--blue);padding:1px 5px;border-radius:3px;font-size:11px;}
+        .settings-divider{height:1px;background:var(--border);margin:18px 0;}
+        .settings-danger-btn{display:flex;align-items:center;gap:8px;background:none;border:1px solid var(--border);color:var(--t3);font-family:'Google Sans',sans-serif;font-size:13px;padding:9px 16px;border-radius:var(--r);cursor:pointer;transition:all .15s;width:100%;}
+        .settings-danger-btn:hover{border-color:var(--red);color:var(--red);background:#fce8e6;}
+        .settings-danger-btn .material-symbols-outlined{font-size:16px;}
+
         @media(max-width:600px){
             .main{padding:14px 14px 0;}
             .topbar{padding:0 14px;}
@@ -457,6 +486,82 @@
 </div>
 
 <!-- ══════════════════════════════════════════
+     MODAL 4 — SETTINGS (Client ID + config)
+══════════════════════════════════════════ -->
+<div class="mover" id="settingsmodal" onclick="closeSettings(event)">
+  <div class="settings-sheet">
+    <div class="mdrag"></div>
+    <div class="mbody">
+      <div class="mtitle">⚙️ Settings</div>
+      <div class="msub">Configure your Google Drive connection and app preferences.</div>
+
+      <!-- Google Client ID -->
+      <div class="settings-section">
+        <div class="settings-label">
+          <span class="material-symbols-outlined">key</span>
+          Google OAuth Client ID
+        </div>
+        <div class="cid-wrap">
+          <input
+            class="cid-input"
+            id="cid-input"
+            type="password"
+            placeholder="xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com"
+            autocomplete="off"
+            oninput="onCidInput()"
+            onpaste="setTimeout(onCidInput,10)"
+          >
+          <button class="cid-eye" id="cid-eye" onclick="toggleCidVisibility()" title="Show / Hide">
+            <span class="material-symbols-outlined" id="cid-eye-icon">visibility</span>
+          </button>
+        </div>
+        <div class="cid-status hint" id="cid-status">
+          <span class="material-symbols-outlined">info</span>
+          <span id="cid-status-txt">Paste your Client ID above to enable Google Drive sync.</span>
+        </div>
+        <div class="mact" style="margin-top:10px;">
+          <button class="btxt" onclick="clearClientId()">Clear</button>
+          <button class="bcont" id="cid-save-btn" onclick="saveClientId()" disabled>
+            <span class="material-symbols-outlined" style="font-size:15px;">save</span>
+            Save &amp; Apply
+          </button>
+        </div>
+
+        <div class="settings-hint-box">
+          <strong>How to get your Client ID:</strong><br>
+          1. Go to <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a><br>
+          2. Create a project → <strong>APIs &amp; Services</strong> → <strong>Enable APIs</strong> → enable <em>Google Drive API</em><br>
+          3. Go to <strong>Credentials</strong> → <strong>Create Credentials</strong> → <strong>OAuth 2.0 Client ID</strong><br>
+          4. Application type: <strong>Web application</strong><br>
+          5. Under <em>Authorized JavaScript origins</em> add: <code>null</code> (for local files) or your site URL<br>
+          6. Copy the Client ID (ends in <code>.apps.googleusercontent.com</code>) and paste it above<br>
+          7. Hit <strong>Save &amp; Apply</strong> — then tap <strong>Connect Drive</strong> in the top bar
+        </div>
+      </div>
+
+      <div class="settings-divider"></div>
+
+      <!-- Reset -->
+      <div class="settings-section">
+        <div class="settings-label">
+          <span class="material-symbols-outlined">restart_alt</span>
+          Reset
+        </div>
+        <button class="settings-danger-btn" onclick="resetFirstLaunch()">
+          <span class="material-symbols-outlined">replay</span>
+          Show welcome screen again on next open
+        </button>
+        <button class="settings-danger-btn" style="margin-top:8px;" onclick="clearAllData()">
+          <span class="material-symbols-outlined">delete_forever</span>
+          Clear all local data &amp; tasks
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
      TOP BAR
 ══════════════════════════════════════════ -->
 <div class="topbar">
@@ -472,6 +577,9 @@
     <span class="ttl" id="ttl"></span>
     <button class="btn-help" onclick="openInfo()" title="Help & Setup">
       <span class="material-symbols-outlined">help_outline</span>
+    </button>
+    <button class="btn-help" onclick="openSettings()" title="Settings" id="settingsbtn">
+      <span class="material-symbols-outlined">settings</span>
     </button>
     <button class="btn-drive" id="drivebtn" onclick="requestToken()">
       <svg width="16" height="16" viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg">
@@ -567,10 +675,11 @@
 'use strict';
 
 // ════════════════════════════════════════════════════════════
-// CONFIG — Replace with your real Google OAuth Client ID
-// See the Help modal (?) for step-by-step setup instructions.
+// CONFIG — Google OAuth Client ID
+// Set via the Settings modal (⚙️) in the UI — saved to localStorage.
+// Falls back to the hardcoded placeholder if not yet configured.
 // ════════════════════════════════════════════════════════════
-const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
+let GOOGLE_CLIENT_ID = localStorage.getItem('sd_client_id') || 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
 
 // ════════════════════════════════════════════
 // STATE
@@ -1019,7 +1128,131 @@ function closeWelcome(){
 }
 
 // ════════════════════════════════════════════
-// FEATURE 1 — FIRST-LAUNCH DETECTION
+// SETTINGS MODAL — Client ID management
+// ════════════════════════════════════════════
+function openSettings(){
+    const modal = document.getElementById('settingsmodal');
+    modal.classList.add('open');
+    // Populate input with current value (mask placeholder text)
+    const inp = document.getElementById('cid-input');
+    const stored = localStorage.getItem('sd_client_id') || '';
+    inp.value = stored;
+    updateCidStatus(stored);
+}
+
+function closeSettings(e){
+    if(!e || e.target===document.getElementById('settingsmodal'))
+        document.getElementById('settingsmodal').classList.remove('open');
+}
+
+function toggleCidVisibility(){
+    const inp = document.getElementById('cid-input');
+    const icon = document.getElementById('cid-eye-icon');
+    if(inp.type==='password'){
+        inp.type='text';
+        icon.textContent='visibility_off';
+    } else {
+        inp.type='password';
+        icon.textContent='visibility';
+    }
+}
+
+function onCidInput(){
+    const val = document.getElementById('cid-input').value.trim();
+    updateCidStatus(val);
+    document.getElementById('cid-save-btn').disabled = !isValidCid(val);
+}
+
+function isValidCid(v){
+    // Google Client IDs end in .apps.googleusercontent.com and are non-trivial length
+    return v.length > 20 && v.includes('.apps.googleusercontent.com') && !v.startsWith('YOUR_');
+}
+
+function updateCidStatus(val){
+    const el   = document.getElementById('cid-status');
+    const txt  = document.getElementById('cid-status-txt');
+    const inp  = document.getElementById('cid-input');
+    inp.classList.remove('valid','invalid');
+
+    if(!val){
+        el.className='cid-status hint';
+        el.querySelector('.material-symbols-outlined').textContent='info';
+        txt.textContent='Paste your Client ID above to enable Google Drive sync.';
+        return;
+    }
+    if(isValidCid(val)){
+        el.className='cid-status ok';
+        el.querySelector('.material-symbols-outlined').textContent='check_circle';
+        txt.textContent = (localStorage.getItem('sd_client_id')===val)
+            ? 'Client ID is active — Drive sync is ready.'
+            : 'Looks valid! Hit Save & Apply to activate.';
+        inp.classList.add('valid');
+    } else {
+        el.className='cid-status err';
+        el.querySelector('.material-symbols-outlined').textContent='error';
+        txt.textContent = val.startsWith('YOUR_')
+            ? 'That\'s still the placeholder — paste your real Client ID.'
+            : 'Doesn\'t look right. It should end in .apps.googleusercontent.com';
+        inp.classList.add('invalid');
+    }
+}
+
+function saveClientId(){
+    const val = document.getElementById('cid-input').value.trim();
+    if(!isValidCid(val)){ toast('Invalid Client ID — check the format','err'); return; }
+    localStorage.setItem('sd_client_id', val);
+    GOOGLE_CLIENT_ID = val; // update live variable immediately
+    updateCidStatus(val);
+    document.getElementById('cid-save-btn').disabled = true;
+    // Update the Drive button label in case it was showing error state
+    const db = document.getElementById('drivebtn');
+    if(!token){
+        db.style.display='flex';
+        db.innerHTML=`<svg width="16" height="16" viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg"><path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8H0c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/><path d="M43.65 25 29.9 1.2C28.55 2 27.4 3.1 26.6 4.5L1.2 49.15C.4 50.55 0 52.1 0 53.65h27.5z" fill="#00ac47"/><path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5H59.8l5.65 10.35z" fill="#ea4335"/><path d="M43.65 25 57.4 1.2C56.05.4 54.5 0 52.95 0H34.35c-1.55 0-3.1.45-4.45 1.2z" fill="#00832d"/><path d="M59.8 53.65H27.5L13.75 77.45c1.35.8 2.9 1.2 4.45 1.2h50.9c1.55 0 3.1-.45 4.45-1.2z" fill="#2684fc"/><path d="M73.4 26.45l-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3L43.65 25l16.15 28H87.3c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/></svg> Connect Drive`;
+    }
+    toast('Client ID saved — tap Connect Drive!','ok');
+    updateSettingsBadge();
+    // Show a pulsing indicator on the drive button to guide user
+    setTimeout(()=>{ document.getElementById('settingsmodal').classList.remove('open'); }, 1200);
+}
+
+function clearClientId(){
+    document.getElementById('cid-input').value='';
+    onCidInput();
+    document.getElementById('cid-save-btn').disabled=true;
+}
+
+function resetFirstLaunch(){
+    localStorage.removeItem('sd_returning');
+    toast('Welcome screen will show on next open','ok');
+    document.getElementById('settingsmodal').classList.remove('open');
+}
+
+function clearAllData(){
+    if(!confirm('This will delete all your local tasks and settings. Are you sure?')) return;
+    localStorage.clear();
+    tasks=[];
+    render();
+    toast('All local data cleared','inf');
+    document.getElementById('settingsmodal').classList.remove('open');
+}
+
+// Show a visual indicator on the settings button if Client ID is not set
+function updateSettingsBadge(){
+    const btn = document.getElementById('settingsbtn');
+    const stored = localStorage.getItem('sd_client_id');
+    if(!stored || stored.startsWith('YOUR_')){
+        btn.style.borderColor='#f9ab00';
+        btn.style.color='#f57f17';
+        btn.title='Settings — Client ID not configured';
+    } else {
+        btn.style.borderColor='';
+        btn.style.color='';
+        btn.title='Settings';
+    }
+}
+
+// ════════════════════════════════════════════
 // Checks localStorage for 'sd_returning'.
 // If absent → show welcome modal on first open.
 // ════════════════════════════════════════════
@@ -1042,10 +1275,12 @@ document.addEventListener('DOMContentLoaded',()=>{
         if(e.key==='Escape'){
             closeModal();
             closeInfo();
+            closeSettings();
             document.getElementById('welcomemodal').classList.remove('open');
         }
     });
     render();
+    updateSettingsBadge();
     checkFirstLaunch();
 });
 </script>
