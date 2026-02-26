@@ -21,11 +21,14 @@
             --sh1:0 1px 2px rgba(60,64,67,.3),0 1px 3px rgba(60,64,67,.15);
             --sh2:0 1px 2px rgba(60,64,67,.3),0 2px 6px rgba(60,64,67,.15);
             --r:8px; --rl:16px;
+            /* Detail panel */
+            --panel-w:340px;
+            --panel-transition:all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
         *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0;}
-        body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;padding:0 0 80px;-webkit-font-smoothing:antialiased;}
+        body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;padding:0 0 100px;-webkit-font-smoothing:antialiased;}
 
-        /* TOP BAR */
+        /* ── TOP BAR ── */
         .topbar{background:var(--surface);border-bottom:1px solid var(--border);height:64px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;}
         .topbar-l{display:flex;align-items:center;gap:10px;}
         .logo{width:32px;height:32px;border-radius:8px;background:var(--blue);color:white;display:flex;align-items:center;justify-content:center;font-family:'Google Sans',sans-serif;font-weight:700;font-size:13px;}
@@ -38,33 +41,35 @@
         .sdot.live{background:var(--green);}
         .sdot.spin{background:var(--blue);animation:pulse 1s infinite;}
         @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
-        .ttl{font-size:11px;font-family:'Roboto Mono',monospace;color:var(--yellow);background:#fef7e0;border:1px solid #fdd663;padding:3px 8px;border-radius:4px;display:none;}
-        .ttl.show{display:inline;}
+        /* TTL removed — token persists until 401 */
         .btn-drive{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);color:var(--t2);font-family:'Google Sans',sans-serif;font-size:13px;font-weight:500;padding:8px 16px;border-radius:4px;cursor:pointer;box-shadow:var(--sh1);transition:all .15s;white-space:nowrap;}
         .btn-drive:hover{background:#f8f9fa;box-shadow:var(--sh2);}
-        /* Info button */
         .btn-help{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--t3);cursor:pointer;box-shadow:var(--sh1);transition:all .15s;flex-shrink:0;}
         .btn-help:hover{background:#e8f0fe;color:var(--blue);border-color:var(--blue);}
         .btn-help .material-symbols-outlined{font-size:18px;}
 
-        /* MAIN */
-        .main{max-width:960px;margin:0 auto;padding:24px 24px 0;}
+        /* ── MAIN LAYOUT (shrinks when detail panel is open) ── */
+        .app-body{display:flex;align-items:flex-start;gap:0;transition:var(--panel-transition);position:relative;}
+        .main{max-width:960px;width:100%;margin:0 auto;padding:24px 24px 0;transition:var(--panel-transition);flex-shrink:1;}
+        /* When detail panel open, shrink main */
+        .app-body.panel-open .main{margin-right:0;max-width:calc(100% - var(--panel-w) - 16px);}
+
         .dbanner{display:none;align-items:center;gap:10px;background:#e8f0fe;border:1px solid #c5d9f8;border-radius:var(--r);padding:10px 16px;font-size:13px;color:var(--blue);margin-bottom:16px;}
         .dbanner.show{display:flex;}
 
-        /* PAGE HEADER */
+        /* ── PAGE HEADER ── */
         .ph{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
         .ph-title{font-family:'Google Sans',sans-serif;font-size:26px;font-weight:400;color:var(--t1);}
         .ph-sub{font-size:13px;color:var(--t3);margin-top:2px;}
 
-        /* PROGRESS RING */
+        /* ── PROGRESS RING ── */
         .pring{position:relative;width:56px;height:56px;flex-shrink:0;}
         .pring svg{transform:rotate(-90deg);}
         .pt{fill:none;stroke:var(--border);stroke-width:4;}
         .pf{fill:none;stroke:var(--blue);stroke-width:4;stroke-linecap:round;stroke-dasharray:141;stroke-dashoffset:141;transition:stroke-dashoffset .5s cubic-bezier(.4,0,.2,1);}
         .plbl{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Google Sans',sans-serif;font-size:11px;font-weight:500;color:var(--blue);}
 
-        /* STATS */
+        /* ── STATS ── */
         .stats{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
         .scard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 18px;display:flex;align-items:center;gap:10px;box-shadow:var(--sh1);flex:1;min-width:90px;}
         .sico{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
@@ -75,23 +80,26 @@
         .sval{font-family:'Google Sans',sans-serif;font-size:20px;font-weight:500;line-height:1;}
         .slbl{font-size:11px;color:var(--t3);margin-top:2px;}
 
-        /* CARD */
+        /* ── CARD ── */
         .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);box-shadow:var(--sh1);overflow:hidden;}
         .card-hd{padding:14px 20px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
         .card-hd-t{font-family:'Google Sans',sans-serif;font-size:14px;font-weight:500;color:var(--t2);}
         .btn-add{background:none;border:none;color:var(--blue);font-family:'Google Sans',sans-serif;font-size:13px;font-weight:500;padding:6px 12px;border-radius:4px;cursor:pointer;transition:background .15s;}
         .btn-add:hover{background:rgba(26,115,232,.08);}
 
-        /* TABLE */
+        /* ── TABLE ── */
         .twrap{overflow-x:auto;}
         table{width:100%;border-collapse:collapse;min-width:500px;}
         thead tr{border-bottom:1px solid var(--border);}
         th{padding:0 14px 12px;font-size:11px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;text-align:left;white-space:nowrap;}
-        tbody tr{border-bottom:1px solid var(--border);transition:background .1s;}
+        tbody tr{border-bottom:1px solid var(--border);transition:background .1s;cursor:pointer;}
         tbody tr:last-child{border-bottom:none;}
-        tbody tr:hover{background:#f8f9fa;}
+        tbody tr:hover{background:#f0f6ff;}
         tbody tr.done td{opacity:.45;}
         tbody tr.done .tf{text-decoration:line-through;}
+        /* Active row (detail panel open for this task) */
+        tbody tr.active-row{background:#e8f0fe!important;outline:2px solid var(--blue);outline-offset:-2px;}
+        tbody tr.active-row td{opacity:1!important;}
         td{padding:5px 14px;vertical-align:middle;}
         .rnum{font-size:11px;color:var(--t3);text-align:center;width:30px;}
         .gc{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:2px solid var(--t3);border-radius:3px;cursor:pointer;display:grid;place-items:center;transition:all .15s;background:transparent;}
@@ -114,23 +122,96 @@
         .empty .material-symbols-outlined{font-size:48px;opacity:.3;display:block;margin-bottom:10px;}
         .empty p{font-size:14px;}
 
-        /* FAB */
-        .fabs{position:fixed;bottom:80px;right:20px;display:flex;flex-direction:column;align-items:flex-end;gap:10px;z-index:400;}
-        .fab{display:flex;align-items:center;gap:8px;background:var(--blue);color:white;border:none;border-radius:16px;padding:0 20px;height:56px;font-family:'Google Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,.2),0 4px 8px rgba(0,0,0,.12);transition:all .2s;white-space:nowrap;}
-        .fab:hover{filter:brightness(1.06);box-shadow:0 4px 8px rgba(0,0,0,.2),0 8px 16px rgba(0,0,0,.15);}
-        .fab .material-symbols-outlined{font-size:20px;}
-        .fab-sm{width:40px;height:40px;border-radius:12px;background:var(--surface);border:1px solid var(--border);color:var(--t2);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--sh1);transition:all .15s;}
-        .fab-sm:hover{box-shadow:var(--sh2);background:#f8f9fa;}
-        .fab-sm .material-symbols-outlined{font-size:18px;}
+        /* ═══════════════════════════════════════════
+           FEATURE 4 — TASK DETAIL PANEL (slide-in)
+        ═══════════════════════════════════════════ */
+        .detail-panel{
+            position:fixed;
+            top:64px;
+            right:0;
+            width:var(--panel-w);
+            height:calc(100vh - 64px - 90px);
+            background:var(--surface);
+            border-left:1px solid var(--border);
+            box-shadow:-4px 0 24px rgba(60,64,67,.12);
+            display:flex;
+            flex-direction:column;
+            z-index:150;
+            transform:translateX(100%);
+            transition:var(--panel-transition);
+            overflow:hidden;
+        }
+        .detail-panel.open{transform:translateX(0);}
+        .dp-header{padding:16px 18px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0;}
+        .dp-title{font-family:'Google Sans',sans-serif;font-size:14px;font-weight:500;color:var(--t1);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+        .dp-close{background:none;border:none;cursor:pointer;color:var(--t3);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;}
+        .dp-close:hover{background:#f1f3f4;color:var(--t1);}
+        .dp-close .material-symbols-outlined{font-size:18px;}
+        .dp-body{padding:18px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:16px;}
+        .dp-meta{display:flex;gap:8px;flex-wrap:wrap;}
+        .dp-chip{display:inline-flex;align-items:center;gap:4px;background:#f8f9fa;border:1px solid var(--border);border-radius:50px;padding:4px 10px;font-size:11px;color:var(--t2);}
+        .dp-chip .material-symbols-outlined{font-size:13px;color:var(--t3);}
+        .dp-field label{display:block;font-size:11px;font-weight:500;color:var(--t3);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+        .dp-textarea{width:100%;border:1.5px solid var(--border);border-radius:var(--r);padding:10px 12px;font-family:'Roboto',sans-serif;font-size:13px;color:var(--t1);background:var(--surface);outline:none;resize:none;height:180px;line-height:1.6;transition:border-color .15s,box-shadow .15s;}
+        .dp-textarea:focus{border-color:var(--blue);box-shadow:0 0 0 2px rgba(26,115,232,.12);}
+        .dp-textarea::placeholder{color:#bdc1c6;}
+        .dp-save-row{display:flex;justify-content:flex-end;}
+        .dp-save-btn{display:flex;align-items:center;gap:6px;background:var(--blue);color:white;border:none;font-family:'Google Sans',sans-serif;font-size:13px;font-weight:500;padding:8px 18px;border-radius:4px;cursor:pointer;transition:background .15s;}
+        .dp-save-btn:hover{background:var(--blue-dk);}
+        .dp-save-btn .material-symbols-outlined{font-size:15px;}
+        .dp-hint{font-size:11px;color:var(--t3);line-height:1.5;background:#f8f9fa;border-radius:var(--r);padding:10px 12px;}
 
-        /* BOTTOM NAV */
-        .botnav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);padding:6px 0 10px;display:flex;justify-content:space-around;align-items:center;z-index:300;}
-        .ni{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:4px 14px;border-radius:50px;border:none;background:none;color:var(--t3);transition:color .15s;font-family:'Roboto',sans-serif;}
-        .ni:hover{color:var(--blue);}
-        .ni .material-symbols-outlined{font-size:22px;}
-        .ni span:last-child{font-size:10px;font-weight:500;}
+        /* ═══════════════════════════════════════════
+           FEATURE 3 — WIN11-STYLE FLOATING DOCK
+        ═══════════════════════════════════════════ */
+        .dock{
+            position:fixed;
+            bottom:18px;
+            left:50%;
+            transform:translateX(-50%);
+            z-index:500;
+            display:flex;
+            align-items:center;
+            gap:4px;
+            background:rgba(255,255,255,0.72);
+            backdrop-filter:blur(20px) saturate(180%);
+            -webkit-backdrop-filter:blur(20px) saturate(180%);
+            border:1px solid rgba(255,255,255,0.9);
+            border-radius:18px;
+            padding:8px 12px;
+            box-shadow:0 8px 32px rgba(60,64,67,.18), 0 2px 8px rgba(60,64,67,.10), inset 0 1px 0 rgba(255,255,255,.8);
+        }
+        .dock-item{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:3px;
+            background:none;
+            border:none;
+            cursor:pointer;
+            padding:6px 10px;
+            border-radius:12px;
+            color:var(--t2);
+            font-family:'Roboto',sans-serif;
+            font-size:9px;
+            font-weight:500;
+            letter-spacing:.02em;
+            transition:all .18s cubic-bezier(.4,0,.2,1);
+            min-width:52px;
+            position:relative;
+        }
+        .dock-item:hover{background:rgba(26,115,232,.10);color:var(--blue);transform:translateY(-3px);}
+        .dock-item:active{transform:translateY(-1px);}
+        .dock-item .material-symbols-outlined{font-size:22px;transition:transform .18s;}
+        .dock-item:hover .material-symbols-outlined{transform:scale(1.15);}
+        .dock-item.active{color:var(--blue);}
+        .dock-item.active::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--blue);}
+        .dock-sep{width:1px;height:36px;background:var(--border);margin:0 4px;}
+        /* FAB kept for AI button, now in dock */
+        .dock-ai{background:var(--blue);color:white;border-radius:14px;padding:8px 16px;gap:6px;flex-direction:row;font-size:12px;}
+        .dock-ai:hover{background:var(--blue-dk);color:white;transform:translateY(-3px);}
 
-        /* TOAST */
+        /* ── TOAST ── */
         #toasts{position:fixed;top:68px;right:14px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;}
         .toast{background:var(--t1);color:white;padding:12px 16px;border-radius:var(--r);font-size:13px;box-shadow:0 3px 6px rgba(0,0,0,.25);animation:tin .25s ease,tout .3s ease 2.7s forwards;max-width:300px;pointer-events:auto;display:flex;align-items:center;gap:8px;}
         .toast::before{font-size:14px;flex-shrink:0;}
@@ -140,7 +221,7 @@
         @keyframes tin{from{transform:translateX(20px);opacity:0;}to{transform:translateX(0);opacity:1;}}
         @keyframes tout{to{opacity:0;transform:translateX(8px);}}
 
-        /* MODALS — shared overlay */
+        /* ── MODALS — shared overlay ── */
         .mover{position:fixed;inset:0;background:rgba(32,33,36,.5);z-index:2000;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;}
         .mover.open{opacity:1;pointer-events:auto;}
         .msheet{background:var(--surface);border-radius:28px 28px 0 0;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;transform:translateY(30px);transition:transform .3s cubic-bezier(.4,0,.2,1);}
@@ -166,7 +247,7 @@
         .gi:focus,.gta:focus{border-color:var(--blue);box-shadow:0 0 0 2px rgba(26,115,232,.15);}
         .gta{resize:none;height:78px;}
         .khint{font-size:11px;color:var(--t3);margin-top:4px;}
-        .khint a{color:var(--blue);text-decoration:none;}
+        .khint a,.khint a:visited{color:var(--blue);text-decoration:none;}
         .khint a:hover{text-decoration:underline;}
         .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
         .chip{background:#f8f9fa;border:1px solid var(--border);border-radius:50px;padding:5px 12px;font-size:12px;cursor:pointer;transition:all .15s;color:var(--t2);}
@@ -178,7 +259,7 @@
         .bcont:hover{background:var(--blue-dk);box-shadow:var(--sh2);}
         .bcont:disabled{opacity:.45;cursor:not-allowed;box-shadow:none;}
 
-        /* ── WELCOME MODAL (first-launch) ── */
+        /* ── WELCOME MODAL ── */
         .welcome-icon{font-size:48px;text-align:center;display:block;margin:8px 0 16px;}
         .welcome-steps{display:flex;flex-direction:column;gap:10px;margin:14px 0;}
         .ws{display:flex;align-items:flex-start;gap:12px;background:#f8f9fa;border-radius:var(--r);padding:12px 14px;}
@@ -187,7 +268,7 @@
         .ws-d{font-size:12px;color:var(--t3);line-height:1.5;}
         .ws-badge{display:inline-flex;align-items:center;gap:4px;background:#e8f0fe;color:var(--blue);font-size:10px;font-weight:600;padding:2px 8px;border-radius:50px;margin-top:4px;}
 
-        /* ── INFO / HELP MODAL ── */
+        /* ── INFO MODAL ── */
         .info-sheet{background:var(--surface);border-radius:28px 28px 0 0;width:100%;max-width:680px;max-height:92vh;overflow-y:auto;transform:translateY(30px);transition:transform .3s cubic-bezier(.4,0,.2,1);}
         .mover.open .info-sheet{transform:translateY(0);}
         .info-hero{background:linear-gradient(135deg,var(--blue) 0%,#0d47a1 100%);border-radius:20px 20px 0 0;padding:28px 28px 22px;color:white;}
@@ -200,29 +281,24 @@
         .info-sec-icon.blue{background:#e8f0fe;color:var(--blue);}
         .info-sec-icon.green{background:#e6f4ea;color:var(--green);}
         .info-sec-icon.yellow{background:#fef7e0;color:#f57f17;}
-        .info-sec-icon.red{background:#fce8e6;color:var(--red);}
         .info-sec-icon .material-symbols-outlined{font-size:17px;}
         .info-sec-title{font-family:'Google Sans',sans-serif;font-size:14px;font-weight:500;color:var(--t1);}
         .info-sec-body{font-size:13px;color:var(--t2);line-height:1.7;}
         .info-sec-body p{margin-bottom:8px;}
-        .info-sec-body p:last-child{margin-bottom:0;}
         .info-step{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start;}
         .info-step-n{background:var(--blue);color:white;width:20px;height:20px;border-radius:50%;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
         .info-step-t{font-size:13px;color:var(--t2);line-height:1.6;}
         .info-step-t strong{color:var(--t1);}
         .info-step-t a{color:var(--blue);text-decoration:none;}
-        .info-step-t a:hover{text-decoration:underline;}
         .info-divider{height:1px;background:var(--border);margin:18px 0;}
         .info-security-box{background:#e6f4ea;border:1px solid #ceead6;border-radius:var(--r);padding:14px 16px;display:flex;gap:12px;align-items:flex-start;}
         .info-security-box .material-symbols-outlined{color:var(--green);font-size:20px;flex-shrink:0;margin-top:1px;}
         .info-security-body{font-size:12px;color:#1e4620;line-height:1.6;}
-        .info-security-body strong{font-weight:500;}
         .provider-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
         .prov-card{background:#f8f9fa;border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;}
         .prov-card-name{font-family:'Google Sans',sans-serif;font-size:12px;font-weight:500;color:var(--t1);margin-bottom:2px;}
         .prov-card-detail{font-size:11px;color:var(--t3);}
         .prov-card-detail a{color:var(--blue);text-decoration:none;}
-        .prov-card-detail a:hover{text-decoration:underline;}
         .free-badge{background:#e6f4ea;color:var(--green);font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;text-transform:uppercase;letter-spacing:.04em;margin-left:4px;}
 
         /* ── SETTINGS MODAL ── */
@@ -247,22 +323,25 @@
         .settings-hint-box{background:#f8f9fa;border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;font-size:12px;color:var(--t2);line-height:1.6;margin-top:10px;}
         .settings-hint-box strong{color:var(--t1);}
         .settings-hint-box a{color:var(--blue);text-decoration:none;}
-        .settings-hint-box a:hover{text-decoration:underline;}
         .settings-hint-box code{background:#e8f0fe;color:var(--blue);padding:1px 5px;border-radius:3px;font-size:11px;}
         .settings-divider{height:1px;background:var(--border);margin:18px 0;}
         .settings-danger-btn{display:flex;align-items:center;gap:8px;background:none;border:1px solid var(--border);color:var(--t3);font-family:'Google Sans',sans-serif;font-size:13px;padding:9px 16px;border-radius:var(--r);cursor:pointer;transition:all .15s;width:100%;}
         .settings-danger-btn:hover{border-color:var(--red);color:var(--red);background:#fce8e6;}
         .settings-danger-btn .material-symbols-outlined{font-size:16px;}
 
-        @media(max-width:600px){
+        @media(max-width:768px){
             .main{padding:14px 14px 0;}
             .topbar{padding:0 14px;}
             .appname{display:none;}
             .scard{min-width:80px;padding:10px 12px;}
             .sval{font-size:17px;}
-            .fabs{bottom:70px;right:14px;}
-            .ttl{display:none!important;}
             .provider-grid{grid-template-columns:1fr;}
+            /* On mobile, detail panel goes full width */
+            .detail-panel{width:100%;top:64px;height:calc(100vh - 64px - 80px);}
+            .app-body.panel-open .main{display:none;}
+            .dock{bottom:12px;padding:6px 8px;gap:2px;}
+            .dock-item{min-width:44px;padding:5px 8px;}
+            .dock-ai{padding:7px 12px;font-size:11px;}
         }
     </style>
 </head>
@@ -303,7 +382,6 @@
         <input type="password" class="gi" id="akey" placeholder="gsk_..." autocomplete="off">
         <div class="khint" id="khint">Free key at <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> &mdash; no credit card needed.</div>
       </div>
-      <!-- Save API key to Drive option -->
       <div id="key-save-row" style="display:none;margin-bottom:12px;">
         <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;color:var(--t3);">
           <input type="checkbox" id="saveKeyToDrive" checked style="accent-color:var(--blue);width:14px;height:14px;">
@@ -355,24 +433,24 @@
           <div class="ws-num">2</div>
           <div>
             <div class="ws-t">Connect Google Drive for sync</div>
-            <div class="ws-d">Tap <strong>Connect Drive</strong> in the top bar to sync your tasks across all your devices automatically. Your data stays in your personal Drive — private to you.</div>
-            <span class="ws-badge"><span class="material-symbols-outlined" style="font-size:12px;">cloud_sync</span> Cross-device sync</span>
+            <div class="ws-d">Tap <strong>Connect Drive</strong> in the top bar. Next time you open the app, it reconnects silently — no popup. Your data stays private in your own Drive.</div>
+            <span class="ws-badge"><span class="material-symbols-outlined" style="font-size:12px;">cloud_sync</span> Auto-reconnects on return</span>
           </div>
         </div>
         <div class="ws">
           <div class="ws-num">3</div>
           <div>
             <div class="ws-t">Use AI to plan your day</div>
-            <div class="ws-d">Tap <strong>AI Planner</strong> and get a free API key from Groq or Gemini. Once saved to Drive, your key works on every device automatically.</div>
+            <div class="ws-d">Tap <strong>AI Planner</strong> in the dock. Get a free key from Groq or Gemini. Once saved to Drive, your key works everywhere automatically.</div>
             <span class="ws-badge"><span class="material-symbols-outlined" style="font-size:12px;">auto_awesome</span> AI-powered scheduling</span>
           </div>
         </div>
         <div class="ws">
           <div class="ws-num">4</div>
           <div>
-            <div class="ws-t">Your data, your privacy</div>
-            <div class="ws-d">Everything is stored locally in your browser or in your own Google Drive. Nothing is sent to any third-party server (except the AI provider you choose).</div>
-            <span class="ws-badge"><span class="material-symbols-outlined" style="font-size:12px;">lock</span> Private &amp; secure</span>
+            <div class="ws-t">Click any task for details</div>
+            <div class="ws-d">Click on a task row to open the <strong>Task Details</strong> side panel where you can add notes and descriptions that sync to Drive.</div>
+            <span class="ws-badge"><span class="material-symbols-outlined" style="font-size:12px;">side_navigation</span> Slide-in detail panel</span>
           </div>
         </div>
       </div>
@@ -397,58 +475,37 @@
       <div class="info-hero-sub">Everything you need to know to get the most out of your planner.</div>
     </div>
     <div class="info-body">
-
-      <!-- SECTION: Google Drive Setup -->
       <div class="info-section">
         <div class="info-sec-hd">
           <div class="info-sec-icon blue"><span class="material-symbols-outlined">cloud_sync</span></div>
           <div class="info-sec-title">Setting Up Google Drive Sync</div>
         </div>
         <div class="info-sec-body">
-          <div class="info-step"><div class="info-step-n">1</div><div class="info-step-t"><strong>Go to Google Cloud Console</strong> → <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a> and create a new project (or use an existing one).</div></div>
-          <div class="info-step"><div class="info-step-n">2</div><div class="info-step-t"><strong>Enable the Google Drive API:</strong> Search for "Google Drive API" in the API Library and click Enable.</div></div>
-          <div class="info-step"><div class="info-step-n">3</div><div class="info-step-t"><strong>Create OAuth credentials:</strong> Go to Credentials → Create Credentials → OAuth 2.0 Client ID. Choose "Web application".</div></div>
-          <div class="info-step"><div class="info-step-n">4</div><div class="info-step-t"><strong>Add your origin:</strong> Under "Authorized JavaScript origins", add <code>null</code> (for local file use) or your hosting domain.</div></div>
-          <div class="info-step"><div class="info-step-n">5</div><div class="info-step-t"><strong>Copy your Client ID</strong> and replace <code>YOUR_GOOGLE_CLIENT_ID</code> in this HTML file's source code (search for it with Ctrl+F in a text editor).</div></div>
-          <div class="info-step"><div class="info-step-n">6</div><div class="info-step-t"><strong>Click "Connect Drive"</strong> in the top bar. SmartDay will create a file called <code>smartday_sync.json</code> in your Drive — this holds your tasks and API key.</div></div>
+          <div class="info-step"><div class="info-step-n">1</div><div class="info-step-t">Go to <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a> and create a project.</div></div>
+          <div class="info-step"><div class="info-step-n">2</div><div class="info-step-t">Enable the <strong>Google Drive API</strong> under APIs &amp; Services.</div></div>
+          <div class="info-step"><div class="info-step-n">3</div><div class="info-step-t">Create an <strong>OAuth 2.0 Client ID</strong> (Web application).</div></div>
+          <div class="info-step"><div class="info-step-n">4</div><div class="info-step-t">Add <code>null</code> (for local files) or your URL to Authorized JavaScript origins.</div></div>
+          <div class="info-step"><div class="info-step-n">5</div><div class="info-step-t">Open <strong>⚙️ Settings</strong> and paste your Client ID there — no code editing needed.</div></div>
+          <div class="info-step"><div class="info-step-n">6</div><div class="info-step-t">Click <strong>Connect Drive</strong>. Future visits auto-reconnect silently.</div></div>
         </div>
       </div>
-
       <div class="info-divider"></div>
-
-      <!-- SECTION: Getting an API Key -->
       <div class="info-section">
         <div class="info-sec-hd">
           <div class="info-sec-icon yellow"><span class="material-symbols-outlined">vpn_key</span></div>
           <div class="info-sec-title">Getting an AI API Key</div>
         </div>
         <div class="info-sec-body">
-          <p>The AI Planner needs an API key from one of the supported providers. All free-tier options require no credit card:</p>
+          <p>All providers below have free tiers — no credit card required:</p>
           <div class="provider-grid">
-            <div class="prov-card">
-              <div class="prov-card-name">⚡ Groq <span class="free-badge">Free</span></div>
-              <div class="prov-card-detail">14,400 requests/day &bull; Fastest<br><a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a></div>
-            </div>
-            <div class="prov-card">
-              <div class="prov-card-name">⭐ Gemini <span class="free-badge">Free</span></div>
-              <div class="prov-card-detail">Gemini 2.0 Flash &bull; Google<br><a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a></div>
-            </div>
-            <div class="prov-card">
-              <div class="prov-card-name">🔄 OpenRouter <span class="free-badge">Free</span></div>
-              <div class="prov-card-detail">30+ models &bull; Flexible<br><a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys</a></div>
-            </div>
-            <div class="prov-card">
-              <div class="prov-card-name">🤖 OpenAI</div>
-              <div class="prov-card-detail">GPT-4o mini &bull; Pay-per-use<br><a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a></div>
-            </div>
+            <div class="prov-card"><div class="prov-card-name">⚡ Groq <span class="free-badge">Free</span></div><div class="prov-card-detail"><a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a></div></div>
+            <div class="prov-card"><div class="prov-card-name">⭐ Gemini <span class="free-badge">Free</span></div><div class="prov-card-detail"><a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a></div></div>
+            <div class="prov-card"><div class="prov-card-name">🔄 OpenRouter <span class="free-badge">Free</span></div><div class="prov-card-detail"><a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys</a></div></div>
+            <div class="prov-card"><div class="prov-card-name">🤖 OpenAI</div><div class="prov-card-detail"><a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a></div></div>
           </div>
-          <p style="margin-top:10px;">Once you enter your key in the AI Planner, check <strong>"Save to Drive"</strong> to store it in your sync file. The next time you open SmartDay on any device and connect Drive, your key will be automatically loaded.</p>
         </div>
       </div>
-
       <div class="info-divider"></div>
-
-      <!-- SECTION: Security -->
       <div class="info-section">
         <div class="info-sec-hd">
           <div class="info-sec-icon green"><span class="material-symbols-outlined">shield</span></div>
@@ -457,27 +514,12 @@
         <div class="info-security-box">
           <span class="material-symbols-outlined">verified_user</span>
           <div class="info-security-body">
-            <strong>Your API key is stored only in two places:</strong> your browser's memory (cleared when you close the tab) and inside your own private Google Drive file (<code>smartday_sync.json</code>). It is never sent to any SmartDay server — because there isn't one. The key is transmitted directly from your browser to the AI provider you choose (Groq, Gemini, etc.) over encrypted HTTPS.<br><br>
-            <strong>Google Drive scope:</strong> SmartDay only requests the <code>drive.file</code> scope, meaning it can only see the files <em>it created</em>. It cannot read your other Drive files.<br><br>
-            <strong>Token expiry:</strong> Your Google auth token auto-expires after 5 minutes of inactivity for security. Just tap "Connect Drive" again to refresh it.
+            <strong>Your API key lives only in two places:</strong> browser memory (cleared on tab close) and your own private Drive file (<code>smartday_sync.json</code>). No SmartDay server ever touches it.<br><br>
+            <strong>Drive scope:</strong> SmartDay only requests <code>drive.file</code> — it can only see files it created.<br><br>
+            <strong>Token lifecycle:</strong> The Drive token stays active for the lifetime of your browser tab. It only expires if the Google API returns a 401, at which point you're prompted to reconnect.
           </div>
         </div>
       </div>
-
-      <div class="info-divider"></div>
-
-      <!-- SECTION: Cross-device sync -->
-      <div class="info-section">
-        <div class="info-sec-hd">
-          <div class="info-sec-icon blue"><span class="material-symbols-outlined">devices</span></div>
-          <div class="info-sec-title">Cross-Device Sync — How It Works</div>
-        </div>
-        <div class="info-sec-body">
-          <p>SmartDay uses a single JSON file in your Google Drive (<code>smartday_sync.json</code>) as the source of truth. Every time you make a change — checking a task, editing text, adding a task — the app auto-saves to Drive after a 3-second debounce.</p>
-          <p>On any other device: open this HTML file, tap <strong>Connect Drive</strong> with the same Google account, and your latest tasks (and API key) are instantly pulled down. Changes made on your phone will be reflected on your desktop on next sync.</p>
-        </div>
-      </div>
-
       <div class="mact">
         <button class="bcont" onclick="closeInfo()" style="justify-content:center;">Close</button>
       </div>
@@ -486,7 +528,7 @@
 </div>
 
 <!-- ══════════════════════════════════════════
-     MODAL 4 — SETTINGS (Client ID + config)
+     MODAL 4 — SETTINGS
 ══════════════════════════════════════════ -->
 <div class="mover" id="settingsmodal" onclick="closeSettings(event)">
   <div class="settings-sheet">
@@ -494,24 +536,13 @@
     <div class="mbody">
       <div class="mtitle">⚙️ Settings</div>
       <div class="msub">Configure your Google Drive connection and app preferences.</div>
-
-      <!-- Google Client ID -->
       <div class="settings-section">
-        <div class="settings-label">
-          <span class="material-symbols-outlined">key</span>
-          Google OAuth Client ID
-        </div>
+        <div class="settings-label"><span class="material-symbols-outlined">key</span>Google OAuth Client ID</div>
         <div class="cid-wrap">
-          <input
-            class="cid-input"
-            id="cid-input"
-            type="password"
-            placeholder="xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com"
-            autocomplete="off"
-            oninput="onCidInput()"
-            onpaste="setTimeout(onCidInput,10)"
-          >
-          <button class="cid-eye" id="cid-eye" onclick="toggleCidVisibility()" title="Show / Hide">
+          <input class="cid-input" id="cid-input" type="password"
+            placeholder="xxxxxxxxxxxx-xxxxxxxx.apps.googleusercontent.com"
+            autocomplete="off" oninput="onCidInput()" onpaste="setTimeout(onCidInput,10)">
+          <button class="cid-eye" id="cid-eye" onclick="toggleCidVisibility()" title="Show/Hide">
             <span class="material-symbols-outlined" id="cid-eye-icon">visibility</span>
           </button>
         </div>
@@ -522,41 +553,28 @@
         <div class="mact" style="margin-top:10px;">
           <button class="btxt" onclick="clearClientId()">Clear</button>
           <button class="bcont" id="cid-save-btn" onclick="saveClientId()" disabled>
-            <span class="material-symbols-outlined" style="font-size:15px;">save</span>
-            Save &amp; Apply
+            <span class="material-symbols-outlined" style="font-size:15px;">save</span>Save &amp; Apply
           </button>
         </div>
-
         <div class="settings-hint-box">
           <strong>How to get your Client ID:</strong><br>
-          1. Go to <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a><br>
-          2. Create a project → <strong>APIs &amp; Services</strong> → <strong>Enable APIs</strong> → enable <em>Google Drive API</em><br>
-          3. Go to <strong>Credentials</strong> → <strong>Create Credentials</strong> → <strong>OAuth 2.0 Client ID</strong><br>
-          4. Application type: <strong>Web application</strong><br>
-          5. Under <em>Authorized JavaScript origins</em> add: <code>null</code> (for local files) or your site URL<br>
-          6. Copy the Client ID (ends in <code>.apps.googleusercontent.com</code>) and paste it above<br>
-          7. Hit <strong>Save &amp; Apply</strong> — then tap <strong>Connect Drive</strong> in the top bar
+          1. <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a> → new project<br>
+          2. APIs &amp; Services → Enable <em>Google Drive API</em><br>
+          3. Credentials → OAuth 2.0 Client ID → Web application<br>
+          4. Authorized JS origins: <code>null</code> (local) or your site URL<br>
+          5. Paste the ID above and hit <strong>Save &amp; Apply</strong>
         </div>
       </div>
-
       <div class="settings-divider"></div>
-
-      <!-- Reset -->
       <div class="settings-section">
-        <div class="settings-label">
-          <span class="material-symbols-outlined">restart_alt</span>
-          Reset
-        </div>
+        <div class="settings-label"><span class="material-symbols-outlined">restart_alt</span>Reset</div>
         <button class="settings-danger-btn" onclick="resetFirstLaunch()">
-          <span class="material-symbols-outlined">replay</span>
-          Show welcome screen again on next open
+          <span class="material-symbols-outlined">replay</span>Show welcome screen again on next open
         </button>
         <button class="settings-danger-btn" style="margin-top:8px;" onclick="clearAllData()">
-          <span class="material-symbols-outlined">delete_forever</span>
-          Clear all local data &amp; tasks
+          <span class="material-symbols-outlined">delete_forever</span>Clear all local data &amp; tasks
         </button>
       </div>
-
     </div>
   </div>
 </div>
@@ -574,8 +592,7 @@
       <div class="sdot" id="sdot"></div>
       <span id="stxt">Local only</span>
     </div>
-    <span class="ttl" id="ttl"></span>
-    <button class="btn-help" onclick="openInfo()" title="Help & Setup">
+    <button class="btn-help" onclick="openInfo()" title="Help &amp; Setup">
       <span class="material-symbols-outlined">help_outline</span>
     </button>
     <button class="btn-help" onclick="openSettings()" title="Settings" id="settingsbtn">
@@ -596,103 +613,146 @@
 </div>
 
 <!-- ══════════════════════════════════════════
-     MAIN CONTENT
+     MAIN CONTENT + DETAIL PANEL WRAPPER
 ══════════════════════════════════════════ -->
-<div class="main">
-  <div class="dbanner" id="dbanner">
-    <span class="material-symbols-outlined" style="font-size:18px;">cloud_sync</span>
-    <span id="dbanner-txt">Connected to Google Drive &mdash; auto-syncs every 3 seconds after changes</span>
-  </div>
-  <div class="ph">
-    <div>
-      <div class="ph-title" id="ptitle">Today's Plan</div>
-      <div class="ph-sub" id="pdate"></div>
+<div class="app-body" id="appBody">
+
+  <!-- MAIN PANEL -->
+  <div class="main" id="mainPanel">
+    <div class="dbanner" id="dbanner">
+      <span class="material-symbols-outlined" style="font-size:18px;">cloud_sync</span>
+      <span id="dbanner-txt">Connected to Google Drive &mdash; auto-syncs every 3 s after changes</span>
     </div>
-    <div class="pring">
-      <svg viewBox="0 0 56 56" width="56" height="56">
-        <circle class="pt" cx="28" cy="28" r="22.5"/>
-        <circle class="pf" id="parc" cx="28" cy="28" r="22.5"/>
-      </svg>
-      <div class="plbl" id="plbl">0%</div>
+    <div class="ph">
+      <div>
+        <div class="ph-title" id="ptitle">Today's Plan</div>
+        <div class="ph-sub" id="pdate"></div>
+      </div>
+      <div class="pring">
+        <svg viewBox="0 0 56 56" width="56" height="56">
+          <circle class="pt" cx="28" cy="28" r="22.5"/>
+          <circle class="pf" id="parc" cx="28" cy="28" r="22.5"/>
+        </svg>
+        <div class="plbl" id="plbl">0%</div>
+      </div>
     </div>
-  </div>
-  <div class="stats">
-    <div class="scard">
-      <div class="sico b"><span class="material-symbols-outlined">checklist</span></div>
-      <div><div class="sval" id="stotal">0</div><div class="slbl">Total</div></div>
+    <div class="stats">
+      <div class="scard">
+        <div class="sico b"><span class="material-symbols-outlined">checklist</span></div>
+        <div><div class="sval" id="stotal">0</div><div class="slbl">Total</div></div>
+      </div>
+      <div class="scard">
+        <div class="sico g"><span class="material-symbols-outlined">task_alt</span></div>
+        <div><div class="sval" id="sdone">0</div><div class="slbl">Done</div></div>
+      </div>
+      <div class="scard">
+        <div class="sico y"><span class="material-symbols-outlined">schedule</span></div>
+        <div><div class="sval" id="stime">0h</div><div class="slbl">Scheduled</div></div>
+      </div>
     </div>
-    <div class="scard">
-      <div class="sico g"><span class="material-symbols-outlined">task_alt</span></div>
-      <div><div class="sval" id="sdone">0</div><div class="slbl">Done</div></div>
-    </div>
-    <div class="scard">
-      <div class="sico y"><span class="material-symbols-outlined">schedule</span></div>
-      <div><div class="sval" id="stime">0h</div><div class="slbl">Scheduled</div></div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-hd">
-      <div class="card-hd-t">Tasks</div>
-      <button class="btn-add" onclick="addRow()">+ Add task</button>
-    </div>
-    <div class="twrap" id="printarea">
-      <table>
-        <thead><tr>
-          <th style="padding-left:20px;width:30px;">#</th>
-          <th style="width:34px;"></th>
-          <th style="width:88px;">Time</th>
-          <th>Task</th>
-          <th style="width:64px;">Mins</th>
-          <th style="width:70px;">Priority</th>
-          <th style="width:38px;"></th>
-        </tr></thead>
-        <tbody id="tbody"></tbody>
-      </table>
-      <div id="empty" class="empty" style="display:none;">
-        <span class="material-symbols-outlined">event_note</span>
-        <p>No tasks yet.<br>Tap <strong>+ Add task</strong> or use AI to build your plan.</p>
+    <div class="card">
+      <div class="card-hd">
+        <div class="card-hd-t">Tasks <span style="font-size:11px;color:var(--t3);font-weight:400;margin-left:6px;">— click a row to add notes</span></div>
+        <button class="btn-add" onclick="addRow()">+ Add task</button>
+      </div>
+      <div class="twrap" id="printarea">
+        <table>
+          <thead><tr>
+            <th style="padding-left:20px;width:30px;">#</th>
+            <th style="width:34px;"></th>
+            <th style="width:88px;">Time</th>
+            <th>Task</th>
+            <th style="width:64px;">Mins</th>
+            <th style="width:70px;">Priority</th>
+            <th style="width:38px;"></th>
+          </tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+        <div id="empty" class="empty" style="display:none;">
+          <span class="material-symbols-outlined">event_note</span>
+          <p>No tasks yet.<br>Tap <strong>+ Add task</strong> or use AI to build your plan.</p>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- FAB -->
-<div class="fabs">
-  <button class="fab-sm" onclick="exportPDF()" title="PDF"><span class="material-symbols-outlined">picture_as_pdf</span></button>
-  <button class="fab-sm" onclick="exportDOCX()" title="DOCX"><span class="material-symbols-outlined">description</span></button>
-  <button class="fab" onclick="openModal()"><span class="material-symbols-outlined">auto_awesome</span>AI Planner</button>
-</div>
+  <!-- FEATURE 4 — TASK DETAIL PANEL -->
+  <div class="detail-panel" id="detailPanel">
+    <div class="dp-header">
+      <span class="material-symbols-outlined" style="font-size:18px;color:var(--blue);flex-shrink:0;">sticky_note_2</span>
+      <div class="dp-title" id="dp-title">Task Details</div>
+      <button class="dp-close" onclick="closeDetailPanel()" title="Close panel">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="dp-body">
+      <div class="dp-meta" id="dp-meta"></div>
+      <div class="dp-field">
+        <label>Notes &amp; Description</label>
+        <textarea class="dp-textarea" id="dp-desc"
+          placeholder="Add context, links, subtasks, or any notes for this task..."
+          oninput="onDescInput()"></textarea>
+      </div>
+      <div class="dp-save-row">
+        <button class="dp-save-btn" onclick="saveDesc()" id="dp-save-btn">
+          <span class="material-symbols-outlined">save</span>Save Notes
+        </button>
+      </div>
+      <div class="dp-hint">
+        <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;margin-right:4px;">info</span>
+        Notes are saved locally and synced to Google Drive with your tasks.
+      </div>
+    </div>
+  </div>
 
-<!-- BOTTOM NAV -->
-<div class="botnav">
-  <button class="ni" onclick="addRow()"><span class="material-symbols-outlined">add_circle</span><span>New</span></button>
-  <button class="ni" onclick="openModal()"><span class="material-symbols-outlined">auto_awesome</span><span>AI</span></button>
-  <button class="ni" onclick="exportPDF()"><span class="material-symbols-outlined">picture_as_pdf</span><span>PDF</span></button>
-  <button class="ni" onclick="exportDOCX()"><span class="material-symbols-outlined">description</span><span>DOCX</span></button>
+</div><!-- /app-body -->
+
+<!-- ═══════════════════════════════════════════
+     FEATURE 3 — FLOATING WIN11-STYLE DOCK
+═══════════════════════════════════════════ -->
+<div class="dock" id="dock">
+  <button class="dock-item" onclick="addRow()" title="New Task">
+    <span class="material-symbols-outlined">add_circle</span>
+    <span>New</span>
+  </button>
+  <button class="dock-item" onclick="openModal()" title="AI Planner" id="dock-ai-btn">
+    <span class="material-symbols-outlined">auto_awesome</span>
+    <span>AI</span>
+  </button>
+  <div class="dock-sep"></div>
+  <button class="dock-item" onclick="exportPDF()" title="Export PDF">
+    <span class="material-symbols-outlined">picture_as_pdf</span>
+    <span>PDF</span>
+  </button>
+  <button class="dock-item" onclick="exportDOCX()" title="Export DOCX">
+    <span class="material-symbols-outlined">description</span>
+    <span>DOCX</span>
+  </button>
+  <div class="dock-sep"></div>
+  <button class="dock-item" onclick="requestToken()" id="dock-drive-btn" title="Sync Drive">
+    <span class="material-symbols-outlined">cloud_sync</span>
+    <span>Sync</span>
+  </button>
 </div>
 
 <script>
 'use strict';
 
-// ════════════════════════════════════════════════════════════
-// CONFIG — Google OAuth Client ID
-// Set via the Settings modal (⚙️) in the UI — saved to localStorage.
-// Falls back to the hardcoded placeholder if not yet configured.
-// ════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════
+// CONFIG
+// ════════════════════════════════════════════
 let GOOGLE_CLIENT_ID = localStorage.getItem('sd_client_id') || 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
 
 // ════════════════════════════════════════════
 // STATE
 // ════════════════════════════════════════════
 let tasks = JSON.parse(localStorage.getItem('smartday_v3')||'null') || [
-    {id:uid(),text:'Morning Briefing',time:'09:00',duration:30,done:false,priority:'med'},
-    {id:uid(),text:'Deep Work Block', time:'10:00',duration:90,done:false,priority:'high'}
+    {id:uid(),text:'Morning Briefing',time:'09:00',duration:30,done:false,priority:'med',description:''},
+    {id:uid(),text:'Deep Work Block', time:'10:00',duration:90,done:false,priority:'high',description:''}
 ];
 const CIRC = 2*Math.PI*22.5;
-
-// In-memory API key store (populated from Drive on sync, never persisted to localStorage)
-let _storedApiKeys = {}; // { provider: key }
-let _storedApiProv = null;
+let _storedApiKeys = {};
+let activeTaskId = null; // currently open in detail panel
 
 function uid(){return Math.random().toString(36).slice(2,9);}
 
@@ -710,17 +770,23 @@ function render(){
         em.style.display='none';
         sorted.forEach((t,i)=>{
             const tr=document.createElement('tr');
-            tr.className=t.done?'done':'';
+            const isActive = (t.id === activeTaskId);
+            tr.className=(t.done?'done':'')+(isActive?' active-row':'');
+            tr.dataset.id=t.id;
             const pc={high:'pph',med:'ppm',low:'ppl'};
             const pl={high:'High',med:'Med',low:'Low'};
+            // Has description indicator
+            const noteIco = t.description ? '<span class="material-symbols-outlined" style="font-size:13px;color:var(--blue);vertical-align:middle;margin-left:4px;" title="Has notes">sticky_note_2</span>' : '';
             tr.innerHTML=
                 '<td class="rnum" style="padding-left:20px">'+(i+1)+'</td>'+
-                '<td><input type="checkbox" class="gc"'+(t.done?' checked':'')+' onchange="toggle(\''+t.id+'\')"></td>'+
-                '<td><input type="time" class="tf ftm" value="'+t.time+'" onblur="upd(\''+t.id+'\',\'time\',this.value)"></td>'+
-                '<td><input type="text" class="tf" value="'+esc(t.text)+'" onblur="upd(\''+t.id+'\',\'text\',this.value)" onkeydown="if(event.key===\'Enter\')this.blur()"></td>'+
-                '<td><input type="number" class="tf fdu" value="'+t.duration+'" min="1" max="480" onblur="upd(\''+t.id+'\',\'duration\',parseInt(this.value)||30)"></td>'+
-                '<td><span class="pp '+pc[t.priority]+'" onclick="cyPrio(\''+t.id+'\')" title="Click to change">'+pl[t.priority]+'</span></td>'+
-                '<td><button class="rdel" onclick="del(\''+t.id+'\')" title="Delete"><span class="material-symbols-outlined">delete</span></button></td>';
+                '<td><input type="checkbox" class="gc"'+(t.done?' checked':'')+' onchange="toggle(\''+t.id+'\')" onclick="event.stopPropagation()"></td>'+
+                '<td><input type="time" class="tf ftm" value="'+t.time+'" onblur="upd(\''+t.id+'\',\'time\',this.value)" onclick="event.stopPropagation()"></td>'+
+                '<td><input type="text" class="tf" value="'+esc(t.text)+'" onblur="upd(\''+t.id+'\',\'text\',this.value)" onkeydown="if(event.key===\'Enter\')this.blur()" onclick="event.stopPropagation()">'+noteIco+'</td>'+
+                '<td><input type="number" class="tf fdu" value="'+t.duration+'" min="1" max="480" onblur="upd(\''+t.id+'\',\'duration\',parseInt(this.value)||30)" onclick="event.stopPropagation()"></td>'+
+                '<td><span class="pp '+pc[t.priority]+'" onclick="event.stopPropagation();cyPrio(\''+t.id+'\')" title="Click to change">'+pl[t.priority]+'</span></td>'+
+                '<td><button class="rdel" onclick="event.stopPropagation();del(\''+t.id+'\')" title="Delete"><span class="material-symbols-outlined">delete</span></button></td>';
+            // Row click → open detail panel
+            tr.addEventListener('click', ()=>openDetailPanel(t.id));
             tb.appendChild(tr);
         });
     }
@@ -743,57 +809,166 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 // ════════════════════════════════════════════
 function toggle(id){const t=tasks.find(t=>t.id===id);if(t){t.done=!t.done;render();}}
 function upd(id,k,v){const t=tasks.find(t=>t.id===id);if(t){t[k]=v;render();}}
-function del(id){tasks=tasks.filter(t=>t.id!==id);render();toast('Task removed','inf');}
-function addRow(){
-    tasks.push({id:uid(),text:'New task',time:'12:00',duration:30,done:false,priority:'med'});
+function del(id){
+    if(activeTaskId===id) closeDetailPanel();
+    tasks=tasks.filter(t=>t.id!==id);
     render();
-    setTimeout(()=>{const ins=document.querySelectorAll('.tf:not(.ftm):not(.fdu)');const l=ins[ins.length-1];if(l){l.focus();l.select();}},60);
+    toast('Task removed','inf');
+}
+function addRow(){
+    const newTask={id:uid(),text:'New task',time:'12:00',duration:30,done:false,priority:'med',description:''};
+    tasks.push(newTask);
+    render();
+    setTimeout(()=>{
+        const ins=document.querySelectorAll('.tf:not(.ftm):not(.fdu)');
+        const l=ins[ins.length-1];
+        if(l){l.focus();l.select();}
+    },60);
 }
 function cyPrio(id){const t=tasks.find(t=>t.id===id);if(!t)return;t.priority={high:'med',med:'low',low:'high'}[t.priority]||'med';render();}
 function saveLocal(){localStorage.setItem('smartday_v3',JSON.stringify(tasks));}
 
 // ════════════════════════════════════════════
-// GOOGLE DRIVE ENGINE
-// Sync payload: { tasks: [...], apiKeys: { groq: '...', gemini: '...', ... } }
-// Scope: drive.file only — cannot touch any other user files
-// TTL: 300s token auto-expiry
-// Debounce: 3000ms to avoid HTTP 429
+// FEATURE 4 — TASK DETAIL PANEL
 // ════════════════════════════════════════════
-let token=null, fileId=localStorage.getItem('sd_fid')||null, ttlTimer=null;
+function openDetailPanel(id){
+    const t = tasks.find(t=>t.id===id);
+    if(!t) return;
+
+    activeTaskId = id;
+    // Update panel content
+    document.getElementById('dp-title').textContent = t.text || 'Task Details';
+    document.getElementById('dp-desc').value = t.description || '';
+    document.getElementById('dp-save-btn').textContent = '';
+    document.getElementById('dp-save-btn').innerHTML = '<span class="material-symbols-outlined">save</span>Save Notes';
+
+    // Meta chips
+    const pc={high:'pph',med:'ppm',low:'ppl'};
+    const pl={high:'High',med:'Med',low:'Low'};
+    document.getElementById('dp-meta').innerHTML =
+        '<span class="dp-chip"><span class="material-symbols-outlined">schedule</span>'+t.time+'</span>'+
+        '<span class="dp-chip"><span class="material-symbols-outlined">timer</span>'+t.duration+'m</span>'+
+        '<span class="dp-chip pp '+pc[t.priority]+'" style="border:none;">'+pl[t.priority]+'</span>'+
+        (t.done ? '<span class="dp-chip" style="background:#e6f4ea;color:var(--green);border-color:#ceead6;"><span class="material-symbols-outlined">task_alt</span>Done</span>' : '');
+
+    // Open panel & shrink main
+    document.getElementById('detailPanel').classList.add('open');
+    document.getElementById('appBody').classList.add('panel-open');
+    // Re-render to highlight row
+    render();
+}
+
+function closeDetailPanel(){
+    activeTaskId = null;
+    document.getElementById('detailPanel').classList.remove('open');
+    document.getElementById('appBody').classList.remove('panel-open');
+    render(); // clear active row highlight
+}
+
+function onDescInput(){
+    // Could add auto-save here; for now manual save
+}
+
+function saveDesc(){
+    if(!activeTaskId) return;
+    const t = tasks.find(t=>t.id===activeTaskId);
+    if(!t) return;
+    t.description = document.getElementById('dp-desc').value;
+    // Update panel title if task text changed
+    document.getElementById('dp-title').textContent = t.text || 'Task Details';
+    render();
+    toast('Notes saved ✓','ok');
+}
+
+// ════════════════════════════════════════════════════════════════
+// FEATURE 1 — PERSISTENT TOKEN (No TTL)
+// Token lives in memory until the tab is closed or a 401 hits.
+// Feature 5 — Silent auto-reconnect on page load.
+// ════════════════════════════════════════════════════════════════
+let token=null, fileId=localStorage.getItem('sd_fid')||null;
 const FNAME='smartday_sync.json';
 const DAPI='https://www.googleapis.com/drive/v3';
 const UAPI='https://www.googleapis.com/upload/drive/v3';
+let _gisClient = null; // reuse same token client instance
 
-// Build the full payload: tasks + stored API keys
+function _buildGisClient(promptMode){
+    // promptMode: '' for silent, undefined/omit for normal popup
+    return google.accounts.oauth2.initTokenClient({
+        client_id: GOOGLE_CLIENT_ID,
+        scope:'https://www.googleapis.com/auth/drive.file',
+        prompt: promptMode,
+        callback: async r => {
+            if(r.error || !r.access_token){
+                if(promptMode === ''){
+                    // Silent auth failed — show button, do nothing else
+                    showDriveBtn();
+                    console.info('[SmartDay] Silent auth failed:', r.error||'no token');
+                } else {
+                    toast('Auth error: '+(r.error||'unknown'),'err');
+                }
+                return;
+            }
+            token = r.access_token;
+            localStorage.setItem('sd_has_linked_drive','1');
+            setSyncUI('ok','Drive connected');
+            hideDriveBtn();
+            document.getElementById('dbanner').classList.add('show');
+            // Feature 1: No TTL, no countdown timer — token persists until 401
+            toast('Connected to Google Drive','ok');
+            await initDrive();
+        }
+    });
+}
+
+// Manual connect (shows account picker)
+function requestToken(){
+    if(typeof google==='undefined'){toast('Google SDK not loaded — check internet connection','err');return;}
+    if(GOOGLE_CLIENT_ID.startsWith('YOUR_')){
+        toast('Client ID not configured — tap ⚙️ Settings first','err');
+        setTimeout(openSettings, 400);
+        return;
+    }
+    _buildGisClient(undefined).requestAccessToken();
+}
+
+// Feature 5 — Silent auto-reconnect on DOMContentLoaded
+function trySilentReconnect(){
+    if(typeof google==='undefined'){return;}
+    if(GOOGLE_CLIENT_ID.startsWith('YOUR_')){return;}
+    const hasLinked = localStorage.getItem('sd_has_linked_drive');
+    if(!hasLinked){return;}
+    setSyncUI('busy','Reconnecting...');
+    _buildGisClient('').requestAccessToken({prompt:''});
+}
+
+function showDriveBtn(){
+    const db=document.getElementById('drivebtn');
+    db.style.display='flex';
+    // Keep original Drive SVG
+    db.innerHTML=`<svg width="16" height="16" viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg"><path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8H0c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/><path d="M43.65 25 29.9 1.2C28.55 2 27.4 3.1 26.6 4.5L1.2 49.15C.4 50.55 0 52.1 0 53.65h27.5z" fill="#00ac47"/><path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5H59.8l5.65 10.35z" fill="#ea4335"/><path d="M43.65 25 57.4 1.2C56.05.4 54.5 0 52.95 0H34.35c-1.55 0-3.1.45-4.45 1.2z" fill="#00832d"/><path d="M59.8 53.65H27.5L13.75 77.45c1.35.8 2.9 1.2 4.45 1.2h50.9c1.55 0 3.1-.45 4.45-1.2z" fill="#2684fc"/><path d="M73.4 26.45l-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3L43.65 25l16.15 28H87.3c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/></svg> Connect Drive`;
+    setSyncUI('','Local only');
+}
+function hideDriveBtn(){
+    document.getElementById('drivebtn').style.display='none';
+}
+
+// Called when a Drive request returns 401 — token silently expired server-side
+function handleTokenExpired(){
+    token=null;
+    showDriveBtn();
+    document.getElementById('dbanner').classList.remove('show');
+    setSyncUI('','Reconnect Drive');
+    toast('Drive session expired — tap Reconnect Drive','inf');
+}
+
+// ════════════════════════════════════════════
+// DRIVE ENGINE
+// Payload: { tasks: [...], apiKeys: {...} }
+// ════════════════════════════════════════════
 function buildPayload(){
     return { tasks, apiKeys: _storedApiKeys };
 }
 
-// 1 — AUTH
-function requestToken(){
-    if(typeof google==='undefined'){toast('Google SDK not loaded — check your internet connection','err');return;}
-    if(GOOGLE_CLIENT_ID.startsWith('YOUR_')){
-        toast('Client ID not configured — tap ? for setup steps','err');
-        setTimeout(openInfo, 400);
-        return;
-    }
-    google.accounts.oauth2.initTokenClient({
-        client_id: GOOGLE_CLIENT_ID,
-        scope:'https://www.googleapis.com/auth/drive.file',
-        callback:async r=>{
-            if(r.error){toast('Auth error: '+r.error,'err');return;}
-            token=r.access_token;
-            setSyncUI('ok','Drive connected');
-            document.getElementById('drivebtn').style.display='none';
-            document.getElementById('dbanner').classList.add('show');
-            startTTL(300);
-            toast('Connected to Google Drive','ok');
-            await initDrive();
-        }
-    }).requestAccessToken();
-}
-
-// 2 — INIT: query → load or create
 async function initDrive(){
     if(!token)return;
     setSyncUI('busy','Checking Drive...');
@@ -812,13 +987,13 @@ async function initDrive(){
         }
         setSyncUI('ok','Drive synced');
     }catch(e){
+        if(e.message.includes('401')){handleTokenExpired();return;}
         console.error('[Drive init]',e);
         setSyncUI('','Sync error');
-        toast('Drive init error: '+e.message,'err');
+        toast('Drive error: '+e.message,'err');
     }
 }
 
-// 3a — CREATE
 async function createDrive(){
     const meta=await(await dReq(DAPI+'/files','POST',{name:FNAME,mimeType:'application/json'})).json();
     fileId=meta.id;
@@ -826,54 +1001,53 @@ async function createDrive(){
     await uploadDrive();
 }
 
-// 3b — LOAD: pulls tasks AND stored API keys from Drive
+// FEATURE 2 — Rock-solid API key persistence
 async function loadDrive(){
     if(!token||!fileId)return;
     const r=await dReq(DAPI+'/files/'+fileId+'?alt=media','GET');
     const d=await r.json();
 
-    // Support both old format (plain array) and new format ({ tasks, apiKeys })
+    // Support both old array format and new envelope format
     const rawTasks = Array.isArray(d) ? d : (Array.isArray(d.tasks) ? d.tasks : null);
-    const rawKeys  = (!Array.isArray(d) && d.apiKeys) ? d.apiKeys : {};
+    const rawKeys  = (!Array.isArray(d) && d.apiKeys && typeof d.apiKeys==='object') ? d.apiKeys : {};
 
     if(rawTasks){
-        tasks=rawTasks.map(t=>({
-            id:t.id||uid(), text:t.text||'Untitled',
-            time:/^\d{2}:\d{2}$/.test(t.time)?t.time:'09:00',
-            duration:parseInt(t.duration)||30, done:!!t.done,
-            priority:['high','med','low'].includes(t.priority)?t.priority:'med'
+        tasks = rawTasks.map(t=>({
+            id:       t.id||uid(),
+            text:     t.text||'Untitled',
+            time:     /^\d{2}:\d{2}$/.test(t.time)?t.time:'09:00',
+            duration: parseInt(t.duration)||30,
+            done:     !!t.done,
+            priority: ['high','med','low'].includes(t.priority)?t.priority:'med',
+            description: t.description||''       // preserve notes
         }));
         saveLocal();
         render();
     }
 
-    // Restore API keys from Drive into memory
-    if(rawKeys && typeof rawKeys==='object'){
+    // FEATURE 2 — Silently restore API keys; populate AI modal field
+    if(Object.keys(rawKeys).length > 0){
         _storedApiKeys = rawKeys;
-        // Auto-populate the AI key field if modal has a current provider selected
+        // Pre-fill whichever provider is currently selected
         const savedKey = _storedApiKeys[curProv];
         if(savedKey){
             document.getElementById('akey').value = savedKey;
-            toast('API key restored from Drive ✓','ok');
         }
-        // Update the dbanner to indicate keys were restored
-        if(Object.keys(rawKeys).length>0){
-            document.getElementById('dbanner-txt').textContent =
-                'Drive synced — tasks & API key loaded on this device';
-        }
+        document.getElementById('dbanner-txt').textContent =
+            'Drive synced — tasks & API key ready on this device';
+        // Subtle toast, not intrusive
+        toast('Drive synced — API key loaded ✓','ok');
     }
 }
 
-// 3c — SAVE: uploads tasks + API keys
 async function uploadDrive(){
     if(!token||!fileId)return;
-    const payload=buildPayload();
     await dReq(UAPI+'/files/'+fileId+'?uploadType=media','PATCH',
-        new Blob([JSON.stringify(payload)],{type:'application/json'}),true);
+        new Blob([JSON.stringify(buildPayload())],{type:'application/json'}),true);
     setSyncUI('ok','Drive synced');
 }
 
-// 4 — DEBOUNCED SYNC
+// 4 — DEBOUNCED SYNC — 3 s
 let _dt=null;
 function debSync(){
     if(!token)return;
@@ -881,11 +1055,13 @@ function debSync(){
     clearTimeout(_dt);
     _dt=setTimeout(async()=>{
         try{await uploadDrive();}
-        catch(e){console.error('[sync]',e);setSyncUI('','Sync error');}
+        catch(e){
+            if(e.message.includes('401')){handleTokenExpired();return;}
+            console.error('[sync]',e);setSyncUI('','Sync error');
+        }
     },3000);
 }
 
-// Drive fetch helper
 async function dReq(url,method,body,raw){
     if(!token)throw new Error('No token');
     const h={'Authorization':'Bearer '+token};
@@ -893,40 +1069,22 @@ async function dReq(url,method,body,raw){
     const o={method:method||'GET',headers:h};
     if(body)o.body=raw?body:JSON.stringify(body);
     const r=await fetch(url,o);
-    if(r.status===401){expireToken();throw new Error('Token expired — reconnect.');}
-    if(r.status===429)throw new Error('Rate limit hit.');
+    // Feature 1 — Only expire on actual 401
+    if(r.status===401){token=null;throw new Error('401 Unauthorized');}
+    if(r.status===429)throw new Error('Rate limit hit');
     return r;
 }
 
-// TTL — 5 minute security auto-expiry
-function startTTL(s){
-    clearInterval(ttlTimer);
-    const el=document.getElementById('ttl');
-    el.classList.add('show');
-    ttlTimer=setInterval(()=>{
-        s--;
-        const m=Math.floor(s/60),ss=s%60;
-        el.textContent='Token: '+m+':'+String(ss).padStart(2,'0');
-        if(s<=0){expireToken();toast('Drive token expired — tap Reconnect Drive','inf');}
-    },1000);
-}
-function expireToken(){
-    token=null; fileId=null;
-    clearInterval(ttlTimer);
-    const el=document.getElementById('ttl');
-    el.textContent='Expired';
-    el.style.cssText='display:inline;background:#fce8e6;color:#c5221f;border:1px solid #f5c6c2;font-size:11px;padding:3px 8px;border-radius:4px;';
-    const db=document.getElementById('drivebtn');
-    db.style.display='flex';
-    db.innerHTML='<span class="material-symbols-outlined" style="font-size:15px;color:#d93025;">refresh</span> Reconnect Drive';
-    document.getElementById('dbanner').classList.remove('show');
-    setSyncUI('','Disconnected');
-}
 function setSyncUI(state,txt){
     const c=document.getElementById('schip'),d=document.getElementById('sdot'),s=document.getElementById('stxt');
     s.textContent=txt; c.className='schip'; d.className='sdot';
     if(state==='ok'){c.classList.add('ok');d.classList.add('live');}
     else if(state==='busy'){c.classList.add('busy');d.classList.add('spin');}
+    // Mirror sync state in dock
+    const dockSync=document.getElementById('dock-drive-btn');
+    if(dockSync){
+        dockSync.classList.toggle('active', state==='ok');
+    }
 }
 
 // ════════════════════════════════════════════
@@ -934,16 +1092,16 @@ function setSyncUI(state,txt){
 // ════════════════════════════════════════════
 const PROVS={
     groq:{name:'Groq',fmt:'oai',url:'https://api.groq.com/openai/v1/chat/completions',model:'llama-3.3-70b-versatile',
-          hint:'Free key at <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> — no credit card needed.',
+          hint:'Free key at <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> — no credit card.',
           lbl:'API KEY — GROQ',ph:'gsk_...',pre:'gsk_'},
     gemini:{name:'Gemini',fmt:'gem',url:null,model:'gemini-2.0-flash',
-            hint:'Free key at <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a> — no card needed.',
+            hint:'Free key at <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a> — no card.',
             lbl:'API KEY — GEMINI',ph:'AIza...',pre:'AIza'},
     openrouter:{name:'OpenRouter',fmt:'oai',url:'https://openrouter.ai/api/v1/chat/completions',model:'meta-llama/llama-3.1-8b-instruct:free',
-                hint:'Free key at <a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys</a> — no card needed.',
+                hint:'Free key at <a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys</a> — no card.',
                 lbl:'API KEY — OPENROUTER',ph:'sk-or-...',pre:'sk-or-'},
     openai:{name:'OpenAI',fmt:'oai',url:'https://api.openai.com/v1/chat/completions',model:'gpt-4o-mini',
-            hint:'Key at <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a> — pay per use.',
+            hint:'Key at <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a> — paid.',
             lbl:'API KEY — OPENAI',ph:'sk-proj-...',pre:'sk-'}
 };
 let curProv='groq';
@@ -956,20 +1114,17 @@ function selProv(id){
     document.getElementById('khint').innerHTML=p.hint;
     document.getElementById('klbl').textContent=p.lbl;
     document.getElementById('akey').placeholder=p.ph;
-    // Auto-fill from Drive-restored key if available
     document.getElementById('akey').value=_storedApiKeys[id]||'';
     clearMsg();
-    if(id==='openai')showMsg('OpenAI may block calls from local files (CORS). Use Groq or OpenRouter if you get a network error — both are free.','wrn');
+    if(id==='openai')showMsg('OpenAI may block calls from local files (CORS). Use Groq or OpenRouter — both are free.','wrn');
 }
 
 function openModal(){
     document.getElementById('aimodal').classList.add('open');
     clearMsg();
-    // Show "save to Drive" checkbox only if Drive is connected
     document.getElementById('key-save-row').style.display = token ? 'block' : 'none';
-    // Auto-fill stored key for current provider
-    const stored = _storedApiKeys[curProv];
-    if(stored) document.getElementById('akey').value = stored;
+    const stored=_storedApiKeys[curProv];
+    if(stored) document.getElementById('akey').value=stored;
     setTimeout(()=>document.getElementById('aprompt').focus(),300);
 }
 function closeModal(e){if(!e||e.target===document.getElementById('aimodal'))document.getElementById('aimodal').classList.remove('open');}
@@ -977,13 +1132,11 @@ function setP(t){document.getElementById('aprompt').value=t;document.getElementB
 function showMsg(m,t){const el=document.getElementById('amsg');el.className='amsg '+(t||'err');el.innerHTML=m;el.style.display='block';}
 function clearMsg(){document.getElementById('amsg').style.display='none';}
 
-// CORS proxy fallback for file:// origin
 const PROXY='https://corsproxy.io/?url=';
 async function sfetch(url,opts){
     try{return await fetch(url,opts);}
     catch(e){
         if(location.protocol!=='file:'&&location.hostname!=='localhost')throw new Error('Network error: '+e.message);
-        console.log('[CORS proxy]');
         return fetch(PROXY+encodeURIComponent(url),opts);
     }
 }
@@ -992,8 +1145,8 @@ function vKey(k,pid){
     const p=PROVS[pid];
     if(!k)return'No API key entered.';
     if(k.includes(' '))return'Key has spaces — re-copy carefully.';
-    if(p.pre&&!k.startsWith(p.pre))return p.name+' keys start with "'+p.pre+'" — check you selected the right provider.';
-    if(k.length<20)return'Key looks too short — re-copy from the dashboard.';
+    if(p.pre&&!k.startsWith(p.pre))return p.name+' keys start with "'+p.pre+'" — check provider.';
+    if(k.length<20)return'Key looks too short.';
     return null;
 }
 
@@ -1004,12 +1157,12 @@ async function callAI(p,key,sys,usr){
         try{r=await sfetch(url,{method:'POST',headers:{'Content-Type':'application/json'},
             body:JSON.stringify({contents:[{parts:[{text:sys+'\n\n'+usr}]}],generationConfig:{temperature:.3,maxOutputTokens:1500}})});}
         catch(e){throw new Error('Cannot reach Gemini: '+e.message);}
-        if(!r.ok){let m='HTTP '+r.status;try{const j=await r.json();m=j.error&&j.error.message?j.error.message:m;}catch(_){}
-            if(r.status===401||r.status===403)throw new Error('Key rejected ('+r.status+'): '+m);
-            if(r.status===429)throw new Error('Rate limit — wait and retry.');
+        if(!r.ok){let m='HTTP '+r.status;try{const j=await r.json();m=j.error&&j.error.message||m;}catch(_){}
+            if(r.status===401||r.status===403)throw new Error('Key rejected: '+m);
+            if(r.status===429)throw new Error('Rate limit — wait.');
             throw new Error('Gemini '+r.status+': '+m);}
         const d=await r.json();
-        return(d.candidates&&d.candidates[0]&&d.candidates[0].content&&d.candidates[0].content.parts&&d.candidates[0].content.parts[0])?d.candidates[0].content.parts[0].text:'';
+        return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
     }
     const h={'Content-Type':'application/json','Authorization':'Bearer '+key};
     if(curProv==='openrouter'){h['HTTP-Referer']='https://smartday.app';h['X-Title']='SmartDay';}
@@ -1017,12 +1170,12 @@ async function callAI(p,key,sys,usr){
     try{r=await sfetch(p.url,{method:'POST',headers:h,body:JSON.stringify({model:p.model,max_tokens:1500,temperature:.3,
         messages:[{role:'system',content:sys},{role:'user',content:usr}]})});}
     catch(e){throw new Error('Cannot reach '+p.name+': '+e.message);}
-    if(!r.ok){let m='HTTP '+r.status;try{const j=await r.json();m=j.error&&j.error.message?j.error.message:m;}catch(_){}
-        if(r.status===401)throw new Error('Invalid key (401) — re-copy from '+p.name+'.');
-        if(r.status===429)throw new Error('Rate limit (429) — wait and retry.');
+    if(!r.ok){let m='HTTP '+r.status;try{const j=await r.json();m=j.error?.message||m;}catch(_){}
+        if(r.status===401)throw new Error('Invalid key (401).');
+        if(r.status===429)throw new Error('Rate limit (429).');
         throw new Error(p.name+' '+r.status+': '+m);}
     const d=await r.json();
-    return(d.choices&&d.choices[0]&&d.choices[0].message)?d.choices[0].message.content:'';
+    return d.choices?.[0]?.message?.content||'';
 }
 
 async function runAI(){
@@ -1032,32 +1185,32 @@ async function runAI(){
     clearMsg();
     const ke=vKey(key,curProv);
     if(ke){showMsg(ke);return;}
-    if(!prompt){showMsg('Please describe what you want to change.');return;}
+    if(!prompt){showMsg('Describe what you want to change.');return;}
 
-    // Feature 3: Save API key to Drive if checkbox is checked and Drive is connected
-    const saveKeyCb = document.getElementById('saveKeyToDrive');
-    if(saveKeyCb && saveKeyCb.checked && token){
+    // FEATURE 2 — Save key to Drive if checkbox checked
+    const saveKeyCb=document.getElementById('saveKeyToDrive');
+    if(saveKeyCb&&saveKeyCb.checked&&token){
         _storedApiKeys[curProv]=key;
-        // Will be written in the next debSync triggered by render()
     }
 
     const btn=document.getElementById('aiBtn');
     btn.disabled=true;
-    btn.innerHTML='<span style="font-size:13px;">&#9203;</span> Processing...';
+    btn.innerHTML='<span style="font-size:13px;">⏳</span> Processing...';
     setSyncUI('busy',p.name+'...');
-    const SYS='You are a productivity planner. Return ONLY a raw JSON array (no markdown, no backticks). Each item: "id"(keep if existing,else short random),"text"(string),"time"(HH:MM 24h),"duration"(int minutes),"done"(bool),"priority"("high"|"med"|"low").';
+    const SYS='You are a productivity planner. Return ONLY a raw JSON array (no markdown, no backticks). Each item: "id"(keep if existing,else short random),"text"(string),"time"(HH:MM 24h),"duration"(int minutes),"done"(bool),"priority"("high"|"med"|"low"),"description"(string,keep existing).';
     const USR='Tasks:\n'+JSON.stringify(tasks)+'\n\nRequest: '+prompt;
     try{
         let raw=await callAI(p,key,SYS,USR);
         raw=raw.trim().replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
         if(raw.startsWith('{')){const o=JSON.parse(raw);const k=Object.keys(o).find(k=>Array.isArray(o[k]));if(k)raw=JSON.stringify(o[k]);}
         const arr=JSON.parse(raw);
-        if(!Array.isArray(arr))throw new Error('Expected a JSON array.');
+        if(!Array.isArray(arr))throw new Error('Expected JSON array.');
         tasks=arr.map(t=>({
             id:t.id||uid(),text:String(t.text||'Untitled'),
             time:/^\d{2}:\d{2}$/.test(t.time)?t.time:'09:00',
             duration:parseInt(t.duration)||30,done:!!t.done,
-            priority:['high','med','low'].includes(t.priority)?t.priority:'med'
+            priority:['high','med','low'].includes(t.priority)?t.priority:'med',
+            description:t.description||''
         }));
         render(); closeModal(); toast('Plan updated via '+p.name,'ok');
         if(saveKeyCb&&saveKeyCb.checked&&token) toast('API key saved to Drive ✓','ok');
@@ -1087,11 +1240,14 @@ function exportDOCX(){
     const doc=new Document({sections:[{children:[
         new Paragraph({text:'SmartDay — '+new Date().toDateString(),heading:HeadingLevel.HEADING_1}),
         new Paragraph({text:''}),
-        ...s.map(t=>new Paragraph({children:[
-            new TextRun({text:t.time+'  ',bold:true}),
-            new TextRun({text:t.text+(t.done?' (done)':''),strike:t.done}),
-            new TextRun({text:'  ('+t.duration+'m)',color:'888888'})
-        ]}))
+        ...s.flatMap(t=>[
+            new Paragraph({children:[
+                new TextRun({text:t.time+'  ',bold:true}),
+                new TextRun({text:t.text+(t.done?' (done)':''),strike:t.done}),
+                new TextRun({text:'  ('+t.duration+'m)',color:'888888'})
+            ]}),
+            ...(t.description?[new Paragraph({children:[new TextRun({text:'  '+t.description,color:'666666',italics:true})]})]:[])
+        ])
     ]}]});
     Packer.toBlob(doc).then(b=>{saveAs(b,'SmartDay_'+new Date().toISOString().slice(0,10)+'.docx');toast('DOCX saved','ok');});
 }
@@ -1110,158 +1266,71 @@ function toast(msg,type){
 // ════════════════════════════════════════════
 // MODAL CONTROLLERS
 // ════════════════════════════════════════════
-function openInfo(){
-    document.getElementById('infomodal').classList.add('open');
-}
-function closeInfo(e){
-    if(!e||e.target===document.getElementById('infomodal'))
-        document.getElementById('infomodal').classList.remove('open');
-}
+function openInfo(){document.getElementById('infomodal').classList.add('open');}
+function closeInfo(e){if(!e||e.target===document.getElementById('infomodal'))document.getElementById('infomodal').classList.remove('open');}
+function openWelcome(){document.getElementById('welcomemodal').classList.add('open');}
+function closeWelcome(){document.getElementById('welcomemodal').classList.remove('open');localStorage.setItem('sd_returning','1');}
 
-// Welcome modal
-function openWelcome(){
-    document.getElementById('welcomemodal').classList.add('open');
-}
-function closeWelcome(){
-    document.getElementById('welcomemodal').classList.remove('open');
-    localStorage.setItem('sd_returning','1');
-}
-
-// ════════════════════════════════════════════
-// SETTINGS MODAL — Client ID management
-// ════════════════════════════════════════════
 function openSettings(){
-    const modal = document.getElementById('settingsmodal');
-    modal.classList.add('open');
-    // Populate input with current value (mask placeholder text)
-    const inp = document.getElementById('cid-input');
-    const stored = localStorage.getItem('sd_client_id') || '';
-    inp.value = stored;
-    updateCidStatus(stored);
+    document.getElementById('settingsmodal').classList.add('open');
+    const inp=document.getElementById('cid-input');
+    inp.value=localStorage.getItem('sd_client_id')||'';
+    updateCidStatus(inp.value);
 }
-
-function closeSettings(e){
-    if(!e || e.target===document.getElementById('settingsmodal'))
-        document.getElementById('settingsmodal').classList.remove('open');
-}
+function closeSettings(e){if(!e||e.target===document.getElementById('settingsmodal'))document.getElementById('settingsmodal').classList.remove('open');}
 
 function toggleCidVisibility(){
-    const inp = document.getElementById('cid-input');
-    const icon = document.getElementById('cid-eye-icon');
-    if(inp.type==='password'){
-        inp.type='text';
-        icon.textContent='visibility_off';
-    } else {
-        inp.type='password';
-        icon.textContent='visibility';
-    }
+    const inp=document.getElementById('cid-input'),icon=document.getElementById('cid-eye-icon');
+    inp.type=inp.type==='password'?'text':'password';
+    icon.textContent=inp.type==='password'?'visibility':'visibility_off';
 }
-
 function onCidInput(){
-    const val = document.getElementById('cid-input').value.trim();
+    const val=document.getElementById('cid-input').value.trim();
     updateCidStatus(val);
-    document.getElementById('cid-save-btn').disabled = !isValidCid(val);
+    document.getElementById('cid-save-btn').disabled=!isValidCid(val);
 }
-
-function isValidCid(v){
-    // Google Client IDs end in .apps.googleusercontent.com and are non-trivial length
-    return v.length > 20 && v.includes('.apps.googleusercontent.com') && !v.startsWith('YOUR_');
-}
-
+function isValidCid(v){return v.length>20&&v.includes('.apps.googleusercontent.com')&&!v.startsWith('YOUR_');}
 function updateCidStatus(val){
-    const el   = document.getElementById('cid-status');
-    const txt  = document.getElementById('cid-status-txt');
-    const inp  = document.getElementById('cid-input');
+    const el=document.getElementById('cid-status'),txt=document.getElementById('cid-status-txt'),inp=document.getElementById('cid-input');
     inp.classList.remove('valid','invalid');
-
-    if(!val){
-        el.className='cid-status hint';
-        el.querySelector('.material-symbols-outlined').textContent='info';
-        txt.textContent='Paste your Client ID above to enable Google Drive sync.';
-        return;
-    }
-    if(isValidCid(val)){
-        el.className='cid-status ok';
-        el.querySelector('.material-symbols-outlined').textContent='check_circle';
-        txt.textContent = (localStorage.getItem('sd_client_id')===val)
-            ? 'Client ID is active — Drive sync is ready.'
-            : 'Looks valid! Hit Save & Apply to activate.';
-        inp.classList.add('valid');
-    } else {
-        el.className='cid-status err';
-        el.querySelector('.material-symbols-outlined').textContent='error';
-        txt.textContent = val.startsWith('YOUR_')
-            ? 'That\'s still the placeholder — paste your real Client ID.'
-            : 'Doesn\'t look right. It should end in .apps.googleusercontent.com';
-        inp.classList.add('invalid');
-    }
+    if(!val){el.className='cid-status hint';el.querySelector('.material-symbols-outlined').textContent='info';txt.textContent='Paste your Client ID to enable Drive sync.';return;}
+    if(isValidCid(val)){el.className='cid-status ok';el.querySelector('.material-symbols-outlined').textContent='check_circle';txt.textContent=localStorage.getItem('sd_client_id')===val?'Client ID active — ready.':'Looks valid! Hit Save & Apply.';inp.classList.add('valid');}
+    else{el.className='cid-status err';el.querySelector('.material-symbols-outlined').textContent='error';txt.textContent=val.startsWith('YOUR_')?'Still a placeholder — paste your real Client ID.':'Should end in .apps.googleusercontent.com';inp.classList.add('invalid');}
 }
-
 function saveClientId(){
-    const val = document.getElementById('cid-input').value.trim();
-    if(!isValidCid(val)){ toast('Invalid Client ID — check the format','err'); return; }
-    localStorage.setItem('sd_client_id', val);
-    GOOGLE_CLIENT_ID = val; // update live variable immediately
+    const val=document.getElementById('cid-input').value.trim();
+    if(!isValidCid(val)){toast('Invalid Client ID','err');return;}
+    localStorage.setItem('sd_client_id',val);
+    GOOGLE_CLIENT_ID=val;
     updateCidStatus(val);
-    document.getElementById('cid-save-btn').disabled = true;
-    // Update the Drive button label in case it was showing error state
-    const db = document.getElementById('drivebtn');
-    if(!token){
-        db.style.display='flex';
-        db.innerHTML=`<svg width="16" height="16" viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg"><path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8H0c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/><path d="M43.65 25 29.9 1.2C28.55 2 27.4 3.1 26.6 4.5L1.2 49.15C.4 50.55 0 52.1 0 53.65h27.5z" fill="#00ac47"/><path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5H59.8l5.65 10.35z" fill="#ea4335"/><path d="M43.65 25 57.4 1.2C56.05.4 54.5 0 52.95 0H34.35c-1.55 0-3.1.45-4.45 1.2z" fill="#00832d"/><path d="M59.8 53.65H27.5L13.75 77.45c1.35.8 2.9 1.2 4.45 1.2h50.9c1.55 0 3.1-.45 4.45-1.2z" fill="#2684fc"/><path d="M73.4 26.45l-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3L43.65 25l16.15 28H87.3c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/></svg> Connect Drive`;
-    }
+    document.getElementById('cid-save-btn').disabled=true;
+    showDriveBtn();
     toast('Client ID saved — tap Connect Drive!','ok');
     updateSettingsBadge();
-    // Show a pulsing indicator on the drive button to guide user
-    setTimeout(()=>{ document.getElementById('settingsmodal').classList.remove('open'); }, 1200);
+    setTimeout(()=>document.getElementById('settingsmodal').classList.remove('open'),1200);
 }
-
-function clearClientId(){
-    document.getElementById('cid-input').value='';
-    onCidInput();
-    document.getElementById('cid-save-btn').disabled=true;
-}
-
-function resetFirstLaunch(){
-    localStorage.removeItem('sd_returning');
-    toast('Welcome screen will show on next open','ok');
-    document.getElementById('settingsmodal').classList.remove('open');
-}
-
+function clearClientId(){document.getElementById('cid-input').value='';onCidInput();document.getElementById('cid-save-btn').disabled=true;}
+function resetFirstLaunch(){localStorage.removeItem('sd_returning');toast('Welcome shows on next open','ok');document.getElementById('settingsmodal').classList.remove('open');}
 function clearAllData(){
-    if(!confirm('This will delete all your local tasks and settings. Are you sure?')) return;
+    if(!confirm('Delete all local tasks and settings?'))return;
+    closeDetailPanel();
     localStorage.clear();
     tasks=[];
     render();
-    toast('All local data cleared','inf');
+    toast('All data cleared','inf');
     document.getElementById('settingsmodal').classList.remove('open');
 }
-
-// Show a visual indicator on the settings button if Client ID is not set
 function updateSettingsBadge(){
-    const btn = document.getElementById('settingsbtn');
-    const stored = localStorage.getItem('sd_client_id');
-    if(!stored || stored.startsWith('YOUR_')){
-        btn.style.borderColor='#f9ab00';
-        btn.style.color='#f57f17';
-        btn.title='Settings — Client ID not configured';
-    } else {
-        btn.style.borderColor='';
-        btn.style.color='';
-        btn.title='Settings';
-    }
+    const btn=document.getElementById('settingsbtn'),stored=localStorage.getItem('sd_client_id');
+    if(!stored||stored.startsWith('YOUR_')){btn.style.borderColor='#f9ab00';btn.style.color='#f57f17';btn.title='Settings — Client ID not configured';}
+    else{btn.style.borderColor='';btn.style.color='';btn.title='Settings';}
 }
 
 // ════════════════════════════════════════════
-// Checks localStorage for 'sd_returning'.
-// If absent → show welcome modal on first open.
+// FIRST-LAUNCH CHECK
 // ════════════════════════════════════════════
 function checkFirstLaunch(){
-    const isReturning = localStorage.getItem('sd_returning');
-    if(!isReturning){
-        // Delay slightly so the rest of the UI renders first
-        setTimeout(openWelcome, 600);
-    }
+    if(!localStorage.getItem('sd_returning')) setTimeout(openWelcome, 700);
 }
 
 // ════════════════════════════════════════════
@@ -1271,17 +1340,31 @@ document.addEventListener('DOMContentLoaded',()=>{
     const now=new Date();
     document.getElementById('pdate').textContent=now.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
     document.getElementById('ptitle').textContent=now.toLocaleDateString('en-US',{weekday:'long'})+"'s Plan";
+
     document.addEventListener('keydown',e=>{
         if(e.key==='Escape'){
             closeModal();
             closeInfo();
             closeSettings();
+            closeDetailPanel();
             document.getElementById('welcomemodal').classList.remove('open');
         }
     });
+
     render();
     updateSettingsBadge();
     checkFirstLaunch();
+
+    // Feature 5 — Attempt silent Drive reconnect after GIS SDK loads
+    // GIS is async-deferred so we poll for readiness
+    const _silentRetry = setInterval(()=>{
+        if(typeof google!=='undefined'&&google.accounts&&google.accounts.oauth2){
+            clearInterval(_silentRetry);
+            trySilentReconnect();
+        }
+    }, 200);
+    // Give up after 8 s if SDK never loads
+    setTimeout(()=>clearInterval(_silentRetry), 8000);
 });
 </script>
 </body>
