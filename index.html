@@ -336,16 +336,141 @@
             .scard{min-width:80px;padding:10px 12px;}
             .sval{font-size:17px;}
             .provider-grid{grid-template-columns:1fr;}
-            /* On mobile, detail panel goes full width */
             .detail-panel{width:100%;top:64px;height:calc(100vh - 64px - 80px);}
             .app-body.panel-open .main{display:none;}
             .dock{bottom:12px;padding:6px 8px;gap:2px;}
             .dock-item{min-width:44px;padding:5px 8px;}
             .dock-ai{padding:7px 12px;font-size:11px;}
         }
+
+        /* ═══════════════════════════════════════
+           GOOGLE SIGN-IN SCREEN
+        ═══════════════════════════════════════ */
+        #signin-screen{
+            position:fixed;inset:0;
+            background:#f1f3f4;
+            z-index:9000;
+            display:flex;align-items:center;justify-content:center;
+            padding:16px;
+        }
+        #signin-screen.hidden{display:none;}
+        .signin-card{
+            background:#fff;
+            border:1px solid #dadce0;
+            border-radius:8px;
+            padding:48px 40px 36px;
+            width:100%;max-width:400px;
+            text-align:center;
+            box-shadow:0 2px 4px rgba(0,0,0,.1),0 4px 16px rgba(0,0,0,.06);
+        }
+        .signin-logo{width:48px;height:48px;border-radius:12px;background:#1a73e8;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:'Google Sans',sans-serif;font-weight:700;font-size:20px;color:white;}
+        .signin-title{font-family:'Google Sans',sans-serif;font-size:24px;font-weight:400;color:#202124;margin-bottom:8px;}
+        .signin-sub{font-size:14px;color:#5f6368;margin-bottom:32px;line-height:1.5;}
+        .signin-google-btn{
+            display:flex;align-items:center;justify-content:center;gap:10px;
+            width:100%;padding:12px 16px;
+            border:1px solid #dadce0;border-radius:4px;
+            background:#fff;cursor:pointer;
+            font-family:'Roboto',sans-serif;font-size:14px;font-weight:500;color:#3c4043;
+            box-shadow:0 1px 2px rgba(60,64,67,.3);
+            transition:box-shadow .15s,background .15s;
+            margin-bottom:12px;
+        }
+        .signin-google-btn:hover{background:#f8f9fa;box-shadow:0 1px 4px rgba(60,64,67,.3);}
+        .signin-guest-btn{
+            background:none;border:none;color:#1a73e8;
+            font-family:'Google Sans',sans-serif;font-size:14px;font-weight:500;
+            cursor:pointer;padding:8px;border-radius:4px;
+            transition:background .15s;
+        }
+        .signin-guest-btn:hover{background:rgba(26,115,232,.08);}
+        .signin-divider{display:flex;align-items:center;gap:12px;margin:16px 0;color:#5f6368;font-size:12px;}
+        .signin-divider::before,.signin-divider::after{content:'';flex:1;height:1px;background:#dadce0;}
+        .signin-user-row{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#f8f9fa;border-radius:var(--r);margin-bottom:16px;text-align:left;}
+        .signin-avatar{width:36px;height:36px;border-radius:50%;background:#1a73e8;color:white;display:flex;align-items:center;justify-content:center;font-family:'Google Sans',sans-serif;font-weight:500;font-size:14px;flex-shrink:0;}
+        .signin-avatar img{width:36px;height:36px;border-radius:50%;object-fit:cover;}
+        .signin-uname{font-family:'Google Sans',sans-serif;font-size:13px;font-weight:500;color:#202124;}
+        .signin-uemail{font-size:11px;color:#5f6368;}
+        .signin-error{background:#fce8e6;color:#c5221f;border-radius:4px;padding:10px 14px;font-size:13px;margin-bottom:12px;display:none;text-align:left;}
+
+        /* user avatar in topbar */
+        .topbar-avatar{width:32px;height:32px;border-radius:50%;background:#1a73e8;color:white;display:flex;align-items:center;justify-content:center;font-family:'Google Sans',sans-serif;font-weight:500;font-size:13px;cursor:pointer;flex-shrink:0;overflow:hidden;border:2px solid transparent;transition:border-color .15s;}
+        .topbar-avatar:hover{border-color:#1a73e8;}
+        .topbar-avatar img{width:100%;height:100%;object-fit:cover;}
+        .user-menu{position:absolute;top:56px;right:14px;background:#fff;border:1px solid #dadce0;border-radius:8px;box-shadow:0 4px 16px rgba(60,64,67,.2);z-index:1000;min-width:220px;overflow:hidden;display:none;}
+        .user-menu.open{display:block;}
+        .user-menu-header{padding:16px;border-bottom:1px solid #dadce0;text-align:center;}
+        .user-menu-avatar{width:56px;height:56px;border-radius:50%;background:#1a73e8;color:white;display:flex;align-items:center;justify-content:center;font-family:'Google Sans',sans-serif;font-weight:500;font-size:22px;margin:0 auto 8px;overflow:hidden;}
+        .user-menu-avatar img{width:100%;height:100%;object-fit:cover;}
+        .user-menu-name{font-family:'Google Sans',sans-serif;font-size:14px;font-weight:500;color:#202124;}
+        .user-menu-email{font-size:12px;color:#5f6368;margin-top:2px;}
+        .user-menu-item{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:13px;color:#3c4043;cursor:pointer;transition:background .15s;}
+        .user-menu-item:hover{background:#f1f3f4;}
+        .user-menu-item .material-symbols-outlined{font-size:18px;color:#5f6368;}
+        .user-menu-sep{height:1px;background:#dadce0;}
+
+        /* ═══════════════════════════════════════
+           API KEY MANAGER (in AI modal)
+        ═══════════════════════════════════════ */
+        .km-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:8px 12px;background:#f8f9fa;border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;user-select:none;}
+        .km-toggle-label{font-family:'Google Sans',sans-serif;font-size:13px;font-weight:500;color:var(--t2);display:flex;align-items:center;gap:6px;}
+        .km-toggle .material-symbols-outlined{font-size:16px;color:var(--t3);transition:transform .2s;}
+        .km-toggle.open .material-symbols-outlined.chevron{transform:rotate(180deg);}
+        .km-panel{display:none;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:12px;}
+        .km-panel.open{display:block;}
+        .km-list{max-height:280px;overflow-y:auto;}
+        .km-row{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--border);transition:background .15s;}
+        .km-row:last-child{border-bottom:none;}
+        .km-row:hover{background:#f8f9fa;}
+        .km-prov-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+        .km-prov-name{font-family:'Google Sans',sans-serif;font-size:12px;font-weight:500;color:var(--t1);flex:1;}
+        .km-key-preview{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--t3);flex:2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .km-actions{display:flex;gap:4px;flex-shrink:0;}
+        .km-btn{background:none;border:none;cursor:pointer;color:var(--t3);width:28px;height:28px;border-radius:4px;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+        .km-btn:hover{background:#e8f0fe;color:var(--blue);}
+        .km-btn.del:hover{background:#fce8e6;color:var(--red);}
+        .km-btn .material-symbols-outlined{font-size:16px;}
+        .km-empty{padding:20px;text-align:center;font-size:12px;color:var(--t3);}
+        .km-add-row{padding:10px 12px;border-top:1px solid var(--border);background:#f8f9fa;}
+        /* Custom provider add form */
+        .custom-prov-form{border:1px solid var(--border);border-radius:var(--r);padding:12px;background:#f8f9fa;margin-bottom:12px;display:none;}
+        .custom-prov-form.open{display:block;}
+        .custom-prov-form .gf{margin-bottom:8px;}
+        .custom-prov-form .gf:last-child{margin-bottom:0;}
+        .custom-prov-form label{font-size:10px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:4px;}
+        .custom-prov-form .gi{font-size:13px;padding:8px 10px;}
     </style>
 </head>
 <body>
+
+<!-- ══════════════════════════════════════════
+     GOOGLE SIGN-IN SCREEN
+══════════════════════════════════════════ -->
+<div id="signin-screen">
+  <div class="signin-card">
+    <div class="signin-logo">SD</div>
+    <div class="signin-title">Sign in to SmartDay</div>
+    <div class="signin-sub">Your AI-powered daily planner.<br>Sign in to sync tasks across all your devices.</div>
+    <div class="signin-error" id="signin-error"></div>
+    <!-- Returning user chip (shown when cookie exists) -->
+    <div class="signin-user-row" id="signin-returning-row" style="display:none;">
+      <div class="signin-avatar" id="signin-return-avatar">?</div>
+      <div>
+        <div class="signin-uname" id="signin-return-name">User</div>
+        <div class="signin-uemail" id="signin-return-email"></div>
+      </div>
+    </div>
+    <button class="signin-google-btn" onclick="signInWithGoogle()" id="signin-btn">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+      Continue with Google
+    </button>
+    <div class="signin-divider">or</div>
+    <button class="signin-guest-btn" onclick="continueAsGuest()">Continue without signing in</button>
+    <p style="font-size:11px;color:#9aa0a6;margin-top:20px;line-height:1.5;">
+      Signing in enables Google Drive sync and saves your API keys securely. Your data stays in your own Google account.
+    </p>
+  </div>
+</div>
 
 <div id="toasts"></div>
 
@@ -358,36 +483,80 @@
     <div class="mbody">
       <div class="mtitle">AI Planner</div>
       <div class="msub">Pick a provider, paste your key, and describe how to update your day.</div>
-      <div class="pgrid">
-        <div class="pcard sel" onclick="selProv('groq')" id="prov-groq">
-          <div class="pname">&#9889; Groq <span class="ftag">Free</span></div>
-          <div class="psub">Llama 3.3 70B &middot; 14,400/day</div>
+
+      <!-- Provider grid — built dynamically by JS to include custom providers -->
+      <div class="pgrid" id="pgrid"></div>
+
+      <!-- Custom provider add form (collapsible) -->
+      <div class="custom-prov-form" id="custom-prov-form">
+        <div style="font-family:'Google Sans',sans-serif;font-size:12px;font-weight:500;color:var(--t2);margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+          <span class="material-symbols-outlined" style="font-size:15px;">add_circle</span>Add Custom Provider
         </div>
-        <div class="pcard" onclick="selProv('gemini')" id="prov-gemini">
-          <div class="pname">&#11088; Gemini <span class="ftag">Free</span></div>
-          <div class="psub">Gemini 2.0 Flash</div>
+        <div class="gf">
+          <label>Provider Name</label>
+          <input class="gi" id="cp-name" placeholder="e.g. DeepSeek, Mistral, Anthropic...">
         </div>
-        <div class="pcard" onclick="selProv('openrouter')" id="prov-openrouter">
-          <div class="pname">&#128256; OpenRouter <span class="ftag">Free</span></div>
-          <div class="psub">Llama 3.1 8B &middot; 30+ models</div>
+        <div class="gf">
+          <label>API Endpoint URL</label>
+          <input class="gi" id="cp-url" placeholder="https://api.deepseek.com/v1/chat/completions">
         </div>
-        <div class="pcard" onclick="selProv('openai')" id="prov-openai">
-          <div class="pname">&#129302; OpenAI</div>
-          <div class="psub">GPT-4o mini &middot; Paid</div>
+        <div class="gf">
+          <label>Model Name</label>
+          <input class="gi" id="cp-model" placeholder="e.g. deepseek-chat">
+        </div>
+        <div class="gf">
+          <label>Key Prefix (optional)</label>
+          <input class="gi" id="cp-prefix" placeholder="e.g. sk- (for validation hint)">
+        </div>
+        <div style="display:flex;gap:8px;margin-top:4px;">
+          <button class="btxt" style="padding:6px 12px;font-size:12px;" onclick="cancelCustomProv()">Cancel</button>
+          <button class="bcont" style="padding:7px 16px;font-size:12px;" onclick="addCustomProvider()">
+            <span class="material-symbols-outlined" style="font-size:13px;">save</span>Save Provider
+          </button>
         </div>
       </div>
+
       <div class="amsg" id="amsg"></div>
+
+      <!-- API Key input -->
       <div class="gf">
-        <label id="klbl">API KEY &mdash; GROQ</label>
-        <input type="password" class="gi" id="akey" placeholder="gsk_..." autocomplete="off">
+        <label id="klbl">API KEY — GROQ</label>
+        <div style="display:flex;gap:6px;">
+          <input type="password" class="gi" id="akey" placeholder="gsk_..." autocomplete="off" style="flex:1;" oninput="onKeyInput()">
+          <button class="km-btn" id="akey-eye" onclick="toggleKeyVis()" title="Show/hide key" style="width:38px;height:38px;border:1.5px solid var(--border);border-radius:var(--r);flex-shrink:0;">
+            <span class="material-symbols-outlined" id="akey-eye-icon">visibility</span>
+          </button>
+        </div>
         <div class="khint" id="khint">Free key at <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> &mdash; no credit card needed.</div>
       </div>
+
+      <!-- Save to Drive row -->
       <div id="key-save-row" style="display:none;margin-bottom:12px;">
         <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;color:var(--t3);">
           <input type="checkbox" id="saveKeyToDrive" checked style="accent-color:var(--blue);width:14px;height:14px;">
           Save this API key to Drive for cross-device access
         </label>
       </div>
+
+      <!-- ── API KEY MANAGER (collapsible) ── -->
+      <div class="km-toggle" id="km-toggle" onclick="toggleKeyManager()">
+        <div class="km-toggle-label">
+          <span class="material-symbols-outlined" style="font-size:16px;">vpn_key</span>
+          Saved API Keys <span id="km-count" style="background:#e8f0fe;color:var(--blue);font-size:10px;padding:1px 6px;border-radius:10px;margin-left:4px;">0</span>
+        </div>
+        <span class="material-symbols-outlined chevron">expand_more</span>
+      </div>
+      <div class="km-panel" id="km-panel">
+        <div class="km-list" id="km-list"></div>
+        <div class="km-add-row" style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:11px;color:var(--t3);">Keys sync to Drive automatically</span>
+          <button class="btxt" style="font-size:12px;padding:5px 10px;" onclick="showCustomProvForm()">
+            <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">add</span> Custom Provider
+          </button>
+        </div>
+      </div>
+
+      <!-- Prompt chips -->
       <div class="chips">
         <div class="chip" onclick="setP('Push everything back 1 hour')">Push back 1hr</div>
         <div class="chip" onclick="setP('Add a 30-minute lunch break')">Add lunch</div>
@@ -609,6 +778,29 @@
       </svg>
       Connect Drive
     </button>
+    <!-- User avatar (shown after sign-in) -->
+    <div class="topbar-avatar" id="topbar-avatar" style="display:none;" onclick="toggleUserMenu()" title="Account">
+      <span id="topbar-avatar-initial">?</span>
+    </div>
+  </div>
+</div>
+
+<!-- User account dropdown menu -->
+<div class="user-menu" id="user-menu">
+  <div class="user-menu-header">
+    <div class="user-menu-avatar" id="umenu-avatar"><span id="umenu-initial">?</span></div>
+    <div class="user-menu-name" id="umenu-name">User</div>
+    <div class="user-menu-email" id="umenu-email"></div>
+  </div>
+  <div class="user-menu-item" onclick="openSettings();closeUserMenu()">
+    <span class="material-symbols-outlined">settings</span>Settings
+  </div>
+  <div class="user-menu-item" onclick="openModal();closeUserMenu()">
+    <span class="material-symbols-outlined">vpn_key</span>Manage API Keys
+  </div>
+  <div class="user-menu-sep"></div>
+  <div class="user-menu-item" onclick="signOut()" style="color:var(--red);">
+    <span class="material-symbols-outlined" style="color:var(--red);">logout</span>Sign out
   </div>
 </div>
 
@@ -751,10 +943,180 @@ let tasks = JSON.parse(localStorage.getItem('smartday_v3')||'null') || [
     {id:uid(),text:'Deep Work Block', time:'10:00',duration:90,done:false,priority:'high',description:''}
 ];
 const CIRC = 2*Math.PI*22.5;
-let _storedApiKeys = {};
-let activeTaskId = null; // currently open in detail panel
+let _storedApiKeys = JSON.parse(localStorage.getItem('sd_api_keys')||'{}');
+let activeTaskId = null;
+
+// ── AUTH STATE (persisted in localStorage as "cookie" equivalent) ──
+let _currentUser = JSON.parse(localStorage.getItem('sd_user')||'null');
+// { name, email, photoUrl, initial }
+let _isGuest = localStorage.getItem('sd_guest') === '1';
+
+// ── CUSTOM PROVIDERS (user-defined, persisted) ──
+let _customProviders = JSON.parse(localStorage.getItem('sd_custom_provs')||'[]');
+// [{id, name, url, model, prefix, hint}]
 
 function uid(){return Math.random().toString(36).slice(2,9);}
+
+// ════════════════════════════════════════════
+// SIGN-IN / AUTH
+// ════════════════════════════════════════════
+function initAuthScreen(){
+    // Check if already signed in or guest
+    if(_currentUser || _isGuest){
+        hideSignInScreen();
+        applyUserToUI();
+        return;
+    }
+    // Show returning user info if we have a stored user
+    const stored = JSON.parse(localStorage.getItem('sd_user')||'null');
+    if(stored){
+        document.getElementById('signin-returning-row').style.display='flex';
+        const av=document.getElementById('signin-return-avatar');
+        av.textContent=stored.initial||stored.name[0].toUpperCase();
+        document.getElementById('signin-return-name').textContent=stored.name;
+        document.getElementById('signin-return-email').textContent=stored.email||'';
+    }
+    document.getElementById('signin-screen').classList.remove('hidden');
+}
+
+function signInWithGoogle(){
+    if(typeof google==='undefined'){
+        showSigninError('Google SDK not loaded. Check your internet connection.');
+        return;
+    }
+    if(GOOGLE_CLIENT_ID.startsWith('YOUR_')){
+        showSigninError('Google Client ID not configured. Tap "Continue without signing in" to use local mode, or set your Client ID in Settings.');
+        return;
+    }
+
+    // Use Google Identity Services for sign-in
+    // We request openid + email + profile to get user info
+    const client = google.accounts.oauth2.initTokenClient({
+        client_id: GOOGLE_CLIENT_ID,
+        scope: 'openid email profile https://www.googleapis.com/auth/drive.file',
+        callback: async (resp) => {
+            if(resp.error || !resp.access_token){
+                showSigninError('Sign-in failed: '+(resp.error||'No token received'));
+                return;
+            }
+            // Fetch user info with token
+            try{
+                const r = await fetch('https://www.googleapis.com/oauth2/v3/userinfo',
+                    {headers:{Authorization:'Bearer '+resp.access_token}});
+                const info = await r.json();
+                _currentUser = {
+                    name: info.name || info.email || 'User',
+                    email: info.email || '',
+                    photoUrl: info.picture || '',
+                    initial: (info.name||info.email||'U')[0].toUpperCase()
+                };
+                localStorage.setItem('sd_user', JSON.stringify(_currentUser));
+                localStorage.removeItem('sd_guest');
+                _isGuest = false;
+
+                // Also set the Drive token since we already have it
+                token = resp.access_token;
+                localStorage.setItem('sd_has_linked_drive','1');
+
+                applyUserToUI();
+                hideSignInScreen();
+                setSyncUI('ok','Drive connected');
+                hideDriveBtn();
+                document.getElementById('dbanner').classList.add('show');
+                await initDrive();
+                toast('Welcome, '+_currentUser.name+'!','ok');
+            } catch(e){
+                showSigninError('Could not fetch user info: '+e.message);
+            }
+        }
+    });
+    document.getElementById('signin-btn').textContent='Signing in...';
+    document.getElementById('signin-btn').disabled=true;
+    client.requestAccessToken();
+}
+
+function continueAsGuest(){
+    _isGuest = true;
+    localStorage.setItem('sd_guest','1');
+    hideSignInScreen();
+    applyUserToUI();
+    toast('Running in local mode — no Drive sync','inf');
+}
+
+function hideSignInScreen(){
+    document.getElementById('signin-screen').classList.add('hidden');
+}
+
+function showSigninError(msg){
+    const el=document.getElementById('signin-error');
+    el.textContent=msg;el.style.display='block';
+    document.getElementById('signin-btn').textContent='Continue with Google';
+    document.getElementById('signin-btn').disabled=false;
+}
+
+function applyUserToUI(){
+    if(_currentUser){
+        const av=document.getElementById('topbar-avatar');
+        av.style.display='flex';
+        const ini=document.getElementById('topbar-avatar-initial');
+        if(_currentUser.photoUrl){
+            av.innerHTML='<img src="'+_currentUser.photoUrl+'" alt="avatar">';
+        } else {
+            ini.textContent=_currentUser.initial;
+        }
+        // User menu
+        document.getElementById('umenu-name').textContent=_currentUser.name;
+        document.getElementById('umenu-email').textContent=_currentUser.email;
+        const uma=document.getElementById('umenu-avatar');
+        if(_currentUser.photoUrl){
+            uma.innerHTML='<img src="'+_currentUser.photoUrl+'" alt="avatar" style="width:56px;height:56px;border-radius:50%;">';
+        } else {
+            document.getElementById('umenu-initial').textContent=_currentUser.initial;
+        }
+        // Hide sign-in button in topbar since user is signed in
+        const db=document.getElementById('drivebtn');
+        if(db && token) db.style.display='none';
+    }
+}
+
+function toggleUserMenu(){
+    document.getElementById('user-menu').classList.toggle('open');
+}
+function closeUserMenu(){
+    document.getElementById('user-menu').classList.remove('open');
+}
+
+function signOut(){
+    if(!confirm('Sign out? Your local tasks will remain on this device.'))return;
+    _currentUser=null;
+    _isGuest=false;
+    token=null;
+    localStorage.removeItem('sd_user');
+    localStorage.removeItem('sd_guest');
+    localStorage.removeItem('sd_has_linked_drive');
+    localStorage.removeItem('sd_fid');
+    closeUserMenu();
+    setSyncUI('','Local only');
+    showDriveBtn();
+    document.getElementById('topbar-avatar').style.display='none';
+    document.getElementById('dbanner').classList.remove('show');
+    // Show sign-in screen
+    localStorage.removeItem('sd_user');
+    document.getElementById('signin-screen').classList.remove('hidden');
+    document.getElementById('signin-btn').textContent='Continue with Google';
+    document.getElementById('signin-btn').disabled=false;
+    document.getElementById('signin-error').style.display='none';
+    toast('Signed out','inf');
+}
+
+// Close user menu on outside click
+document.addEventListener('click', e=>{
+    const menu=document.getElementById('user-menu');
+    const av=document.getElementById('topbar-avatar');
+    if(menu&&!menu.contains(e.target)&&!av.contains(e.target)){
+        menu.classList.remove('open');
+    }
+});
 
 // ════════════════════════════════════════════
 // RENDER
@@ -966,7 +1328,7 @@ function handleTokenExpired(){
 // Payload: { tasks: [...], apiKeys: {...} }
 // ════════════════════════════════════════════
 function buildPayload(){
-    return { tasks, apiKeys: _storedApiKeys };
+    return { tasks, apiKeys: _storedApiKeys, customProviders: _customProviders };
 }
 
 async function initDrive(){
@@ -1010,6 +1372,7 @@ async function loadDrive(){
     // Support both old array format and new envelope format
     const rawTasks = Array.isArray(d) ? d : (Array.isArray(d.tasks) ? d.tasks : null);
     const rawKeys  = (!Array.isArray(d) && d.apiKeys && typeof d.apiKeys==='object') ? d.apiKeys : {};
+    const rawCustom = (!Array.isArray(d) && Array.isArray(d.customProviders)) ? d.customProviders : [];
 
     if(rawTasks){
         tasks = rawTasks.map(t=>({
@@ -1019,24 +1382,29 @@ async function loadDrive(){
             duration: parseInt(t.duration)||30,
             done:     !!t.done,
             priority: ['high','med','low'].includes(t.priority)?t.priority:'med',
-            description: t.description||''       // preserve notes
+            description: t.description||''
         }));
         saveLocal();
         render();
     }
 
-    // FEATURE 2 — Silently restore API keys; populate AI modal field
+    // Restore API keys
     if(Object.keys(rawKeys).length > 0){
-        _storedApiKeys = rawKeys;
-        // Pre-fill whichever provider is currently selected
+        _storedApiKeys = {...rawKeys, ..._storedApiKeys}; // local keys take priority
+        saveApiKeys();
         const savedKey = _storedApiKeys[curProv];
-        if(savedKey){
-            document.getElementById('akey').value = savedKey;
-        }
+        if(savedKey) document.getElementById('akey').value = savedKey;
         document.getElementById('dbanner-txt').textContent =
-            'Drive synced — tasks & API key ready on this device';
-        // Subtle toast, not intrusive
-        toast('Drive synced — API key loaded ✓','ok');
+            'Drive synced — tasks & API keys ready on this device';
+        toast('Drive synced — API keys loaded ✓','ok');
+    }
+
+    // Restore custom providers from Drive
+    if(rawCustom.length > 0){
+        // Merge: avoid duplicates by id
+        const existingIds = new Set(_customProviders.map(p=>p.id));
+        rawCustom.forEach(p=>{ if(!existingIds.has(p.id)) _customProviders.push(p); });
+        localStorage.setItem('sd_custom_provs',JSON.stringify(_customProviders));
     }
 }
 
@@ -1088,29 +1456,66 @@ function setSyncUI(state,txt){
 }
 
 // ════════════════════════════════════════════
-// AI PROVIDERS
+// AI PROVIDERS — BUILT-IN + CUSTOM
 // ════════════════════════════════════════════
-const PROVS={
-    groq:{name:'Groq',fmt:'oai',url:'https://api.groq.com/openai/v1/chat/completions',model:'llama-3.3-70b-versatile',
+const BUILTIN_PROVS={
+    groq:{name:'Groq',emoji:'⚡',fmt:'oai',url:'https://api.groq.com/openai/v1/chat/completions',model:'llama-3.3-70b-versatile',
           hint:'Free key at <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> — no credit card.',
-          lbl:'API KEY — GROQ',ph:'gsk_...',pre:'gsk_'},
-    gemini:{name:'Gemini',fmt:'gem',url:null,model:'gemini-2.0-flash',
+          lbl:'API KEY — GROQ',ph:'gsk_...',pre:'gsk_',tag:'Free'},
+    gemini:{name:'Gemini',emoji:'⭐',fmt:'gem',url:null,model:'gemini-2.0-flash',
             hint:'Free key at <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a> — no card.',
-            lbl:'API KEY — GEMINI',ph:'AIza...',pre:'AIza'},
-    openrouter:{name:'OpenRouter',fmt:'oai',url:'https://openrouter.ai/api/v1/chat/completions',model:'meta-llama/llama-3.1-8b-instruct:free',
+            lbl:'API KEY — GEMINI',ph:'AIza...',pre:'AIza',tag:'Free'},
+    openrouter:{name:'OpenRouter',emoji:'🔄',fmt:'oai',url:'https://openrouter.ai/api/v1/chat/completions',model:'meta-llama/llama-3.1-8b-instruct:free',
                 hint:'Free key at <a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys</a> — no card.',
-                lbl:'API KEY — OPENROUTER',ph:'sk-or-...',pre:'sk-or-'},
-    openai:{name:'OpenAI',fmt:'oai',url:'https://api.openai.com/v1/chat/completions',model:'gpt-4o-mini',
+                lbl:'API KEY — OPENROUTER',ph:'sk-or-...',pre:'sk-or-',tag:'Free'},
+    openai:{name:'OpenAI',emoji:'🤖',fmt:'oai',url:'https://api.openai.com/v1/chat/completions',model:'gpt-4o-mini',
             hint:'Key at <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a> — paid.',
-            lbl:'API KEY — OPENAI',ph:'sk-proj-...',pre:'sk-'}
+            lbl:'API KEY — OPENAI',ph:'sk-proj-...',pre:'sk-',tag:null}
 };
+
 let curProv='groq';
+
+// Build full provider map (built-in + custom)
+function getAllProvs(){
+    const all={...BUILTIN_PROVS};
+    _customProviders.forEach(cp=>{
+        all[cp.id]={
+            name:cp.name,emoji:'🔧',fmt:'oai',
+            url:cp.url,model:cp.model,
+            hint:'Custom provider: '+cp.name,
+            lbl:'API KEY — '+cp.name.toUpperCase(),
+            ph:cp.prefix?(cp.prefix+'...'):'your-api-key',
+            pre:cp.prefix||'',
+            tag:'Custom',
+            isCustom:true
+        };
+    });
+    return all;
+}
+
+// ── RENDER PROVIDER GRID ──
+function renderProvGrid(){
+    const grid=document.getElementById('pgrid');
+    const all=getAllProvs();
+    grid.innerHTML='';
+    Object.entries(all).forEach(([id,p])=>{
+        const div=document.createElement('div');
+        div.className='pcard'+(id===curProv?' sel':'');
+        div.id='prov-'+id;
+        div.onclick=()=>selProv(id);
+        div.innerHTML=`<div class="pname">${p.emoji} ${p.name} ${p.tag?'<span class="ftag">'+p.tag+'</span>':''}</div>`+
+            `<div class="psub">${p.model}${p.isCustom?` <button class="km-btn del" onclick="event.stopPropagation();removeCustomProv('${id}')" title="Remove" style="display:inline-flex;width:18px;height:18px;vertical-align:middle;margin-left:4px;"><span class="material-symbols-outlined" style="font-size:12px;">close</span></button>`:''}</div>`;
+        grid.appendChild(div);
+    });
+}
 
 function selProv(id){
     curProv=id;
     document.querySelectorAll('.pcard').forEach(c=>c.classList.remove('sel'));
-    document.getElementById('prov-'+id).classList.add('sel');
-    const p=PROVS[id];
+    const el=document.getElementById('prov-'+id);
+    if(el)el.classList.add('sel');
+    const p=getAllProvs()[id];
+    if(!p)return;
     document.getElementById('khint').innerHTML=p.hint;
     document.getElementById('klbl').textContent=p.lbl;
     document.getElementById('akey').placeholder=p.ph;
@@ -1119,10 +1524,124 @@ function selProv(id){
     if(id==='openai')showMsg('OpenAI may block calls from local files (CORS). Use Groq or OpenRouter — both are free.','wrn');
 }
 
+// ── KEY VISIBILITY TOGGLE ──
+function toggleKeyVis(){
+    const inp=document.getElementById('akey'),icon=document.getElementById('akey-eye-icon');
+    inp.type=inp.type==='password'?'text':'password';
+    icon.textContent=inp.type==='password'?'visibility':'visibility_off';
+}
+
+// ── KEY INPUT: auto-detect provider from prefix ──
+function onKeyInput(){
+    const val=document.getElementById('akey').value.trim();
+    // Auto-switch provider if prefix matches a different one
+    const all=getAllProvs();
+    for(const [id,p] of Object.entries(all)){
+        if(p.pre && val.startsWith(p.pre) && id!==curProv && val.length>10){
+            selProv(id);
+            break;
+        }
+    }
+}
+
+// ── KEY MANAGER ──
+function toggleKeyManager(){
+    const panel=document.getElementById('km-panel');
+    const toggle=document.getElementById('km-toggle');
+    const isOpen=panel.classList.toggle('open');
+    toggle.classList.toggle('open',isOpen);
+    if(isOpen)renderKeyManager();
+}
+
+function renderKeyManager(){
+    const list=document.getElementById('km-list');
+    const all=getAllProvs();
+    const keys=Object.keys(_storedApiKeys).filter(k=>_storedApiKeys[k]);
+    document.getElementById('km-count').textContent=keys.length;
+    if(!keys.length){
+        list.innerHTML='<div class="km-empty">No keys saved yet. Paste a key above and run AI — it will be saved automatically.</div>';
+        return;
+    }
+    list.innerHTML='';
+    keys.forEach(pid=>{
+        const p=all[pid]||{name:pid,emoji:'🔑'};
+        const k=_storedApiKeys[pid];
+        const preview=k.slice(0,6)+'•••••'+k.slice(-4);
+        const row=document.createElement('div');
+        row.className='km-row';
+        row.innerHTML=
+            '<div class="km-prov-icon">'+p.emoji+'</div>'+
+            '<div class="km-prov-name">'+p.name+'</div>'+
+            '<div class="km-key-preview">'+preview+'</div>'+
+            '<div class="km-actions">'+
+              '<button class="km-btn" onclick="useKey(\''+pid+'\')" title="Use this key"><span class="material-symbols-outlined">login</span></button>'+
+              '<button class="km-btn del" onclick="deleteKey(\''+pid+'\')" title="Delete key"><span class="material-symbols-outlined">delete</span></button>'+
+            '</div>';
+        list.appendChild(row);
+    });
+}
+
+function useKey(pid){
+    selProv(pid);
+    document.getElementById('akey').value=_storedApiKeys[pid]||'';
+    toggleKeyManager(); // close panel
+    toast('Key loaded for '+((getAllProvs()[pid]||{}).name||pid),'ok');
+}
+
+function deleteKey(pid){
+    delete _storedApiKeys[pid];
+    saveApiKeys();
+    renderKeyManager();
+    if(curProv===pid) document.getElementById('akey').value='';
+    toast('Key removed','inf');
+}
+
+function saveApiKeys(){
+    localStorage.setItem('sd_api_keys',JSON.stringify(_storedApiKeys));
+    // Also sync to Drive payload
+    if(token) debSync();
+}
+
+// ── CUSTOM PROVIDER MANAGEMENT ──
+function showCustomProvForm(){
+    document.getElementById('custom-prov-form').classList.add('open');
+    document.getElementById('cp-name').focus();
+}
+function cancelCustomProv(){
+    document.getElementById('custom-prov-form').classList.remove('open');
+    ['cp-name','cp-url','cp-model','cp-prefix'].forEach(id=>document.getElementById(id).value='');
+}
+
+function addCustomProvider(){
+    const name=document.getElementById('cp-name').value.trim();
+    const url=document.getElementById('cp-url').value.trim();
+    const model=document.getElementById('cp-model').value.trim();
+    const prefix=document.getElementById('cp-prefix').value.trim();
+    if(!name||!url||!model){toast('Name, URL and Model are required','err');return;}
+    const id='custom_'+uid();
+    _customProviders.push({id,name,url,model,prefix});
+    localStorage.setItem('sd_custom_provs',JSON.stringify(_customProviders));
+    cancelCustomProv();
+    renderProvGrid();
+    selProv(id);
+    toast(name+' added as custom provider','ok');
+    if(token)debSync();
+}
+
+function removeCustomProv(id){
+    _customProviders=_customProviders.filter(p=>p.id!==id);
+    localStorage.setItem('sd_custom_provs',JSON.stringify(_customProviders));
+    if(curProv===id)selProv('groq');
+    renderProvGrid();
+    toast('Custom provider removed','inf');
+}
+
 function openModal(){
     document.getElementById('aimodal').classList.add('open');
     clearMsg();
     document.getElementById('key-save-row').style.display = token ? 'block' : 'none';
+    renderProvGrid();
+    renderKeyManager();
     const stored=_storedApiKeys[curProv];
     if(stored) document.getElementById('akey').value=stored;
     setTimeout(()=>document.getElementById('aprompt').focus(),300);
@@ -1142,10 +1661,10 @@ async function sfetch(url,opts){
 }
 
 function vKey(k,pid){
-    const p=PROVS[pid];
+    const p=getAllProvs()[pid];
     if(!k)return'No API key entered.';
     if(k.includes(' '))return'Key has spaces — re-copy carefully.';
-    if(p.pre&&!k.startsWith(p.pre))return p.name+' keys start with "'+p.pre+'" — check provider.';
+    if(p&&p.pre&&!k.startsWith(p.pre))return(p.name||pid)+' keys start with "'+p.pre+'" — check provider.';
     if(k.length<20)return'Key looks too short.';
     return null;
 }
@@ -1169,11 +1688,11 @@ async function callAI(p,key,sys,usr){
     let r;
     try{r=await sfetch(p.url,{method:'POST',headers:h,body:JSON.stringify({model:p.model,max_tokens:1500,temperature:.3,
         messages:[{role:'system',content:sys},{role:'user',content:usr}]})});}
-    catch(e){throw new Error('Cannot reach '+p.name+': '+e.message);}
+    catch(e){throw new Error('Cannot reach '+(p.name||'provider')+': '+e.message);}
     if(!r.ok){let m='HTTP '+r.status;try{const j=await r.json();m=j.error?.message||m;}catch(_){}
         if(r.status===401)throw new Error('Invalid key (401).');
         if(r.status===429)throw new Error('Rate limit (429).');
-        throw new Error(p.name+' '+r.status+': '+m);}
+        throw new Error((p.name||'AI')+' '+r.status+': '+m);}
     const d=await r.json();
     return d.choices?.[0]?.message?.content||'';
 }
@@ -1181,22 +1700,26 @@ async function callAI(p,key,sys,usr){
 async function runAI(){
     const key=document.getElementById('akey').value.trim();
     const prompt=document.getElementById('aprompt').value.trim();
-    const p=PROVS[curProv];
+    const p=getAllProvs()[curProv];
     clearMsg();
     const ke=vKey(key,curProv);
     if(ke){showMsg(ke);return;}
     if(!prompt){showMsg('Describe what you want to change.');return;}
 
-    // FEATURE 2 — Save key to Drive if checkbox checked
+    // Always save key to memory and localStorage
+    _storedApiKeys[curProv]=key;
+    saveApiKeys();
+    // Sync to Drive if connected
     const saveKeyCb=document.getElementById('saveKeyToDrive');
     if(saveKeyCb&&saveKeyCb.checked&&token){
-        _storedApiKeys[curProv]=key;
+        // debSync will include keys in payload automatically
+        debSync();
     }
 
     const btn=document.getElementById('aiBtn');
     btn.disabled=true;
     btn.innerHTML='<span style="font-size:13px;">⏳</span> Processing...';
-    setSyncUI('busy',p.name+'...');
+    setSyncUI('busy',(p.name||'AI')+'...');
     const SYS='You are a productivity planner. Return ONLY a raw JSON array (no markdown, no backticks). Each item: "id"(keep if existing,else short random),"text"(string),"time"(HH:MM 24h),"duration"(int minutes),"done"(bool),"priority"("high"|"med"|"low"),"description"(string,keep existing).';
     const USR='Tasks:\n'+JSON.stringify(tasks)+'\n\nRequest: '+prompt;
     try{
@@ -1212,12 +1735,12 @@ async function runAI(){
             priority:['high','med','low'].includes(t.priority)?t.priority:'med',
             description:t.description||''
         }));
-        render(); closeModal(); toast('Plan updated via '+p.name,'ok');
+        render(); closeModal(); toast('Plan updated via '+(p.name||'AI'),'ok');
         if(saveKeyCb&&saveKeyCb.checked&&token) toast('API key saved to Drive ✓','ok');
     }catch(e){
         console.error('[AI]',e);
-        showMsg('<strong>'+p.name+' error:</strong> '+e.message);
-        toast(p.name+' failed','err');
+        showMsg('<strong>'+(p.name||'AI')+' error:</strong> '+e.message);
+        toast((p.name||'AI')+' failed','err');
     }finally{
         btn.disabled=false;
         btn.innerHTML='<span class="material-symbols-outlined" style="font-size:15px;">auto_awesome</span> Generate Plan';
@@ -1351,19 +1874,24 @@ document.addEventListener('DOMContentLoaded',()=>{
         }
     });
 
+    // Init provider grid on first render
+    renderProvGrid();
+
     render();
     updateSettingsBadge();
     checkFirstLaunch();
 
+    // ── AUTH: check sign-in state ──
+    initAuthScreen();
+
     // Feature 5 — Attempt silent Drive reconnect after GIS SDK loads
-    // GIS is async-deferred so we poll for readiness
     const _silentRetry = setInterval(()=>{
         if(typeof google!=='undefined'&&google.accounts&&google.accounts.oauth2){
             clearInterval(_silentRetry);
-            trySilentReconnect();
+            // Only auto-reconnect if user is signed in (not guest)
+            if(!_isGuest) trySilentReconnect();
         }
     }, 200);
-    // Give up after 8 s if SDK never loads
     setTimeout(()=>clearInterval(_silentRetry), 8000);
 });
 </script>
