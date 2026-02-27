@@ -248,35 +248,42 @@
         .mbody{padding:16px 24px 32px;}
         .mtitle{font-family:'Google Sans',sans-serif;font-size:18px;font-weight:500;color:var(--t1);margin-bottom:4px;}
         .msub{font-size:13px;color:var(--t3);margin-bottom:14px;}
-        /* ── AI PROVIDER TABS — horizontal icon row ── */
-        /* Micro-interaction: sliding underline + background bloom on active */
-        .prov-tabs{display:flex;gap:6px;margin-bottom:16px;padding:4px;background:#f1f3f4;border-radius:12px;}
-        .ptab{
-            flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;
-            padding:10px 8px 8px;border-radius:9px;border:none;
-            background:transparent;cursor:pointer;
-            color:var(--t3);font-family:'Google Sans',sans-serif;font-size:11px;font-weight:500;
-            position:relative;overflow:hidden;
-            transition:color .2s ease, background .2s ease, box-shadow .2s ease, transform .15s cubic-bezier(.34,1.4,.64,1);
-        }
-        .ptab::after{
-            content:'';position:absolute;bottom:0;left:20%;width:60%;height:2px;
-            background:var(--blue);border-radius:1px;
-            transform:scaleX(0);transition:transform .25s cubic-bezier(.4,0,.2,1);
-        }
-        .ptab:hover{color:var(--t1);background:rgba(26,115,232,.06);transform:translateY(-1px);}
-        .ptab.active{
-            color:var(--blue);
-            background:var(--surface);
-            box-shadow:0 1px 4px rgba(60,64,67,.2), 0 0 0 1px rgba(26,115,232,.15);
-            transform:translateY(-1px);
-        }
-        .ptab.active::after{transform:scaleX(1);}
-        .ptab-icon{font-size:22px;line-height:1;transition:transform .2s cubic-bezier(.34,1.4,.64,1);}
-        .ptab:hover .ptab-icon,.ptab.active .ptab-icon{transform:scale(1.18);}
-        .ptab-label{font-size:10px;white-space:nowrap;}
-        .ptab .ftag{font-size:8px;padding:1px 4px;margin-top:1px;}
-        /* Key area that swaps per provider */
+        /* ═══════════════════════════════════════════
+           BYOM — DYNAMIC PROVIDER GRID
+        ═══════════════════════════════════════════ */
+        .prov-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px;}
+        .ptile{position:relative;display:flex;flex-direction:column;gap:4px;border:1.5px solid var(--border);border-radius:10px;padding:10px 12px 10px;cursor:pointer;background:var(--surface);transition:border-color .15s,background .15s,box-shadow .15s,transform .12s cubic-bezier(.34,1.4,.64,1);text-align:left;min-height:72px;}
+        .ptile:hover{border-color:var(--blue);background:#f5f9ff;transform:translateY(-1px);box-shadow:var(--sh2);}
+        .ptile.sel{border-color:var(--blue);background:#e8f0fe;box-shadow:0 0 0 2px rgba(26,115,232,.18);}
+        .ptile-name{font-family:'Google Sans',sans-serif;font-size:13px;font-weight:600;color:var(--t1);display:flex;align-items:center;gap:6px;padding-right:44px;}
+        .ptile.sel .ptile-name{color:var(--blue);}
+        .ptile-model{font-size:10px;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+        .ptile-key-dot{position:absolute;top:9px;right:28px;width:7px;height:7px;border-radius:50%;background:#bdc1c6;transition:background .2s;}
+        .ptile-key-dot.has-key{background:var(--green);}
+        .ptile-del{position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:4px;border:none;background:none;color:#bdc1c6;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:color .15s,background .15s;z-index:1;}
+        .ptile-del:hover{color:var(--red);background:#fce8e6;}
+        .ptile-del .material-symbols-outlined{font-size:14px;}
+        .ptile-add{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:1.5px dashed var(--border);border-radius:10px;padding:10px;cursor:pointer;background:transparent;color:var(--t3);font-family:'Google Sans',sans-serif;font-size:11px;font-weight:500;min-height:72px;transition:border-color .15s,color .15s,background .15s;width:100%;border-style:dashed;}
+        .ptile-add:hover{border-color:var(--blue);color:var(--blue);background:#f5f9ff;}
+        .ptile-add .material-symbols-outlined{font-size:22px;}
+        /* ── ADD MODEL INLINE FORM ── */
+        .byom-form{background:#f8f9fa;border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px;display:none;flex-direction:column;gap:10px;}
+        .byom-form.open{display:flex;animation:fadeSlide .2s ease;}
+        .byom-form-title{font-family:'Google Sans',sans-serif;font-size:13px;font-weight:600;color:var(--t1);display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;}
+        .byom-form-close{background:none;border:none;cursor:pointer;color:var(--t3);display:flex;align-items:center;}
+        .byom-form-close:hover{color:var(--t1);}
+        .byom-form-close .material-symbols-outlined{font-size:18px;}
+        .byom-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+        .byom-field{display:flex;flex-direction:column;gap:3px;}
+        .byom-field label{font-size:10px;font-weight:600;color:var(--t3);letter-spacing:.04em;text-transform:uppercase;}
+        .byom-input{border:1.5px solid var(--border);border-radius:var(--r);padding:8px 10px;font-family:'Roboto',sans-serif;font-size:12px;color:var(--t1);background:var(--surface);outline:none;transition:border-color .15s,box-shadow .15s;width:100%;}
+        .byom-input:focus{border-color:var(--blue);box-shadow:0 0 0 2px rgba(26,115,232,.12);}
+        .byom-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:2px;}
+        .byom-save{background:var(--blue);color:white;border:none;border-radius:var(--r);padding:8px 18px;font-family:'Google Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:background .15s;display:flex;align-items:center;gap:6px;}
+        .byom-save:hover{background:var(--blue-dk);}
+        .byom-cancel{background:none;border:1px solid var(--border);color:var(--t2);border-radius:var(--r);padding:8px 14px;font-family:'Google Sans',sans-serif;font-size:13px;cursor:pointer;transition:background .15s,border-color .15s;}
+        .byom-cancel:hover{background:#f1f3f4;border-color:var(--t3);}
+        /* Key area fade-in animation */
         .prov-key-area{animation:fadeSlide .2s ease;}
         @keyframes fadeSlide{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
         .ftag{background:#e6f4ea;color:var(--green);font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;text-transform:uppercase;letter-spacing:.04em;}
@@ -419,19 +426,182 @@
         .settings-danger-btn:hover{border-color:var(--red);color:var(--red);background:#fce8e6;}
         .settings-danger-btn .material-symbols-outlined{font-size:16px;}
 
-        @media(max-width:768px){
-            .main{padding:14px 14px 0;}
-            .topbar{padding:0 14px;}
-            .appname{display:none;}
-            .scard{min-width:80px;padding:10px 12px;}
-            .sval{font-size:17px;}
-            .provider-grid{grid-template-columns:1fr;}
-            /* On mobile, detail panel goes full width */
-            .detail-panel{width:100%;top:64px;height:calc(100vh - 64px - 80px);}
-            .app-body.panel-open .main{display:none;}
-            .dock{bottom:12px;padding:6px 8px;gap:2px;}
-            .dock-item{min-width:44px;padding:5px 8px;}
-            .dock-ai{padding:7px 12px;font-size:11px;}
+        /* ═══════════════════════════════════════════
+           FLUID RESPONSIVE SYSTEM
+           Strategy:
+             xs  < 480px  → mobile portrait
+             sm  480-767  → mobile landscape / small tablet
+             md  768-1023 → tablet portrait
+             lg  ≥ 1024   → desktop / tablet landscape
+           Detail panel behaviour:
+             xs/sm portrait → full-width overlay (drawer)
+             sm landscape+  → side panel, main shrinks
+             lg              → persistent side panel (existing behaviour)
+        ═══════════════════════════════════════════ */
+
+        /* ── Fluid typography via clamp() ── */
+        .ph-title { font-size: clamp(18px, 4vw, 26px); }
+        .appname  { font-size: clamp(14px, 3vw, 18px); }
+        .sval     { font-size: clamp(16px, 3.5vw, 20px); }
+        .mtitle   { font-size: clamp(16px, 3.5vw, 18px); }
+
+        /* ── Fluid spacing ── */
+        .main { padding: clamp(12px, 3vw, 24px) clamp(12px, 3vw, 24px) 0; }
+
+        /* ─────────────────────────────────────
+           DETAIL PANEL — PORTRAIT OVERLAY MODE
+           Default (mobile-first): full-width drawer
+           overlaying content, not squishing it
+        ───────────────────────────────────────*/
+        @media (max-width: 767px) {
+            /* Topbar */
+            .topbar { padding: 0 12px; height: 56px; }
+            .topbar-r { gap: 6px; }
+            .appname { display: none; }
+            .schip { padding: 5px 9px; font-size: 11px; }
+
+            /* Page header */
+            .ph { margin-bottom: 14px; }
+            .ph-sub { font-size: 12px; }
+            .pring { width: 46px; height: 46px; }
+            .pring svg { width: 46px; height: 46px; }
+
+            /* Stats */
+            .stats { gap: 8px; margin-bottom: 14px; }
+            .scard { min-width: 0; padding: 10px 12px; }
+            .slbl { font-size: 10px; }
+
+            /* Card header */
+            .card-hd { padding: 10px 14px; }
+
+            /* Table: allow horizontal scroll; hide less critical cols */
+            .twrap { -webkit-overflow-scrolling: touch; }
+            table { min-width: 360px; font-size: 12px; }
+            th, td { padding: 6px 8px; }
+            th:first-child, td:first-child { padding-left: 12px; }
+            /* Hide # column on very small screens */
+            th:first-child, td:first-child { display: none; }
+
+            /* Detail panel: FULL-WIDTH OVERLAY DRAWER */
+            /* Sits over everything, pushed from right,
+               main content stays visible beneath */
+            .detail-panel {
+                top: 56px;
+                width: 100%;
+                height: calc(100vh - 56px);
+                z-index: 300;
+                box-shadow: -8px 0 32px rgba(0,0,0,.22);
+            }
+            /* DO NOT hide main — it shows behind the translucent scrim */
+            .app-body.panel-open .main { max-width: 100%; margin-right: 0; }
+            /* Scrim behind drawer */
+            .app-body.panel-open::before {
+                content: '';
+                position: fixed;
+                inset: 0;
+                background: rgba(32,33,36,.4);
+                z-index: 299;
+                animation: scrimIn .25s ease;
+            }
+            @keyframes scrimIn { from{opacity:0} to{opacity:1} }
+
+            /* Dock */
+            .dock { bottom: 10px; padding: 5px 8px; gap: 2px; border-radius: 14px; }
+            .dock-item { min-width: 40px; padding: 5px 7px; font-size: 8px; }
+            .dock-item .material-symbols-outlined { font-size: 20px; }
+            .dock-sep { height: 28px; }
+
+            /* Body padding for dock */
+            body { padding-bottom: 80px; }
+
+            /* Modals: full-width */
+            .msheet, .info-sheet, .settings-sheet { border-radius: 20px 20px 0 0; }
+            .mbody { padding: 12px 16px 24px; }
+            .info-body { padding: 14px 16px 28px; }
+            .provider-grid { grid-template-columns: 1fr; }
+
+            /* Welcome modal */
+            .wc-section { padding: 12px; }
+            .wc-btn-drive, .wc-btn-local { padding: 11px 16px; font-size: 13px; }
+
+            /* BYOM provider grid — 2 cols on mobile */
+            .prov-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        /* ─────────────────────────────────────
+           MOBILE LANDSCAPE
+           480px+ wide OR landscape orientation
+           Panel becomes a narrower side-panel
+           (not full overlay) when width allows
+        ───────────────────────────────────────*/
+        @media (min-width: 480px) and (orientation: landscape),
+               (min-width: 600px) {
+            /* Restore # column */
+            th:first-child, td:first-child { display: table-cell; }
+
+            /* Detail panel: narrow side panel */
+            :root { --panel-w: 300px; }
+            .detail-panel {
+                top: 56px;
+                width: var(--panel-w);
+                height: calc(100vh - 56px - 70px);
+            }
+            .app-body.panel-open .main {
+                max-width: calc(100% - var(--panel-w) - 8px);
+                margin-right: 0;
+            }
+            /* No scrim — panel is beside main, not over it */
+            .app-body.panel-open::before { display: none; }
+
+            .dock-item { min-width: 46px; }
+        }
+
+        /* ─────────────────────────────────────
+           TABLET PORTRAIT  768px+
+        ───────────────────────────────────────*/
+        @media (min-width: 768px) {
+            .topbar { padding: 0 20px; height: 60px; }
+            .appname { display: block; }
+            :root { --panel-w: 320px; }
+            .detail-panel {
+                top: 60px;
+                height: calc(100vh - 60px - 82px);
+            }
+            body { padding-bottom: 90px; }
+        }
+
+        /* ─────────────────────────────────────
+           DESKTOP / TABLET LANDSCAPE  1024px+
+           Full side-panel, no scrim needed
+        ───────────────────────────────────────*/
+        @media (min-width: 1024px) {
+            .topbar { padding: 0 24px; height: 64px; }
+            :root { --panel-w: 340px; }
+            .detail-panel {
+                top: 64px;
+                height: calc(100vh - 64px - 90px);
+            }
+            .app-body.panel-open .main {
+                max-width: calc(100% - var(--panel-w) - 16px);
+            }
+            body { padding-bottom: 100px; }
+
+            /* BYOM grid — up to 3 cols on wide screens */
+            .prov-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        /* ─────────────────────────────────────
+           LANDSCAPE PHONE  (short & wide)
+           Compact dock, shorter panels
+        ───────────────────────────────────────*/
+        @media (orientation: landscape) and (max-height: 500px) {
+            .topbar { height: 48px; }
+            .detail-panel { top: 48px; height: calc(100vh - 48px - 64px); }
+            .dock { bottom: 6px; padding: 4px 8px; }
+            .dock-item { padding: 4px 6px; }
+            .dock-item span:last-child { display: none; } /* hide labels */
+            .stats { display: none; } /* reclaim vertical space */
+            body { padding-bottom: 64px; }
         }
     </style>
 </head>
@@ -440,45 +610,62 @@
 <div id="toasts"></div>
 
 <!-- ══════════════════════════════════════════
-     MODAL 1 — AI PLANNER
+     MODAL 1 — AI PLANNER (BYOM)
 ══════════════════════════════════════════ -->
 <div class="mover" id="aimodal" onclick="closeModal(event)">
   <div class="msheet">
     <div class="mdrag"></div>
     <div class="mbody">
       <div class="mtitle">AI Planner</div>
-      <div class="msub">Choose a provider, then describe how to reshape your day.</div>
+      <div class="msub">Choose a model, then describe how to reshape your day.</div>
 
-      <!-- Horizontal provider tab bar -->
-      <div class="prov-tabs" id="provTabs">
-        <button class="ptab active" id="ptab-groq" onclick="selProv('groq')">
-          <span class="ptab-icon">⚡</span>
-          <span class="ptab-label">Groq</span>
-          <span class="ftag">Free</span>
-        </button>
-        <button class="ptab" id="ptab-gemini" onclick="selProv('gemini')">
-          <span class="ptab-icon">⭐</span>
-          <span class="ptab-label">Gemini</span>
-          <span class="ftag">Free</span>
-        </button>
-        <button class="ptab" id="ptab-openrouter" onclick="selProv('openrouter')">
-          <span class="ptab-icon">🔄</span>
-          <span class="ptab-label">OpenRouter</span>
-          <span class="ftag">Free</span>
-        </button>
-        <button class="ptab" id="ptab-openai" onclick="selProv('openai')">
-          <span class="ptab-icon">🤖</span>
-          <span class="ptab-label">OpenAI</span>
-        </button>
+      <!-- Dynamic provider grid — rendered by renderProviders() -->
+      <div class="prov-grid" id="provGrid"></div>
+
+      <!-- Add Model inline form -->
+      <div class="byom-form" id="byomForm">
+        <div class="byom-form-title">
+          Add Custom AI Model
+          <button class="byom-form-close" onclick="closeByomForm()" title="Cancel">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div class="byom-row">
+          <div class="byom-field">
+            <label>Name</label>
+            <input class="byom-input" id="bf-name" type="text" placeholder="e.g. My DeepSeek" autocomplete="off">
+          </div>
+          <div class="byom-field">
+            <label>Model ID</label>
+            <input class="byom-input" id="bf-model" type="text" placeholder="e.g. gpt-4o-mini" autocomplete="off">
+          </div>
+        </div>
+        <div class="byom-field">
+          <label>Endpoint URL</label>
+          <input class="byom-input" id="bf-url" type="url"
+            placeholder="https://api.openai.com/v1/chat/completions"
+            value="https://api.openai.com/v1/chat/completions" autocomplete="off">
+        </div>
+        <div class="byom-field">
+          <label>API Key</label>
+          <input class="byom-input" id="bf-key" type="password" placeholder="sk-..." autocomplete="new-password">
+        </div>
+        <div class="byom-actions">
+          <button class="byom-cancel" onclick="closeByomForm()">Cancel</button>
+          <button class="byom-save" onclick="saveByomProvider()">
+            <span class="material-symbols-outlined" style="font-size:14px;">add_circle</span>
+            Save Model
+          </button>
+        </div>
       </div>
 
-      <!-- Key area — re-renders per provider -->
+      <!-- Active provider key area -->
       <div class="prov-key-area" id="provKeyArea">
         <div class="amsg" id="amsg"></div>
         <div class="gf">
-          <label id="klbl">API KEY — GROQ</label>
-          <input type="password" class="gi" id="akey" placeholder="gsk_..." autocomplete="new-password" spellcheck="false">
-          <div class="khint" id="khint">Free key at <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> — no credit card needed.</div>
+          <label id="klbl">API KEY</label>
+          <input type="password" class="gi" id="akey" placeholder="sk-..." autocomplete="new-password" spellcheck="false">
+          <div class="khint" id="khint"></div>
         </div>
         <div id="key-save-row" style="display:none;margin-bottom:12px;">
           <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;color:var(--t3);">
@@ -958,7 +1145,10 @@ function addRow(){
     },60);
 }
 function cyPrio(id){const t=tasks.find(t=>t.id===id);if(!t)return;t.priority={high:'med',med:'low',low:'high'}[t.priority]||'med';render();}
-function saveLocal(){localStorage.setItem('smartday_v3',JSON.stringify(tasks));}
+function saveLocal(){
+    localStorage.setItem('smartday_v3',JSON.stringify(tasks));
+    localStorage.setItem('sd_providers',JSON.stringify(providers));
+}
 
 // ════════════════════════════════════════════
 // FEATURE 4 — TASK DETAIL PANEL
@@ -1098,7 +1288,7 @@ function handleTokenExpired(){
 // Payload: { tasks: [...], apiKeys: {...} }
 // ════════════════════════════════════════════
 function buildPayload(){
-    return { tasks, apiKeys: _storedApiKeys };
+    return { tasks, apiKeys: _storedApiKeys, providers };
 }
 
 async function initDrive(){
@@ -1133,7 +1323,7 @@ async function createDrive(){
     await uploadDrive();
 }
 
-// FEATURE 2 — Rock-solid API key persistence
+// FEATURE 2 — Rock-solid API key persistence + BYOM provider sync
 async function loadDrive(){
     if(!token||!fileId)return;
     const r=await dReq(DAPI+'/files/'+fileId+'?alt=media','GET');
@@ -1142,6 +1332,7 @@ async function loadDrive(){
     // Support both old array format and new envelope format
     const rawTasks = Array.isArray(d) ? d : (Array.isArray(d.tasks) ? d.tasks : null);
     const rawKeys  = (!Array.isArray(d) && d.apiKeys && typeof d.apiKeys==='object') ? d.apiKeys : {};
+    const rawProvs = (!Array.isArray(d) && Array.isArray(d.providers)) ? d.providers : null;
 
     if(rawTasks){
         tasks = rawTasks.map(t=>({
@@ -1151,23 +1342,32 @@ async function loadDrive(){
             duration: parseInt(t.duration)||30,
             done:     !!t.done,
             priority: ['high','med','low'].includes(t.priority)?t.priority:'med',
-            description: t.description||''       // preserve notes
+            description: t.description||''
         }));
         saveLocal();
         render();
     }
 
-    // FEATURE 2 — Silently restore API keys; populate AI modal field
+    // Restore providers from Drive (overrides local if present)
+    if(rawProvs && rawProvs.length > 0){
+        providers = rawProvs.map(p=>({
+            id:    p.id    || ('p_'+Math.random().toString(36).slice(2,8)),
+            name:  p.name  || 'Custom',
+            url:   p.url   || 'https://api.openai.com/v1/chat/completions',
+            model: p.model || 'gpt-4o-mini',
+            fmt:   p.fmt   || 'oai'
+        }));
+        localStorage.setItem('sd_providers', JSON.stringify(providers));
+        if(!providers.find(p=>p.id===curProvId)) curProvId = providers[0].id;
+    }
+
+    // Silently restore API keys; pre-fill AI modal field
     if(Object.keys(rawKeys).length > 0){
         _storedApiKeys = rawKeys;
-        // Pre-fill whichever provider is currently selected
-        const savedKey = _storedApiKeys[curProv];
-        if(savedKey){
-            document.getElementById('akey').value = savedKey;
-        }
+        const keyEl = document.getElementById('akey');
+        if(keyEl) keyEl.value = _storedApiKeys[curProvId]||'';
         document.getElementById('dbanner-txt').textContent =
             'Drive synced — tasks & API key ready on this device';
-        // Subtle toast, not intrusive
         toast('Drive synced — API key loaded ✓','ok');
     }
 }
@@ -1220,51 +1420,185 @@ function setSyncUI(state,txt){
 }
 
 // ════════════════════════════════════════════
-// AI PROVIDERS
+// BYOM — DYNAMIC AI PROVIDERS
+// Schema per provider:
+//   { id, name, url, model, fmt('oai'|'gem') }
+// Keys stored separately in _storedApiKeys[id]
 // ════════════════════════════════════════════
-const PROVS={
-    groq:{name:'Groq',fmt:'oai',url:'https://api.groq.com/openai/v1/chat/completions',model:'llama-3.3-70b-versatile',
-          hint:'Free key at <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> — no credit card.',
-          lbl:'API KEY — GROQ',ph:'gsk_...',pre:'gsk_'},
-    gemini:{name:'Gemini',fmt:'gem',url:null,model:'gemini-2.0-flash',
-            hint:'Free key at <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a> — no card.',
-            lbl:'API KEY — GEMINI',ph:'AIza...',pre:'AIza'},
-    openrouter:{name:'OpenRouter',fmt:'oai',url:'https://openrouter.ai/api/v1/chat/completions',model:'meta-llama/llama-3.1-8b-instruct:free',
-                hint:'Free key at <a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys</a> — no card.',
-                lbl:'API KEY — OPENROUTER',ph:'sk-or-...',pre:'sk-or-'},
-    openai:{name:'OpenAI',fmt:'oai',url:'https://api.openai.com/v1/chat/completions',model:'gpt-4o-mini',
-            hint:'Key at <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a> — paid.',
-            lbl:'API KEY — OPENAI',ph:'sk-proj-...',pre:'sk-'}
-};
-let curProv='groq';
+
+// Default seed providers — loaded once if localStorage has none
+const DEFAULT_PROVIDERS = [
+    {id:'groq',    name:'Groq',       url:'https://api.groq.com/openai/v1/chat/completions', model:'llama-3.3-70b-versatile',             fmt:'oai'},
+    {id:'gemini',  name:'Gemini',     url:'gemini://generativelanguage.googleapis.com',       model:'gemini-2.0-flash',                    fmt:'gem'},
+    {id:'openrtr', name:'OpenRouter', url:'https://openrouter.ai/api/v1/chat/completions',   model:'meta-llama/llama-3.1-8b-instruct:free',fmt:'oai'},
+    {id:'openai',  name:'OpenAI',     url:'https://api.openai.com/v1/chat/completions',      model:'gpt-4o-mini',                         fmt:'oai'},
+];
+
+function loadProviders(){
+    const raw = localStorage.getItem('sd_providers');
+    if(raw){try{return JSON.parse(raw);}catch(_){}}
+    return DEFAULT_PROVIDERS.map(p=>({...p}));
+}
+function saveProviders(){
+    localStorage.setItem('sd_providers', JSON.stringify(providers));
+    debSync();
+}
+
+let providers = loadProviders();
+let curProvId = providers.length ? providers[0].id : null;
+
+// ── Emoji avatar: deterministic from name ──
+function provEmoji(p){
+    const n = (p.name||'').toLowerCase();
+    if(n.includes('groq'))   return '⚡';
+    if(n.includes('gemini')) return '✦';
+    if(n.includes('openrouter')||n.includes('open router')) return '⇄';
+    if(n.includes('openai')) return '◎';
+    if(n.includes('deepseek')) return '🐬';
+    if(n.includes('mistral')) return '🌪';
+    if(n.includes('claude')||n.includes('anthropic')) return '🔶';
+    if(n.includes('grok'))   return '𝕏';
+    if(n.includes('llama'))  return '🦙';
+    if(n.includes('cohere')) return '◈';
+    // Deterministic fallback from char sum
+    const icons = ['◆','◉','▲','★','⬡','◐','⬢','⬟'];
+    const sum = [...p.name].reduce((a,c)=>a+c.charCodeAt(0),0);
+    return icons[sum % icons.length];
+}
+
+// ── Render provider grid into #provGrid ──
+function renderProviders(){
+    const grid = document.getElementById('provGrid');
+    if(!grid) return;
+    grid.innerHTML = '';
+
+    providers.forEach(p => {
+        const hasKey = !!(_storedApiKeys[p.id]||'').trim();
+        const isSelected = p.id === curProvId;
+
+        const tile = document.createElement('button');
+        tile.className = 'ptile' + (isSelected ? ' sel' : '');
+        tile.title = p.model;
+        tile.innerHTML =
+            `<div class="ptile-name">${provEmoji(p)} ${esc(p.name)}</div>`+
+            `<div class="ptile-model">${esc(p.model)}</div>`+
+            `<span class="ptile-key-dot${hasKey?' has-key':''}" title="${hasKey?'Key stored':'No key'}"></span>`+
+            `<button class="ptile-del" onclick="event.stopPropagation();delProvider('${p.id}')" title="Remove">`+
+                `<span class="material-symbols-outlined">close</span>`+
+            `</button>`;
+        tile.addEventListener('click', () => selProv(p.id));
+        grid.appendChild(tile);
+    });
+
+    // "Add Model" button always last
+    const addBtn = document.createElement('button');
+    addBtn.className = 'ptile-add';
+    addBtn.innerHTML = '<span class="material-symbols-outlined">add_circle</span>Add Model';
+    addBtn.addEventListener('click', openByomForm);
+    grid.appendChild(addBtn);
+
+    // Update key area for currently selected provider
+    const cur = providers.find(p => p.id === curProvId);
+    if(cur) _updateKeyArea(cur);
+}
 
 function selProv(id){
-    curProv=id;
-    // Update tab active states
-    document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
-    document.getElementById('ptab-'+id).classList.add('active');
-    const p=PROVS[id];
-    // Swap key area with animation
-    const area=document.getElementById('provKeyArea');
-    area.style.animation='none';
-    void area.offsetWidth; // reflow to restart
-    area.style.animation='';
-    document.getElementById('khint').innerHTML=p.hint;
-    document.getElementById('klbl').textContent=p.lbl;
-    const keyEl=document.getElementById('akey');
-    keyEl.type='password'; // always password
-    keyEl.placeholder=p.ph;
-    keyEl.value=_storedApiKeys[id]||'';
+    curProvId = id;
+    // Update tile selection visuals
+    document.querySelectorAll('.ptile').forEach(t => t.classList.remove('sel'));
+    const tiles = document.querySelectorAll('.ptile');
+    const idx = providers.findIndex(p => p.id === id);
+    if(idx >= 0) tiles[idx].classList.add('sel');
+
+    const p = providers.find(p => p.id === id);
+    if(p) _updateKeyArea(p);
     clearMsg();
-    if(id==='openai')showMsg('OpenAI may block calls from local files (CORS). Use Groq or OpenRouter — both are free.','wrn');
+}
+
+function _updateKeyArea(p){
+    const area = document.getElementById('provKeyArea');
+    if(!area) return;
+    // Restart animation
+    area.style.animation = 'none';
+    void area.offsetWidth;
+    area.style.animation = '';
+
+    const lbl = document.getElementById('klbl');
+    const keyEl = document.getElementById('akey');
+    const hint = document.getElementById('khint');
+    if(lbl) lbl.textContent = 'API KEY — ' + p.name.toUpperCase();
+    if(keyEl){ keyEl.type = 'password'; keyEl.placeholder = 'sk-...'; keyEl.value = _storedApiKeys[p.id]||''; }
+    if(hint){ hint.innerHTML = _provHint(p); }
+}
+
+function _provHint(p){
+    const n = (p.name||'').toLowerCase();
+    if(n.includes('groq'))       return 'Free key at <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> — no card needed.';
+    if(n.includes('gemini'))     return 'Free key at <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a> — no card.';
+    if(n.includes('openrouter')) return 'Free key at <a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys</a> — no card.';
+    if(n.includes('openai'))     return 'Paid API key at <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a>.';
+    return 'Paste your API key above. It will be saved to Drive.';
+}
+
+// ── BYOM Form ──
+function openByomForm(){
+    document.getElementById('byomForm').classList.add('open');
+    document.getElementById('bf-name').focus();
+}
+function closeByomForm(){
+    const f = document.getElementById('byomForm');
+    f.classList.remove('open');
+    // Reset fields
+    ['bf-name','bf-model','bf-key'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('bf-url').value = 'https://api.openai.com/v1/chat/completions';
+}
+function saveByomProvider(){
+    const name  = document.getElementById('bf-name').value.trim();
+    const model = document.getElementById('bf-model').value.trim();
+    const url   = document.getElementById('bf-url').value.trim();
+    const key   = document.getElementById('bf-key').value.trim();
+
+    if(!name){ toast('Name is required','err'); return; }
+    if(!model){ toast('Model ID is required','err'); return; }
+    if(!url || !url.startsWith('http')){ toast('Valid endpoint URL is required','err'); return; }
+
+    // Auto-detect Gemini: native SDK vs OAI-compat
+    const fmt = (url.includes('generativelanguage.googleapis.com') && !url.includes('/openai/')) ? 'gem' : 'oai';
+
+    const id = 'p_' + Math.random().toString(36).slice(2,8);
+    providers.push({id, name, url, model, fmt});
+    if(key) _storedApiKeys[id] = key;
+
+    saveProviders();
+    closeByomForm();
+    curProvId = id;
+    renderProviders();
+    toast(name + ' added ✓','ok');
+}
+
+function delProvider(id){
+    if(providers.length <= 1){ toast('Keep at least one provider','inf'); return; }
+    providers = providers.filter(p => p.id !== id);
+    delete _storedApiKeys[id];
+    if(curProvId === id) curProvId = providers[0].id;
+    saveProviders();
+    renderProviders();
+    toast('Provider removed','inf');
+}
+
+// ── vKey — simplified for dynamic providers (no prefix check) ──
+function vKey(k){
+    if(!k || !k.trim()) return 'No API key entered.';
+    if(k.includes(' ')) return 'Key has spaces — re-copy carefully.';
+    if(k.length < 10) return 'Key looks too short.';
+    return null;
 }
 
 function openModal(){
     document.getElementById('aimodal').classList.add('open');
     clearMsg();
+    renderProviders(); // always fresh
     document.getElementById('key-save-row').style.display = token ? 'block' : 'none';
-    const stored=_storedApiKeys[curProv];
-    if(stored) document.getElementById('akey').value=stored;
     setTimeout(()=>document.getElementById('aprompt').focus(),300);
 }
 function closeModal(e){if(!e||e.target===document.getElementById('aimodal'))document.getElementById('aimodal').classList.remove('open');}
@@ -1281,87 +1615,101 @@ async function sfetch(url,opts){
     }
 }
 
-function vKey(k,pid){
-    const p=PROVS[pid];
-    if(!k)return'No API key entered.';
-    if(k.includes(' '))return'Key has spaces — re-copy carefully.';
-    if(p.pre&&!k.startsWith(p.pre))return p.name+' keys start with "'+p.pre+'" — check provider.';
-    if(k.length<20)return'Key looks too short.';
-    return null;
-}
-
-async function callAI(p,key,sys,usr){
-    if(p.fmt==='gem'){
-        const url='https://generativelanguage.googleapis.com/v1beta/models/'+p.model+':generateContent?key='+key;
+async function callAI(p, key, sys, usr){
+    if(p.fmt === 'gem'){
+        // Native Gemini SDK path
+        const base = 'https://generativelanguage.googleapis.com/v1beta/models/';
+        const url = base + p.model + ':generateContent?key=' + key;
         let r;
-        try{r=await sfetch(url,{method:'POST',headers:{'Content-Type':'application/json'},
-            body:JSON.stringify({contents:[{parts:[{text:sys+'\n\n'+usr}]}],generationConfig:{temperature:.3,maxOutputTokens:1500}})});}
-        catch(e){throw new Error('Cannot reach Gemini: '+e.message);}
-        if(!r.ok){let m='HTTP '+r.status;try{const j=await r.json();m=j.error&&j.error.message||m;}catch(_){}
-            if(r.status===401||r.status===403)throw new Error('Key rejected: '+m);
-            if(r.status===429)throw new Error('Rate limit — wait.');
-            throw new Error('Gemini '+r.status+': '+m);}
-        const d=await r.json();
-        return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
+        try{
+            r = await sfetch(url,{method:'POST',headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({contents:[{parts:[{text:sys+'\n\n'+usr}]}],
+                    generationConfig:{temperature:.3,maxOutputTokens:1500}})});
+        }catch(e){throw new Error('Cannot reach Gemini: '+e.message);}
+        if(!r.ok){
+            let m='HTTP '+r.status;
+            try{const j=await r.json();m=j.error?.message||m;}catch(_){}
+            if(r.status===401||r.status===403) throw new Error('Key rejected: '+m);
+            if(r.status===429) throw new Error('Rate limit — wait a moment.');
+            throw new Error('Gemini '+r.status+': '+m);
+        }
+        const d = await r.json();
+        return d.candidates?.[0]?.content?.parts?.[0]?.text || '';
     }
-    const h={'Content-Type':'application/json','Authorization':'Bearer '+key};
-    if(curProv==='openrouter'){h['HTTP-Referer']='https://smartday.app';h['X-Title']='SmartDay';}
+    // OpenAI-compatible path (all other providers)
+    const h = {'Content-Type':'application/json','Authorization':'Bearer '+key};
+    // OpenRouter extra headers
+    if(p.url && p.url.includes('openrouter.ai')){
+        h['HTTP-Referer'] = 'https://smartday.app';
+        h['X-Title'] = 'SmartDay';
+    }
     let r;
-    try{r=await sfetch(p.url,{method:'POST',headers:h,body:JSON.stringify({model:p.model,max_tokens:1500,temperature:.3,
-        messages:[{role:'system',content:sys},{role:'user',content:usr}]})});}
-    catch(e){throw new Error('Cannot reach '+p.name+': '+e.message);}
-    if(!r.ok){let m='HTTP '+r.status;try{const j=await r.json();m=j.error?.message||m;}catch(_){}
-        if(r.status===401)throw new Error('Invalid key (401).');
-        if(r.status===429)throw new Error('Rate limit (429).');
-        throw new Error(p.name+' '+r.status+': '+m);}
-    const d=await r.json();
-    return d.choices?.[0]?.message?.content||'';
+    try{
+        r = await sfetch(p.url,{method:'POST',headers:h,
+            body:JSON.stringify({model:p.model,max_tokens:1500,temperature:.3,
+                messages:[{role:'system',content:sys},{role:'user',content:usr}]})});
+    }catch(e){throw new Error('Cannot reach '+p.name+': '+e.message);}
+    if(!r.ok){
+        let m='HTTP '+r.status;
+        try{const j=await r.json();m=j.error?.message||m;}catch(_){}
+        if(r.status===401) throw new Error('Invalid key (401).');
+        if(r.status===429) throw new Error('Rate limit (429).');
+        throw new Error(p.name+' '+r.status+': '+m);
+    }
+    const d = await r.json();
+    return d.choices?.[0]?.message?.content || '';
 }
 
 async function runAI(){
-    const key=document.getElementById('akey').value.trim();
-    const prompt=document.getElementById('aprompt').value.trim();
-    const p=PROVS[curProv];
+    const key = document.getElementById('akey').value.trim();
+    const prompt = document.getElementById('aprompt').value.trim();
+    const p = providers.find(p => p.id === curProvId);
+    if(!p){ showMsg('Select a provider first.'); return; }
     clearMsg();
-    const ke=vKey(key,curProv);
-    if(ke){showMsg(ke);return;}
-    if(!prompt){showMsg('Describe what you want to change.');return;}
 
-    // FEATURE 2 — Save key to Drive if checkbox checked
-    const saveKeyCb=document.getElementById('saveKeyToDrive');
-    if(saveKeyCb&&saveKeyCb.checked&&token){
-        _storedApiKeys[curProv]=key;
+    const ke = vKey(key);
+    if(ke){ showMsg(ke); return; }
+    if(!prompt){ showMsg('Describe what you want to change.'); return; }
+
+    // Save key to in-memory store + Drive if checkbox checked
+    _storedApiKeys[curProvId] = key;
+    const saveKeyCb = document.getElementById('saveKeyToDrive');
+    if(saveKeyCb && saveKeyCb.checked && token){
+        // debSync below will pick up _storedApiKeys
     }
 
-    const btn=document.getElementById('aiBtn');
-    btn.disabled=true;
-    btn.innerHTML='<span style="font-size:13px;">⏳</span> Processing...';
-    setSyncUI('busy',p.name+'...');
-    const SYS='You are a productivity planner. Return ONLY a raw JSON array (no markdown, no backticks). Each item: "id"(keep if existing,else short random),"text"(string),"time"(HH:MM 24h),"duration"(int minutes),"done"(bool),"priority"("high"|"med"|"low"),"description"(string,keep existing).';
-    const USR='Tasks:\n'+JSON.stringify(tasks)+'\n\nRequest: '+prompt;
+    const btn = document.getElementById('aiBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span style="font-size:13px;">⏳</span> Processing...';
+    setSyncUI('busy', p.name + '...');
+
+    const SYS = 'You are a productivity planner. Return ONLY a raw JSON array (no markdown, no backticks). Each item: "id"(keep if existing,else short random),"text"(string),"time"(HH:MM 24h),"duration"(int minutes),"done"(bool),"priority"("high"|"med"|"low"),"description"(string,keep existing).';
+    const USR = 'Tasks:\n' + JSON.stringify(tasks) + '\n\nRequest: ' + prompt;
     try{
-        let raw=await callAI(p,key,SYS,USR);
-        raw=raw.trim().replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
-        if(raw.startsWith('{')){const o=JSON.parse(raw);const k=Object.keys(o).find(k=>Array.isArray(o[k]));if(k)raw=JSON.stringify(o[k]);}
-        const arr=JSON.parse(raw);
-        if(!Array.isArray(arr))throw new Error('Expected JSON array.');
-        tasks=arr.map(t=>({
-            id:t.id||uid(),text:String(t.text||'Untitled'),
+        let raw = await callAI(p, key, SYS, USR);
+        raw = raw.trim().replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
+        if(raw.startsWith('{')){ const o=JSON.parse(raw); const k=Object.keys(o).find(k=>Array.isArray(o[k])); if(k) raw=JSON.stringify(o[k]); }
+        const arr = JSON.parse(raw);
+        if(!Array.isArray(arr)) throw new Error('Expected JSON array.');
+        tasks = arr.map(t=>({
+            id:t.id||uid(), text:String(t.text||'Untitled'),
             time:/^\d{2}:\d{2}$/.test(t.time)?t.time:'09:00',
-            duration:parseInt(t.duration)||30,done:!!t.done,
+            duration:parseInt(t.duration)||30, done:!!t.done,
             priority:['high','med','low'].includes(t.priority)?t.priority:'med',
             description:t.description||''
         }));
-        render(); closeModal(); toast('Plan updated via '+p.name,'ok');
-        if(saveKeyCb&&saveKeyCb.checked&&token) toast('API key saved to Drive ✓','ok');
+        render();
+        closeModal();
+        toast('Plan updated via ' + p.name, 'ok');
+        if(saveKeyCb && saveKeyCb.checked && token) toast('API key saved to Drive ✓','ok');
     }catch(e){
-        console.error('[AI]',e);
-        showMsg('<strong>'+p.name+' error:</strong> '+e.message);
-        toast(p.name+' failed','err');
+        console.error('[AI]', e);
+        showMsg('<strong>' + p.name + ' error:</strong> ' + e.message);
+        toast(p.name + ' failed', 'err');
     }finally{
-        btn.disabled=false;
-        btn.innerHTML='<span class="material-symbols-outlined" style="font-size:15px;">auto_awesome</span> Generate Plan';
-        setSyncUI(token?'ok':'',token?'Drive synced':'Local only');
+        btn.disabled = false;
+        btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:15px;">auto_awesome</span> Generate Plan';
+        setSyncUI(token?'ok':'', token?'Drive synced':'Local only');
     }
 }
 
@@ -1444,7 +1792,7 @@ function saveWcClientId(){
 
 // ── DATA PORTABILITY ──
 function exportLocalData(){
-    const blob=new Blob([JSON.stringify({tasks,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});
+    const blob=new Blob([JSON.stringify({tasks,providers,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});
     const url=URL.createObjectURL(blob);
     const a=document.createElement('a');
     a.href=url;
@@ -1470,10 +1818,15 @@ function importLocalData(e){
                 priority:['high','med','low'].includes(t.priority)?t.priority:'med',
                 description:t.description||''
             }));
+            // Restore providers if present in export file
+            if(Array.isArray(parsed.providers) && parsed.providers.length > 0){
+                providers = parsed.providers;
+                if(!providers.find(p=>p.id===curProvId)) curProvId = providers[0].id;
+            }
             saveLocal();render();
             toast('Imported '+tasks.length+' tasks ✓','ok');
         }catch(err){toast('Import failed: '+err.message,'err');}
-        finally{e.target.value='';}// reset so same file can be re-imported
+        finally{e.target.value='';}
     };
     reader.readAsText(file);
 }
@@ -1519,10 +1872,13 @@ function saveClientId(){
 function clearClientId(){document.getElementById('cid-input').value='';onCidInput();document.getElementById('cid-save-btn').disabled=true;}
 function resetFirstLaunch(){localStorage.removeItem('sd_returning');toast('Welcome shows on next open','ok');document.getElementById('settingsmodal').classList.remove('open');}
 function clearAllData(){
-    if(!confirm('Delete all local tasks and settings?'))return;
+    if(!confirm('Delete all local tasks, providers and settings?'))return;
     closeDetailPanel();
     localStorage.clear();
     tasks=[];
+    providers=DEFAULT_PROVIDERS.map(p=>({...p}));
+    curProvId=providers[0].id;
+    _storedApiKeys={};
     render();
     toast('All data cleared','inf');
     document.getElementById('settingsmodal').classList.remove('open');
