@@ -89,24 +89,26 @@
 
         /* ── TABLE ── */
         .twrap{overflow-x:auto;}
-        table{width:100%;border-collapse:collapse;min-width:500px;}
-        thead tr{border-bottom:1px solid var(--border);}
-        th{padding:0 14px 12px;font-size:11px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;text-align:left;white-space:nowrap;}
-        tbody tr{border-bottom:1px solid var(--border);transition:background .1s;cursor:pointer;}
+        table{width:100%;border-collapse:collapse;min-width:540px;}
+        thead tr{border-bottom:2px solid var(--border);}
+        /* Normalized th — same vertical rhythm as td rows */
+        th{padding:9px 14px;font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;text-align:left;white-space:nowrap;line-height:1.4;vertical-align:middle;}
+        tbody tr{border-bottom:1px solid var(--border);transition:background .12s;}
         tbody tr:last-child{border-bottom:none;}
-        tbody tr:hover{background:#f0f6ff;}
+        tbody tr:hover{background:#f8fafe;}
         tbody tr.done td{opacity:.45;}
         tbody tr.done .tf{text-decoration:line-through;}
-        /* Active row (detail panel open for this task) */
-        tbody tr.active-row{background:#e8f0fe!important;outline:2px solid var(--blue);outline-offset:-2px;}
+        /* Active row */
+        tbody tr.active-row{background:#e8f0fe!important;}
         tbody tr.active-row td{opacity:1!important;}
-        td{padding:5px 14px;vertical-align:middle;}
+        tbody tr.active-row .brief-btn{color:var(--blue);background:#c5d9f8;}
+        td{padding:4px 14px;vertical-align:middle;}
         .rnum{font-size:11px;color:var(--t3);text-align:center;width:30px;}
         .gc{appearance:none;-webkit-appearance:none;width:18px;height:18px;border:2px solid var(--t3);border-radius:3px;cursor:pointer;display:grid;place-items:center;transition:all .15s;background:transparent;}
         .gc:checked{background:var(--blue);border-color:var(--blue);}
         .gc:checked::after{content:'';display:block;width:5px;height:9px;border:2px solid white;border-top:none;border-left:none;transform:rotate(45deg) translate(-1px,-1px);}
         .gc:hover{border-color:var(--blue);}
-        .tf{border:none;background:transparent;font-family:'Roboto',sans-serif;font-size:13px;color:var(--t1);width:100%;padding:8px 6px;border-radius:4px;outline:none;transition:background .15s;}
+        .tf{border:none;background:transparent;font-family:'Roboto',sans-serif;font-size:13px;color:var(--t1);width:100%;padding:7px 6px;border-radius:4px;outline:none;transition:background .15s;}
         .tf:focus{background:#e8f0fe;}
         .ftm{width:85px;} .fdu{width:52px;text-align:center;}
         input[type=time].tf::-webkit-calendar-picker-indicator{opacity:.5;}
@@ -118,6 +120,22 @@
         .rdel{background:none;border:none;cursor:pointer;color:#ccc;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;transition:all .15s;}
         .rdel:hover{background:#fce8e6;color:var(--red);}
         .rdel .material-symbols-outlined{font-size:18px;}
+        /* ── BRIEF BUTTON — micro-interaction ── */
+        /* Lift + ink-fill on hover; spring pop on click */
+        .brief-btn{
+            background:none;border:none;cursor:pointer;
+            color:#bdc1c6;border-radius:8px;
+            width:32px;height:32px;
+            display:flex;align-items:center;justify-content:center;
+            transition:color .18s ease, background .18s ease, transform .15s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease;
+            will-change:transform;
+        }
+        .brief-btn .material-symbols-outlined{font-size:18px;transition:transform .18s cubic-bezier(.34,1.56,.64,1);}
+        .brief-btn:hover{color:var(--blue);background:#e8f0fe;transform:scale(1.12);}
+        .brief-btn:hover .material-symbols-outlined{transform:rotate(-8deg) scale(1.1);}
+        .brief-btn:active{transform:scale(.94);}
+        .brief-btn.has-notes{color:var(--blue);background:#e8f0fe;}
+        .brief-btn.has-notes .material-symbols-outlined{font-variation-settings:'FILL' 1;}
         .empty{padding:60px 20px;text-align:center;color:var(--t3);}
         .empty .material-symbols-outlined{font-size:48px;opacity:.3;display:block;margin-bottom:10px;}
         .empty p{font-size:14px;}
@@ -230,13 +248,37 @@
         .mbody{padding:16px 24px 32px;}
         .mtitle{font-family:'Google Sans',sans-serif;font-size:18px;font-weight:500;color:var(--t1);margin-bottom:4px;}
         .msub{font-size:13px;color:var(--t3);margin-bottom:14px;}
-        .pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px;}
-        .pcard{border:1.5px solid var(--border);border-radius:var(--r);padding:10px 12px;cursor:pointer;transition:all .15s;background:var(--surface);}
-        .pcard:hover{border-color:var(--blue);background:#f0f6ff;}
-        .pcard.sel{border-color:var(--blue);background:#e8f0fe;}
-        .pname{font-family:'Google Sans',sans-serif;font-size:13px;font-weight:500;color:var(--t1);display:flex;align-items:center;gap:6px;}
-        .pcard.sel .pname{color:var(--blue);}
-        .psub{font-size:11px;color:var(--t3);margin-top:2px;}
+        /* ── AI PROVIDER TABS — horizontal icon row ── */
+        /* Micro-interaction: sliding underline + background bloom on active */
+        .prov-tabs{display:flex;gap:6px;margin-bottom:16px;padding:4px;background:#f1f3f4;border-radius:12px;}
+        .ptab{
+            flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;
+            padding:10px 8px 8px;border-radius:9px;border:none;
+            background:transparent;cursor:pointer;
+            color:var(--t3);font-family:'Google Sans',sans-serif;font-size:11px;font-weight:500;
+            position:relative;overflow:hidden;
+            transition:color .2s ease, background .2s ease, box-shadow .2s ease, transform .15s cubic-bezier(.34,1.4,.64,1);
+        }
+        .ptab::after{
+            content:'';position:absolute;bottom:0;left:20%;width:60%;height:2px;
+            background:var(--blue);border-radius:1px;
+            transform:scaleX(0);transition:transform .25s cubic-bezier(.4,0,.2,1);
+        }
+        .ptab:hover{color:var(--t1);background:rgba(26,115,232,.06);transform:translateY(-1px);}
+        .ptab.active{
+            color:var(--blue);
+            background:var(--surface);
+            box-shadow:0 1px 4px rgba(60,64,67,.2), 0 0 0 1px rgba(26,115,232,.15);
+            transform:translateY(-1px);
+        }
+        .ptab.active::after{transform:scaleX(1);}
+        .ptab-icon{font-size:22px;line-height:1;transition:transform .2s cubic-bezier(.34,1.4,.64,1);}
+        .ptab:hover .ptab-icon,.ptab.active .ptab-icon{transform:scale(1.18);}
+        .ptab-label{font-size:10px;white-space:nowrap;}
+        .ptab .ftag{font-size:8px;padding:1px 4px;margin-top:1px;}
+        /* Key area that swaps per provider */
+        .prov-key-area{animation:fadeSlide .2s ease;}
+        @keyframes fadeSlide{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
         .ftag{background:#e6f4ea;color:var(--green);font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;text-transform:uppercase;letter-spacing:.04em;}
         .amsg{display:none;padding:9px 13px;border-radius:var(--r);font-size:12px;line-height:1.5;margin-bottom:10px;}
         .amsg.err{background:#fce8e6;border:1px solid #f5c6c2;color:#c5221f;}
@@ -259,13 +301,61 @@
         .bcont:hover{background:var(--blue-dk);box-shadow:var(--sh2);}
         .bcont:disabled{opacity:.45;cursor:not-allowed;box-shadow:none;}
 
-        /* ── WELCOME MODAL ── */
-        .welcome-icon{font-size:48px;text-align:center;display:block;margin:8px 0 16px;}
-        .welcome-steps{display:flex;flex-direction:column;gap:10px;margin:14px 0;}
-        .ws{display:flex;align-items:flex-start;gap:12px;background:#f8f9fa;border-radius:var(--r);padding:12px 14px;}
-        .ws-num{width:24px;height:24px;border-radius:50%;background:var(--blue);color:white;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
-        .ws-t{font-family:'Google Sans',sans-serif;font-size:13px;font-weight:500;color:var(--t1);margin-bottom:2px;}
-        .ws-d{font-size:12px;color:var(--t3);line-height:1.5;}
+        /* ── WELCOME MODAL — Phase 3 onboarding hub ── */
+        .welcome-hero{text-align:center;padding:8px 0 20px;}
+        .welcome-hero-icon{font-size:52px;display:block;margin-bottom:10px;}
+        .welcome-hero-title{font-family:'Google Sans',sans-serif;font-size:20px;font-weight:500;color:var(--t1);margin-bottom:4px;}
+        .welcome-hero-sub{font-size:13px;color:var(--t3);line-height:1.5;}
+        /* Client ID block */
+        .wc-section{background:#f8f9fa;border:1px solid var(--border);border-radius:var(--rl);padding:16px;margin-bottom:12px;}
+        .wc-section-title{font-family:'Google Sans',sans-serif;font-size:12px;font-weight:600;color:var(--t2);letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+        .wc-section-title .material-symbols-outlined{font-size:15px;color:var(--blue);}
+        .wc-cid-row{display:flex;gap:8px;align-items:flex-start;}
+        .wc-cid-input{flex:1;border:1.5px solid var(--border);border-radius:var(--r);padding:9px 12px;font-family:'Roboto Mono',monospace;font-size:12px;color:var(--t1);background:var(--surface);outline:none;transition:border-color .15s,box-shadow .15s;}
+        .wc-cid-input:focus{border-color:var(--blue);box-shadow:0 0 0 2px rgba(26,115,232,.12);}
+        .wc-cid-input.valid{border-color:var(--green);}
+        .wc-cid-save{background:var(--blue);color:white;border:none;border-radius:var(--r);padding:9px 16px;font-family:'Google Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;transition:background .15s;flex-shrink:0;}
+        .wc-cid-save:hover{background:var(--blue-dk);}
+        .wc-cid-save:disabled{opacity:.4;cursor:not-allowed;}
+        .wc-cid-hint{font-size:11px;color:var(--t3);margin-top:6px;line-height:1.4;}
+        .wc-cid-hint a{color:var(--blue);text-decoration:none;}
+        /* Auth action buttons */
+        .wc-auth-row{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+        .wc-btn-drive{
+            display:flex;align-items:center;justify-content:center;gap:10px;
+            background:var(--blue);color:white;border:none;
+            border-radius:var(--r);padding:13px 20px;
+            font-family:'Google Sans',sans-serif;font-size:14px;font-weight:500;
+            cursor:pointer;box-shadow:var(--sh2);
+            transition:background .15s, box-shadow .15s, transform .12s;
+        }
+        .wc-btn-drive:hover{background:var(--blue-dk);transform:translateY(-1px);box-shadow:0 4px 12px rgba(26,115,232,.35);}
+        .wc-btn-drive:active{transform:translateY(0);}
+        .wc-btn-local{
+            display:flex;align-items:center;justify-content:center;gap:8px;
+            background:var(--surface);color:var(--t2);
+            border:1.5px solid var(--border);border-radius:var(--r);padding:11px 20px;
+            font-family:'Google Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;
+            transition:background .15s, border-color .15s;
+        }
+        .wc-btn-local:hover{background:#f1f3f4;border-color:var(--t3);}
+        /* Data portability row */
+        .wc-portability{display:flex;gap:8px;}
+        .wc-port-btn{
+            flex:1;display:flex;align-items:center;justify-content:center;gap:7px;
+            background:var(--surface);color:var(--t2);
+            border:1px solid var(--border);border-radius:var(--r);padding:9px 12px;
+            font-family:'Google Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;
+            transition:background .15s, border-color .15s, color .15s;
+        }
+        .wc-port-btn:hover{background:#e8f0fe;border-color:var(--blue);color:var(--blue);}
+        .wc-port-btn .material-symbols-outlined{font-size:16px;}
+        /* Steps list used on Welcome */
+        .welcome-steps{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+        .ws{display:flex;align-items:flex-start;gap:12px;background:#f8f9fa;border-radius:var(--r);padding:11px 13px;}
+        .ws-num{width:22px;height:22px;border-radius:50%;background:var(--blue);color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+        .ws-t{font-family:'Google Sans',sans-serif;font-size:13px;font-weight:500;color:var(--t1);margin-bottom:1px;}
+        .ws-d{font-size:12px;color:var(--t3);line-height:1.45;}
         .ws-badge{display:inline-flex;align-items:center;gap:4px;background:#e8f0fe;color:var(--blue);font-size:10px;font-weight:600;padding:2px 8px;border-radius:50px;margin-top:4px;}
 
         /* ── INFO MODAL ── */
@@ -336,141 +426,16 @@
             .scard{min-width:80px;padding:10px 12px;}
             .sval{font-size:17px;}
             .provider-grid{grid-template-columns:1fr;}
+            /* On mobile, detail panel goes full width */
             .detail-panel{width:100%;top:64px;height:calc(100vh - 64px - 80px);}
             .app-body.panel-open .main{display:none;}
             .dock{bottom:12px;padding:6px 8px;gap:2px;}
             .dock-item{min-width:44px;padding:5px 8px;}
             .dock-ai{padding:7px 12px;font-size:11px;}
         }
-
-        /* ═══════════════════════════════════════
-           GOOGLE SIGN-IN SCREEN
-        ═══════════════════════════════════════ */
-        #signin-screen{
-            position:fixed;inset:0;
-            background:#f1f3f4;
-            z-index:9000;
-            display:flex;align-items:center;justify-content:center;
-            padding:16px;
-        }
-        #signin-screen.hidden{display:none;}
-        .signin-card{
-            background:#fff;
-            border:1px solid #dadce0;
-            border-radius:8px;
-            padding:48px 40px 36px;
-            width:100%;max-width:400px;
-            text-align:center;
-            box-shadow:0 2px 4px rgba(0,0,0,.1),0 4px 16px rgba(0,0,0,.06);
-        }
-        .signin-logo{width:48px;height:48px;border-radius:12px;background:#1a73e8;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:'Google Sans',sans-serif;font-weight:700;font-size:20px;color:white;}
-        .signin-title{font-family:'Google Sans',sans-serif;font-size:24px;font-weight:400;color:#202124;margin-bottom:8px;}
-        .signin-sub{font-size:14px;color:#5f6368;margin-bottom:32px;line-height:1.5;}
-        .signin-google-btn{
-            display:flex;align-items:center;justify-content:center;gap:10px;
-            width:100%;padding:12px 16px;
-            border:1px solid #dadce0;border-radius:4px;
-            background:#fff;cursor:pointer;
-            font-family:'Roboto',sans-serif;font-size:14px;font-weight:500;color:#3c4043;
-            box-shadow:0 1px 2px rgba(60,64,67,.3);
-            transition:box-shadow .15s,background .15s;
-            margin-bottom:12px;
-        }
-        .signin-google-btn:hover{background:#f8f9fa;box-shadow:0 1px 4px rgba(60,64,67,.3);}
-        .signin-guest-btn{
-            background:none;border:none;color:#1a73e8;
-            font-family:'Google Sans',sans-serif;font-size:14px;font-weight:500;
-            cursor:pointer;padding:8px;border-radius:4px;
-            transition:background .15s;
-        }
-        .signin-guest-btn:hover{background:rgba(26,115,232,.08);}
-        .signin-divider{display:flex;align-items:center;gap:12px;margin:16px 0;color:#5f6368;font-size:12px;}
-        .signin-divider::before,.signin-divider::after{content:'';flex:1;height:1px;background:#dadce0;}
-        .signin-user-row{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#f8f9fa;border-radius:var(--r);margin-bottom:16px;text-align:left;}
-        .signin-avatar{width:36px;height:36px;border-radius:50%;background:#1a73e8;color:white;display:flex;align-items:center;justify-content:center;font-family:'Google Sans',sans-serif;font-weight:500;font-size:14px;flex-shrink:0;}
-        .signin-avatar img{width:36px;height:36px;border-radius:50%;object-fit:cover;}
-        .signin-uname{font-family:'Google Sans',sans-serif;font-size:13px;font-weight:500;color:#202124;}
-        .signin-uemail{font-size:11px;color:#5f6368;}
-        .signin-error{background:#fce8e6;color:#c5221f;border-radius:4px;padding:10px 14px;font-size:13px;margin-bottom:12px;display:none;text-align:left;}
-
-        /* user avatar in topbar */
-        .topbar-avatar{width:32px;height:32px;border-radius:50%;background:#1a73e8;color:white;display:flex;align-items:center;justify-content:center;font-family:'Google Sans',sans-serif;font-weight:500;font-size:13px;cursor:pointer;flex-shrink:0;overflow:hidden;border:2px solid transparent;transition:border-color .15s;}
-        .topbar-avatar:hover{border-color:#1a73e8;}
-        .topbar-avatar img{width:100%;height:100%;object-fit:cover;}
-        .user-menu{position:absolute;top:56px;right:14px;background:#fff;border:1px solid #dadce0;border-radius:8px;box-shadow:0 4px 16px rgba(60,64,67,.2);z-index:1000;min-width:220px;overflow:hidden;display:none;}
-        .user-menu.open{display:block;}
-        .user-menu-header{padding:16px;border-bottom:1px solid #dadce0;text-align:center;}
-        .user-menu-avatar{width:56px;height:56px;border-radius:50%;background:#1a73e8;color:white;display:flex;align-items:center;justify-content:center;font-family:'Google Sans',sans-serif;font-weight:500;font-size:22px;margin:0 auto 8px;overflow:hidden;}
-        .user-menu-avatar img{width:100%;height:100%;object-fit:cover;}
-        .user-menu-name{font-family:'Google Sans',sans-serif;font-size:14px;font-weight:500;color:#202124;}
-        .user-menu-email{font-size:12px;color:#5f6368;margin-top:2px;}
-        .user-menu-item{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:13px;color:#3c4043;cursor:pointer;transition:background .15s;}
-        .user-menu-item:hover{background:#f1f3f4;}
-        .user-menu-item .material-symbols-outlined{font-size:18px;color:#5f6368;}
-        .user-menu-sep{height:1px;background:#dadce0;}
-
-        /* ═══════════════════════════════════════
-           API KEY MANAGER (in AI modal)
-        ═══════════════════════════════════════ */
-        .km-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:8px 12px;background:#f8f9fa;border:1px solid var(--border);border-radius:var(--r);margin-bottom:10px;user-select:none;}
-        .km-toggle-label{font-family:'Google Sans',sans-serif;font-size:13px;font-weight:500;color:var(--t2);display:flex;align-items:center;gap:6px;}
-        .km-toggle .material-symbols-outlined{font-size:16px;color:var(--t3);transition:transform .2s;}
-        .km-toggle.open .material-symbols-outlined.chevron{transform:rotate(180deg);}
-        .km-panel{display:none;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:12px;}
-        .km-panel.open{display:block;}
-        .km-list{max-height:280px;overflow-y:auto;}
-        .km-row{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--border);transition:background .15s;}
-        .km-row:last-child{border-bottom:none;}
-        .km-row:hover{background:#f8f9fa;}
-        .km-prov-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
-        .km-prov-name{font-family:'Google Sans',sans-serif;font-size:12px;font-weight:500;color:var(--t1);flex:1;}
-        .km-key-preview{font-family:'Roboto Mono',monospace;font-size:10px;color:var(--t3);flex:2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-        .km-actions{display:flex;gap:4px;flex-shrink:0;}
-        .km-btn{background:none;border:none;cursor:pointer;color:var(--t3);width:28px;height:28px;border-radius:4px;display:flex;align-items:center;justify-content:center;transition:all .15s;}
-        .km-btn:hover{background:#e8f0fe;color:var(--blue);}
-        .km-btn.del:hover{background:#fce8e6;color:var(--red);}
-        .km-btn .material-symbols-outlined{font-size:16px;}
-        .km-empty{padding:20px;text-align:center;font-size:12px;color:var(--t3);}
-        .km-add-row{padding:10px 12px;border-top:1px solid var(--border);background:#f8f9fa;}
-        /* Custom provider add form */
-        .custom-prov-form{border:1px solid var(--border);border-radius:var(--r);padding:12px;background:#f8f9fa;margin-bottom:12px;display:none;}
-        .custom-prov-form.open{display:block;}
-        .custom-prov-form .gf{margin-bottom:8px;}
-        .custom-prov-form .gf:last-child{margin-bottom:0;}
-        .custom-prov-form label{font-size:10px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:4px;}
-        .custom-prov-form .gi{font-size:13px;padding:8px 10px;}
     </style>
 </head>
 <body>
-
-<!-- ══════════════════════════════════════════
-     GOOGLE SIGN-IN SCREEN
-══════════════════════════════════════════ -->
-<div id="signin-screen">
-  <div class="signin-card">
-    <div class="signin-logo">SD</div>
-    <div class="signin-title">Sign in to SmartDay</div>
-    <div class="signin-sub">Your AI-powered daily planner.<br>Sign in to sync tasks across all your devices.</div>
-    <div class="signin-error" id="signin-error"></div>
-    <!-- Returning user chip (shown when cookie exists) -->
-    <div class="signin-user-row" id="signin-returning-row" style="display:none;">
-      <div class="signin-avatar" id="signin-return-avatar">?</div>
-      <div>
-        <div class="signin-uname" id="signin-return-name">User</div>
-        <div class="signin-uemail" id="signin-return-email"></div>
-      </div>
-    </div>
-    <button class="signin-google-btn" onclick="signInWithGoogle()" id="signin-btn">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-      Continue with Google
-    </button>
-    <div class="signin-divider">or</div>
-    <button class="signin-guest-btn" onclick="continueAsGuest()">Continue without signing in</button>
-    <p style="font-size:11px;color:#9aa0a6;margin-top:20px;line-height:1.5;">
-      Signing in enables Google Drive sync and saves your API keys securely. Your data stays in your own Google account.
-    </p>
-  </div>
-</div>
 
 <div id="toasts"></div>
 
@@ -482,81 +447,47 @@
     <div class="mdrag"></div>
     <div class="mbody">
       <div class="mtitle">AI Planner</div>
-      <div class="msub">Pick a provider, paste your key, and describe how to update your day.</div>
+      <div class="msub">Choose a provider, then describe how to reshape your day.</div>
 
-      <!-- Provider grid — built dynamically by JS to include custom providers -->
-      <div class="pgrid" id="pgrid"></div>
+      <!-- Horizontal provider tab bar -->
+      <div class="prov-tabs" id="provTabs">
+        <button class="ptab active" id="ptab-groq" onclick="selProv('groq')">
+          <span class="ptab-icon">⚡</span>
+          <span class="ptab-label">Groq</span>
+          <span class="ftag">Free</span>
+        </button>
+        <button class="ptab" id="ptab-gemini" onclick="selProv('gemini')">
+          <span class="ptab-icon">⭐</span>
+          <span class="ptab-label">Gemini</span>
+          <span class="ftag">Free</span>
+        </button>
+        <button class="ptab" id="ptab-openrouter" onclick="selProv('openrouter')">
+          <span class="ptab-icon">🔄</span>
+          <span class="ptab-label">OpenRouter</span>
+          <span class="ftag">Free</span>
+        </button>
+        <button class="ptab" id="ptab-openai" onclick="selProv('openai')">
+          <span class="ptab-icon">🤖</span>
+          <span class="ptab-label">OpenAI</span>
+        </button>
+      </div>
 
-      <!-- Custom provider add form (collapsible) -->
-      <div class="custom-prov-form" id="custom-prov-form">
-        <div style="font-family:'Google Sans',sans-serif;font-size:12px;font-weight:500;color:var(--t2);margin-bottom:10px;display:flex;align-items:center;gap:6px;">
-          <span class="material-symbols-outlined" style="font-size:15px;">add_circle</span>Add Custom Provider
-        </div>
+      <!-- Key area — re-renders per provider -->
+      <div class="prov-key-area" id="provKeyArea">
+        <div class="amsg" id="amsg"></div>
         <div class="gf">
-          <label>Provider Name</label>
-          <input class="gi" id="cp-name" placeholder="e.g. DeepSeek, Mistral, Anthropic...">
+          <label id="klbl">API KEY — GROQ</label>
+          <input type="password" class="gi" id="akey" placeholder="gsk_..." autocomplete="new-password" spellcheck="false">
+          <div class="khint" id="khint">Free key at <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> — no credit card needed.</div>
         </div>
-        <div class="gf">
-          <label>API Endpoint URL</label>
-          <input class="gi" id="cp-url" placeholder="https://api.deepseek.com/v1/chat/completions">
-        </div>
-        <div class="gf">
-          <label>Model Name</label>
-          <input class="gi" id="cp-model" placeholder="e.g. deepseek-chat">
-        </div>
-        <div class="gf">
-          <label>Key Prefix (optional)</label>
-          <input class="gi" id="cp-prefix" placeholder="e.g. sk- (for validation hint)">
-        </div>
-        <div style="display:flex;gap:8px;margin-top:4px;">
-          <button class="btxt" style="padding:6px 12px;font-size:12px;" onclick="cancelCustomProv()">Cancel</button>
-          <button class="bcont" style="padding:7px 16px;font-size:12px;" onclick="addCustomProvider()">
-            <span class="material-symbols-outlined" style="font-size:13px;">save</span>Save Provider
-          </button>
+        <div id="key-save-row" style="display:none;margin-bottom:12px;">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;color:var(--t3);">
+            <input type="checkbox" id="saveKeyToDrive" checked style="accent-color:var(--blue);width:14px;height:14px;">
+            Save this API key to Drive for cross-device access
+          </label>
         </div>
       </div>
 
-      <div class="amsg" id="amsg"></div>
-
-      <!-- API Key input -->
-      <div class="gf">
-        <label id="klbl">API KEY — GROQ</label>
-        <div style="display:flex;gap:6px;">
-          <input type="password" class="gi" id="akey" placeholder="gsk_..." autocomplete="off" style="flex:1;" oninput="onKeyInput()">
-          <button class="km-btn" id="akey-eye" onclick="toggleKeyVis()" title="Show/hide key" style="width:38px;height:38px;border:1.5px solid var(--border);border-radius:var(--r);flex-shrink:0;">
-            <span class="material-symbols-outlined" id="akey-eye-icon">visibility</span>
-          </button>
-        </div>
-        <div class="khint" id="khint">Free key at <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> &mdash; no credit card needed.</div>
-      </div>
-
-      <!-- Save to Drive row -->
-      <div id="key-save-row" style="display:none;margin-bottom:12px;">
-        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;color:var(--t3);">
-          <input type="checkbox" id="saveKeyToDrive" checked style="accent-color:var(--blue);width:14px;height:14px;">
-          Save this API key to Drive for cross-device access
-        </label>
-      </div>
-
-      <!-- ── API KEY MANAGER (collapsible) ── -->
-      <div class="km-toggle" id="km-toggle" onclick="toggleKeyManager()">
-        <div class="km-toggle-label">
-          <span class="material-symbols-outlined" style="font-size:16px;">vpn_key</span>
-          Saved API Keys <span id="km-count" style="background:#e8f0fe;color:var(--blue);font-size:10px;padding:1px 6px;border-radius:10px;margin-left:4px;">0</span>
-        </div>
-        <span class="material-symbols-outlined chevron">expand_more</span>
-      </div>
-      <div class="km-panel" id="km-panel">
-        <div class="km-list" id="km-list"></div>
-        <div class="km-add-row" style="display:flex;justify-content:space-between;align-items:center;">
-          <span style="font-size:11px;color:var(--t3);">Keys sync to Drive automatically</span>
-          <button class="btxt" style="font-size:12px;padding:5px 10px;" onclick="showCustomProvForm()">
-            <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">add</span> Custom Provider
-          </button>
-        </div>
-      </div>
-
-      <!-- Prompt chips -->
       <div class="chips">
         <div class="chip" onclick="setP('Push everything back 1 hour')">Push back 1hr</div>
         <div class="chip" onclick="setP('Add a 30-minute lunch break')">Add lunch</div>
@@ -580,55 +511,83 @@
 </div>
 
 <!-- ══════════════════════════════════════════
-     MODAL 2 — WELCOME (first-time launch)
+     MODAL 2 — WELCOME / ONBOARDING HUB
 ══════════════════════════════════════════ -->
 <div class="mover" id="welcomemodal">
-  <div class="msheet">
+  <div class="msheet" style="max-width:560px;">
     <div class="mdrag"></div>
     <div class="mbody">
-      <span class="welcome-icon">👋</span>
-      <div class="mtitle" style="text-align:center;">Welcome to SmartDay!</div>
-      <div class="msub" style="text-align:center;">Your personal AI-powered daily planner — it lives right in this HTML file.</div>
-      <div class="welcome-steps">
-        <div class="ws">
-          <div class="ws-num">1</div>
-          <div>
-            <div class="ws-t">Save this file somewhere safe</div>
-            <div class="ws-d">This app is a single HTML file. Bookmark it in your browser or move it to a folder you won't lose. On mobile, use <strong>"Add to Home Screen"</strong> for app-like access.</div>
-            <span class="ws-badge"><span class="material-symbols-outlined" style="font-size:12px;">bookmark</span> Save / Bookmark this file</span>
-          </div>
+
+      <!-- Hero -->
+      <div class="welcome-hero">
+        <span class="welcome-hero-icon">📅</span>
+        <div class="welcome-hero-title">Welcome to SmartDay</div>
+        <div class="welcome-hero-sub">Your AI-powered daily planner lives entirely in this HTML file.<br>Set it up once — use it everywhere.</div>
+      </div>
+
+      <!-- Step 1: Client ID -->
+      <div class="wc-section">
+        <div class="wc-section-title">
+          <span class="material-symbols-outlined">key</span>
+          Google OAuth Client ID
+          <span style="margin-left:auto;font-size:10px;font-weight:400;color:var(--t3);text-transform:none;letter-spacing:0;">Required for Drive sync</span>
         </div>
-        <div class="ws">
-          <div class="ws-num">2</div>
-          <div>
-            <div class="ws-t">Connect Google Drive for sync</div>
-            <div class="ws-d">Tap <strong>Connect Drive</strong> in the top bar. Next time you open the app, it reconnects silently — no popup. Your data stays private in your own Drive.</div>
-            <span class="ws-badge"><span class="material-symbols-outlined" style="font-size:12px;">cloud_sync</span> Auto-reconnects on return</span>
-          </div>
+        <div class="wc-cid-row">
+          <input
+            class="wc-cid-input"
+            id="wc-cid"
+            type="password"
+            placeholder="xxxxxxxx.apps.googleusercontent.com"
+            autocomplete="off"
+            oninput="onWcCidInput()"
+            onpaste="setTimeout(onWcCidInput,10)"
+          >
+          <button class="wc-cid-save" id="wc-cid-save" onclick="saveWcClientId()" disabled>Save</button>
         </div>
-        <div class="ws">
-          <div class="ws-num">3</div>
-          <div>
-            <div class="ws-t">Use AI to plan your day</div>
-            <div class="ws-d">Tap <strong>AI Planner</strong> in the dock. Get a free key from Groq or Gemini. Once saved to Drive, your key works everywhere automatically.</div>
-            <span class="ws-badge"><span class="material-symbols-outlined" style="font-size:12px;">auto_awesome</span> AI-powered scheduling</span>
-          </div>
-        </div>
-        <div class="ws">
-          <div class="ws-num">4</div>
-          <div>
-            <div class="ws-t">Click any task for details</div>
-            <div class="ws-d">Click on a task row to open the <strong>Task Details</strong> side panel where you can add notes and descriptions that sync to Drive.</div>
-            <span class="ws-badge"><span class="material-symbols-outlined" style="font-size:12px;">side_navigation</span> Slide-in detail panel</span>
-          </div>
+        <div class="wc-cid-hint">
+          Need one? See the <a href="#" onclick="event.preventDefault();closeWelcome(false);openInfo();">Help &amp; Setup guide</a> for step-by-step instructions (requires deploying to a free <code style="font-size:10px;background:#e8f0fe;color:var(--blue);padding:1px 4px;border-radius:3px;">https://</code> host).
         </div>
       </div>
-      <div class="mact">
-        <button class="bcont" onclick="closeWelcome()" style="width:100%;justify-content:center;">
-          <span class="material-symbols-outlined" style="font-size:15px;">check_circle</span>
-          Got it — Let's plan my day!
+
+      <!-- Step 2: Auth actions -->
+      <div class="wc-auth-row">
+        <button class="wc-btn-drive" onclick="closeWelcome(true);requestToken();">
+          <svg width="18" height="18" viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg">
+            <path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8H0c0 1.55.4 3.1 1.2 4.5z" fill="rgba(255,255,255,.9)"/>
+            <path d="M43.65 25 29.9 1.2C28.55 2 27.4 3.1 26.6 4.5L1.2 49.15C.4 50.55 0 52.1 0 53.65h27.5z" fill="rgba(255,255,255,.9)"/>
+            <path d="M73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5H59.8l5.65 10.35z" fill="rgba(255,255,255,.7)"/>
+            <path d="M43.65 25 57.4 1.2C56.05.4 54.5 0 52.95 0H34.35c-1.55 0-3.1.45-4.45 1.2z" fill="rgba(255,255,255,.9)"/>
+            <path d="M59.8 53.65H27.5L13.75 77.45c1.35.8 2.9 1.2 4.45 1.2h50.9c1.55 0 3.1-.45 4.45-1.2z" fill="rgba(255,255,255,.9)"/>
+            <path d="M73.4 26.45l-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3L43.65 25l16.15 28H87.3c0-1.55-.4-3.1-1.2-4.5z" fill="rgba(255,255,255,.8)"/>
+          </svg>
+          Connect to Google Drive
+        </button>
+        <button class="wc-btn-local" onclick="closeWelcome(true)">
+          <span class="material-symbols-outlined" style="font-size:18px;">computer</span>
+          Continue Locally (no sync)
         </button>
       </div>
+
+      <!-- Step 3: Data portability -->
+      <div class="wc-section" style="background:transparent;border-color:var(--border);">
+        <div class="wc-section-title" style="margin-bottom:8px;">
+          <span class="material-symbols-outlined" style="color:var(--t3);">folder_open</span>
+          Local Data Portability
+        </div>
+        <div class="wc-portability">
+          <button class="wc-port-btn" onclick="exportLocalData()">
+            <span class="material-symbols-outlined">download</span>
+            Export Local Data
+          </button>
+          <label class="wc-port-btn" style="cursor:pointer;">
+            <span class="material-symbols-outlined">upload</span>
+            Import Local Data
+            <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importLocalData(event)">
+          </label>
+        </div>
+        <div style="font-size:11px;color:var(--t3);margin-top:8px;line-height:1.4;">Export saves your tasks as a <code style="font-size:10px;">.json</code> file. Import loads a previously exported file — your data is always portable.</div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -650,12 +609,15 @@
           <div class="info-sec-title">Setting Up Google Drive Sync</div>
         </div>
         <div class="info-sec-body">
-          <div class="info-step"><div class="info-step-n">1</div><div class="info-step-t">Go to <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a> and create a project.</div></div>
-          <div class="info-step"><div class="info-step-n">2</div><div class="info-step-t">Enable the <strong>Google Drive API</strong> under APIs &amp; Services.</div></div>
-          <div class="info-step"><div class="info-step-n">3</div><div class="info-step-t">Create an <strong>OAuth 2.0 Client ID</strong> (Web application).</div></div>
-          <div class="info-step"><div class="info-step-n">4</div><div class="info-step-t">Add <code>null</code> (for local files) or your URL to Authorized JavaScript origins.</div></div>
-          <div class="info-step"><div class="info-step-n">5</div><div class="info-step-t">Open <strong>⚙️ Settings</strong> and paste your Client ID there — no code editing needed.</div></div>
-          <div class="info-step"><div class="info-step-n">6</div><div class="info-step-t">Click <strong>Connect Drive</strong>. Future visits auto-reconnect silently.</div></div>
+          <div style="background:#fef7e0;border:1px solid #fdd663;border-radius:var(--r);padding:10px 13px;font-size:12px;color:#7a4a00;margin-bottom:12px;display:flex;gap:8px;">
+            <span class="material-symbols-outlined" style="font-size:15px;flex-shrink:0;margin-top:1px;">warning</span>
+            <span><strong>Google requires an <code style="font-size:11px;background:rgba(0,0,0,.07);padding:1px 4px;border-radius:3px;">https://</code> origin.</strong> Running the file locally (<code style="font-size:11px;background:rgba(0,0,0,.07);padding:1px 4px;border-radius:3px;">file:///</code>) will trigger a <em>Error 400: invalid_request</em>. You must deploy first.</span>
+          </div>
+          <div class="info-step"><div class="info-step-n">1</div><div class="info-step-t"><strong>Deploy the app first.</strong> Upload this HTML file to a free static host — <a href="https://pages.github.com" target="_blank">GitHub Pages</a> or <a href="https://netlify.com" target="_blank">Netlify</a> are both free and take under 2 minutes. You'll get a secure <code style="font-size:11px;background:#e8f0fe;color:var(--blue);padding:1px 4px;border-radius:3px;">https://</code> URL.</div></div>
+          <div class="info-step"><div class="info-step-n">2</div><div class="info-step-t"><strong>Google Cloud Console.</strong> Go to <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a>, create a project, go to <em>APIs &amp; Services</em>, and enable the <strong>Google Drive API</strong>.</div></div>
+          <div class="info-step"><div class="info-step-n">3</div><div class="info-step-t"><strong>Create credentials.</strong> Go to <em>Credentials → Create Credentials → OAuth 2.0 Client ID</em>. Set Application type to <strong>Web application</strong>.</div></div>
+          <div class="info-step"><div class="info-step-n">4</div><div class="info-step-t"><strong>Add your deployed URL.</strong> Under both <em>"Authorized JavaScript origins"</em> and <em>"Authorized redirect URIs"</em>, paste your exact <code style="font-size:11px;background:#e8f0fe;color:var(--blue);padding:1px 4px;border-radius:3px;">https://your-app.github.io</code> URL — <strong>no trailing slash</strong>.</div></div>
+          <div class="info-step"><div class="info-step-n">5</div><div class="info-step-t"><strong>Configure the app.</strong> Copy your Client ID (ends in <code style="font-size:11px;background:#e8f0fe;color:var(--blue);padding:1px 4px;border-radius:3px;">.apps.googleusercontent.com</code>), then open the SmartDay <strong>Welcome screen</strong> (or <strong>⚙️ Settings</strong>) and paste it into the Client ID field. Hit Save — then tap <em>Connect Drive</em>.</div></div>
         </div>
       </div>
       <div class="info-divider"></div>
@@ -727,11 +689,11 @@
         </div>
         <div class="settings-hint-box">
           <strong>How to get your Client ID:</strong><br>
-          1. <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a> → new project<br>
-          2. APIs &amp; Services → Enable <em>Google Drive API</em><br>
+          1. Deploy SmartDay to <a href="https://pages.github.com" target="_blank">GitHub Pages</a> or <a href="https://netlify.com" target="_blank">Netlify</a> first (required — Google blocks <code>file://</code> origins)<br>
+          2. <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a> → new project → enable Drive API<br>
           3. Credentials → OAuth 2.0 Client ID → Web application<br>
-          4. Authorized JS origins: <code>null</code> (local) or your site URL<br>
-          5. Paste the ID above and hit <strong>Save &amp; Apply</strong>
+          4. Authorized JS origins <strong>and</strong> redirect URIs: your <code>https://</code> URL, no trailing slash<br>
+          5. Paste the Client ID above and hit <strong>Save &amp; Apply</strong>
         </div>
       </div>
       <div class="settings-divider"></div>
@@ -778,29 +740,6 @@
       </svg>
       Connect Drive
     </button>
-    <!-- User avatar (shown after sign-in) -->
-    <div class="topbar-avatar" id="topbar-avatar" style="display:none;" onclick="toggleUserMenu()" title="Account">
-      <span id="topbar-avatar-initial">?</span>
-    </div>
-  </div>
-</div>
-
-<!-- User account dropdown menu -->
-<div class="user-menu" id="user-menu">
-  <div class="user-menu-header">
-    <div class="user-menu-avatar" id="umenu-avatar"><span id="umenu-initial">?</span></div>
-    <div class="user-menu-name" id="umenu-name">User</div>
-    <div class="user-menu-email" id="umenu-email"></div>
-  </div>
-  <div class="user-menu-item" onclick="openSettings();closeUserMenu()">
-    <span class="material-symbols-outlined">settings</span>Settings
-  </div>
-  <div class="user-menu-item" onclick="openModal();closeUserMenu()">
-    <span class="material-symbols-outlined">vpn_key</span>Manage API Keys
-  </div>
-  <div class="user-menu-sep"></div>
-  <div class="user-menu-item" onclick="signOut()" style="color:var(--red);">
-    <span class="material-symbols-outlined" style="color:var(--red);">logout</span>Sign out
   </div>
 </div>
 
@@ -844,7 +783,7 @@
     </div>
     <div class="card">
       <div class="card-hd">
-        <div class="card-hd-t">Tasks <span style="font-size:11px;color:var(--t3);font-weight:400;margin-left:6px;">— click a row to add notes</span></div>
+        <div class="card-hd-t">Tasks</div>
         <button class="btn-add" onclick="addRow()">+ Add task</button>
       </div>
       <div class="twrap" id="printarea">
@@ -856,6 +795,7 @@
             <th>Task</th>
             <th style="width:64px;">Mins</th>
             <th style="width:70px;">Priority</th>
+            <th style="width:48px;text-align:center;">Brief</th>
             <th style="width:38px;"></th>
           </tr></thead>
           <tbody id="tbody"></tbody>
@@ -943,180 +883,10 @@ let tasks = JSON.parse(localStorage.getItem('smartday_v3')||'null') || [
     {id:uid(),text:'Deep Work Block', time:'10:00',duration:90,done:false,priority:'high',description:''}
 ];
 const CIRC = 2*Math.PI*22.5;
-let _storedApiKeys = JSON.parse(localStorage.getItem('sd_api_keys')||'{}');
-let activeTaskId = null;
-
-// ── AUTH STATE (persisted in localStorage as "cookie" equivalent) ──
-let _currentUser = JSON.parse(localStorage.getItem('sd_user')||'null');
-// { name, email, photoUrl, initial }
-let _isGuest = localStorage.getItem('sd_guest') === '1';
-
-// ── CUSTOM PROVIDERS (user-defined, persisted) ──
-let _customProviders = JSON.parse(localStorage.getItem('sd_custom_provs')||'[]');
-// [{id, name, url, model, prefix, hint}]
+let _storedApiKeys = {};
+let activeTaskId = null; // currently open in detail panel
 
 function uid(){return Math.random().toString(36).slice(2,9);}
-
-// ════════════════════════════════════════════
-// SIGN-IN / AUTH
-// ════════════════════════════════════════════
-function initAuthScreen(){
-    // Check if already signed in or guest
-    if(_currentUser || _isGuest){
-        hideSignInScreen();
-        applyUserToUI();
-        return;
-    }
-    // Show returning user info if we have a stored user
-    const stored = JSON.parse(localStorage.getItem('sd_user')||'null');
-    if(stored){
-        document.getElementById('signin-returning-row').style.display='flex';
-        const av=document.getElementById('signin-return-avatar');
-        av.textContent=stored.initial||stored.name[0].toUpperCase();
-        document.getElementById('signin-return-name').textContent=stored.name;
-        document.getElementById('signin-return-email').textContent=stored.email||'';
-    }
-    document.getElementById('signin-screen').classList.remove('hidden');
-}
-
-function signInWithGoogle(){
-    if(typeof google==='undefined'){
-        showSigninError('Google SDK not loaded. Check your internet connection.');
-        return;
-    }
-    if(GOOGLE_CLIENT_ID.startsWith('YOUR_')){
-        showSigninError('Google Client ID not configured. Tap "Continue without signing in" to use local mode, or set your Client ID in Settings.');
-        return;
-    }
-
-    // Use Google Identity Services for sign-in
-    // We request openid + email + profile to get user info
-    const client = google.accounts.oauth2.initTokenClient({
-        client_id: GOOGLE_CLIENT_ID,
-        scope: 'openid email profile https://www.googleapis.com/auth/drive.file',
-        callback: async (resp) => {
-            if(resp.error || !resp.access_token){
-                showSigninError('Sign-in failed: '+(resp.error||'No token received'));
-                return;
-            }
-            // Fetch user info with token
-            try{
-                const r = await fetch('https://www.googleapis.com/oauth2/v3/userinfo',
-                    {headers:{Authorization:'Bearer '+resp.access_token}});
-                const info = await r.json();
-                _currentUser = {
-                    name: info.name || info.email || 'User',
-                    email: info.email || '',
-                    photoUrl: info.picture || '',
-                    initial: (info.name||info.email||'U')[0].toUpperCase()
-                };
-                localStorage.setItem('sd_user', JSON.stringify(_currentUser));
-                localStorage.removeItem('sd_guest');
-                _isGuest = false;
-
-                // Also set the Drive token since we already have it
-                token = resp.access_token;
-                localStorage.setItem('sd_has_linked_drive','1');
-
-                applyUserToUI();
-                hideSignInScreen();
-                setSyncUI('ok','Drive connected');
-                hideDriveBtn();
-                document.getElementById('dbanner').classList.add('show');
-                await initDrive();
-                toast('Welcome, '+_currentUser.name+'!','ok');
-            } catch(e){
-                showSigninError('Could not fetch user info: '+e.message);
-            }
-        }
-    });
-    document.getElementById('signin-btn').textContent='Signing in...';
-    document.getElementById('signin-btn').disabled=true;
-    client.requestAccessToken();
-}
-
-function continueAsGuest(){
-    _isGuest = true;
-    localStorage.setItem('sd_guest','1');
-    hideSignInScreen();
-    applyUserToUI();
-    toast('Running in local mode — no Drive sync','inf');
-}
-
-function hideSignInScreen(){
-    document.getElementById('signin-screen').classList.add('hidden');
-}
-
-function showSigninError(msg){
-    const el=document.getElementById('signin-error');
-    el.textContent=msg;el.style.display='block';
-    document.getElementById('signin-btn').textContent='Continue with Google';
-    document.getElementById('signin-btn').disabled=false;
-}
-
-function applyUserToUI(){
-    if(_currentUser){
-        const av=document.getElementById('topbar-avatar');
-        av.style.display='flex';
-        const ini=document.getElementById('topbar-avatar-initial');
-        if(_currentUser.photoUrl){
-            av.innerHTML='<img src="'+_currentUser.photoUrl+'" alt="avatar">';
-        } else {
-            ini.textContent=_currentUser.initial;
-        }
-        // User menu
-        document.getElementById('umenu-name').textContent=_currentUser.name;
-        document.getElementById('umenu-email').textContent=_currentUser.email;
-        const uma=document.getElementById('umenu-avatar');
-        if(_currentUser.photoUrl){
-            uma.innerHTML='<img src="'+_currentUser.photoUrl+'" alt="avatar" style="width:56px;height:56px;border-radius:50%;">';
-        } else {
-            document.getElementById('umenu-initial').textContent=_currentUser.initial;
-        }
-        // Hide sign-in button in topbar since user is signed in
-        const db=document.getElementById('drivebtn');
-        if(db && token) db.style.display='none';
-    }
-}
-
-function toggleUserMenu(){
-    document.getElementById('user-menu').classList.toggle('open');
-}
-function closeUserMenu(){
-    document.getElementById('user-menu').classList.remove('open');
-}
-
-function signOut(){
-    if(!confirm('Sign out? Your local tasks will remain on this device.'))return;
-    _currentUser=null;
-    _isGuest=false;
-    token=null;
-    localStorage.removeItem('sd_user');
-    localStorage.removeItem('sd_guest');
-    localStorage.removeItem('sd_has_linked_drive');
-    localStorage.removeItem('sd_fid');
-    closeUserMenu();
-    setSyncUI('','Local only');
-    showDriveBtn();
-    document.getElementById('topbar-avatar').style.display='none';
-    document.getElementById('dbanner').classList.remove('show');
-    // Show sign-in screen
-    localStorage.removeItem('sd_user');
-    document.getElementById('signin-screen').classList.remove('hidden');
-    document.getElementById('signin-btn').textContent='Continue with Google';
-    document.getElementById('signin-btn').disabled=false;
-    document.getElementById('signin-error').style.display='none';
-    toast('Signed out','inf');
-}
-
-// Close user menu on outside click
-document.addEventListener('click', e=>{
-    const menu=document.getElementById('user-menu');
-    const av=document.getElementById('topbar-avatar');
-    if(menu&&!menu.contains(e.target)&&!av.contains(e.target)){
-        menu.classList.remove('open');
-    }
-});
 
 // ════════════════════════════════════════════
 // RENDER
@@ -1132,23 +902,23 @@ function render(){
         em.style.display='none';
         sorted.forEach((t,i)=>{
             const tr=document.createElement('tr');
-            const isActive = (t.id === activeTaskId);
+            const isActive=(t.id===activeTaskId);
             tr.className=(t.done?'done':'')+(isActive?' active-row':'');
             tr.dataset.id=t.id;
             const pc={high:'pph',med:'ppm',low:'ppl'};
             const pl={high:'High',med:'Med',low:'Low'};
-            // Has description indicator
-            const noteIco = t.description ? '<span class="material-symbols-outlined" style="font-size:13px;color:var(--blue);vertical-align:middle;margin-left:4px;" title="Has notes">sticky_note_2</span>' : '';
+            const hasNotes=!!(t.description&&t.description.trim());
             tr.innerHTML=
                 '<td class="rnum" style="padding-left:20px">'+(i+1)+'</td>'+
                 '<td><input type="checkbox" class="gc"'+(t.done?' checked':'')+' onchange="toggle(\''+t.id+'\')" onclick="event.stopPropagation()"></td>'+
                 '<td><input type="time" class="tf ftm" value="'+t.time+'" onblur="upd(\''+t.id+'\',\'time\',this.value)" onclick="event.stopPropagation()"></td>'+
-                '<td><input type="text" class="tf" value="'+esc(t.text)+'" onblur="upd(\''+t.id+'\',\'text\',this.value)" onkeydown="if(event.key===\'Enter\')this.blur()" onclick="event.stopPropagation()">'+noteIco+'</td>'+
+                '<td><input type="text" class="tf" value="'+esc(t.text)+'" onblur="upd(\''+t.id+'\',\'text\',this.value)" onkeydown="if(event.key===\'Enter\')this.blur()" onclick="event.stopPropagation()"></td>'+
                 '<td><input type="number" class="tf fdu" value="'+t.duration+'" min="1" max="480" onblur="upd(\''+t.id+'\',\'duration\',parseInt(this.value)||30)" onclick="event.stopPropagation()"></td>'+
                 '<td><span class="pp '+pc[t.priority]+'" onclick="event.stopPropagation();cyPrio(\''+t.id+'\')" title="Click to change">'+pl[t.priority]+'</span></td>'+
+                // Brief button — sole trigger for detail panel
+                '<td style="text-align:center;"><button class="brief-btn'+(hasNotes?' has-notes':'')+'" onclick="event.stopPropagation();openDetailPanel(\''+t.id+'\')" title="'+(hasNotes?'View notes':'Add notes')+'"><span class="material-symbols-outlined">'+(hasNotes?'sticky_note_2':'note_add')+'</span></button></td>'+
                 '<td><button class="rdel" onclick="event.stopPropagation();del(\''+t.id+'\')" title="Delete"><span class="material-symbols-outlined">delete</span></button></td>';
-            // Row click → open detail panel
-            tr.addEventListener('click', ()=>openDetailPanel(t.id));
+            // NO row-wide click event — Brief button is the sole trigger
             tb.appendChild(tr);
         });
     }
@@ -1328,7 +1098,7 @@ function handleTokenExpired(){
 // Payload: { tasks: [...], apiKeys: {...} }
 // ════════════════════════════════════════════
 function buildPayload(){
-    return { tasks, apiKeys: _storedApiKeys, customProviders: _customProviders };
+    return { tasks, apiKeys: _storedApiKeys };
 }
 
 async function initDrive(){
@@ -1372,7 +1142,6 @@ async function loadDrive(){
     // Support both old array format and new envelope format
     const rawTasks = Array.isArray(d) ? d : (Array.isArray(d.tasks) ? d.tasks : null);
     const rawKeys  = (!Array.isArray(d) && d.apiKeys && typeof d.apiKeys==='object') ? d.apiKeys : {};
-    const rawCustom = (!Array.isArray(d) && Array.isArray(d.customProviders)) ? d.customProviders : [];
 
     if(rawTasks){
         tasks = rawTasks.map(t=>({
@@ -1382,29 +1151,24 @@ async function loadDrive(){
             duration: parseInt(t.duration)||30,
             done:     !!t.done,
             priority: ['high','med','low'].includes(t.priority)?t.priority:'med',
-            description: t.description||''
+            description: t.description||''       // preserve notes
         }));
         saveLocal();
         render();
     }
 
-    // Restore API keys
+    // FEATURE 2 — Silently restore API keys; populate AI modal field
     if(Object.keys(rawKeys).length > 0){
-        _storedApiKeys = {...rawKeys, ..._storedApiKeys}; // local keys take priority
-        saveApiKeys();
+        _storedApiKeys = rawKeys;
+        // Pre-fill whichever provider is currently selected
         const savedKey = _storedApiKeys[curProv];
-        if(savedKey) document.getElementById('akey').value = savedKey;
+        if(savedKey){
+            document.getElementById('akey').value = savedKey;
+        }
         document.getElementById('dbanner-txt').textContent =
-            'Drive synced — tasks & API keys ready on this device';
-        toast('Drive synced — API keys loaded ✓','ok');
-    }
-
-    // Restore custom providers from Drive
-    if(rawCustom.length > 0){
-        // Merge: avoid duplicates by id
-        const existingIds = new Set(_customProviders.map(p=>p.id));
-        rawCustom.forEach(p=>{ if(!existingIds.has(p.id)) _customProviders.push(p); });
-        localStorage.setItem('sd_custom_provs',JSON.stringify(_customProviders));
+            'Drive synced — tasks & API key ready on this device';
+        // Subtle toast, not intrusive
+        toast('Drive synced — API key loaded ✓','ok');
     }
 }
 
@@ -1456,192 +1220,49 @@ function setSyncUI(state,txt){
 }
 
 // ════════════════════════════════════════════
-// AI PROVIDERS — BUILT-IN + CUSTOM
+// AI PROVIDERS
 // ════════════════════════════════════════════
-const BUILTIN_PROVS={
-    groq:{name:'Groq',emoji:'⚡',fmt:'oai',url:'https://api.groq.com/openai/v1/chat/completions',model:'llama-3.3-70b-versatile',
+const PROVS={
+    groq:{name:'Groq',fmt:'oai',url:'https://api.groq.com/openai/v1/chat/completions',model:'llama-3.3-70b-versatile',
           hint:'Free key at <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a> — no credit card.',
-          lbl:'API KEY — GROQ',ph:'gsk_...',pre:'gsk_',tag:'Free'},
-    gemini:{name:'Gemini',emoji:'⭐',fmt:'gem',url:null,model:'gemini-2.0-flash',
+          lbl:'API KEY — GROQ',ph:'gsk_...',pre:'gsk_'},
+    gemini:{name:'Gemini',fmt:'gem',url:null,model:'gemini-2.0-flash',
             hint:'Free key at <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a> — no card.',
-            lbl:'API KEY — GEMINI',ph:'AIza...',pre:'AIza',tag:'Free'},
-    openrouter:{name:'OpenRouter',emoji:'🔄',fmt:'oai',url:'https://openrouter.ai/api/v1/chat/completions',model:'meta-llama/llama-3.1-8b-instruct:free',
+            lbl:'API KEY — GEMINI',ph:'AIza...',pre:'AIza'},
+    openrouter:{name:'OpenRouter',fmt:'oai',url:'https://openrouter.ai/api/v1/chat/completions',model:'meta-llama/llama-3.1-8b-instruct:free',
                 hint:'Free key at <a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys</a> — no card.',
-                lbl:'API KEY — OPENROUTER',ph:'sk-or-...',pre:'sk-or-',tag:'Free'},
-    openai:{name:'OpenAI',emoji:'🤖',fmt:'oai',url:'https://api.openai.com/v1/chat/completions',model:'gpt-4o-mini',
+                lbl:'API KEY — OPENROUTER',ph:'sk-or-...',pre:'sk-or-'},
+    openai:{name:'OpenAI',fmt:'oai',url:'https://api.openai.com/v1/chat/completions',model:'gpt-4o-mini',
             hint:'Key at <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a> — paid.',
-            lbl:'API KEY — OPENAI',ph:'sk-proj-...',pre:'sk-',tag:null}
+            lbl:'API KEY — OPENAI',ph:'sk-proj-...',pre:'sk-'}
 };
-
 let curProv='groq';
-
-// Build full provider map (built-in + custom)
-function getAllProvs(){
-    const all={...BUILTIN_PROVS};
-    _customProviders.forEach(cp=>{
-        all[cp.id]={
-            name:cp.name,emoji:'🔧',fmt:'oai',
-            url:cp.url,model:cp.model,
-            hint:'Custom provider: '+cp.name,
-            lbl:'API KEY — '+cp.name.toUpperCase(),
-            ph:cp.prefix?(cp.prefix+'...'):'your-api-key',
-            pre:cp.prefix||'',
-            tag:'Custom',
-            isCustom:true
-        };
-    });
-    return all;
-}
-
-// ── RENDER PROVIDER GRID ──
-function renderProvGrid(){
-    const grid=document.getElementById('pgrid');
-    const all=getAllProvs();
-    grid.innerHTML='';
-    Object.entries(all).forEach(([id,p])=>{
-        const div=document.createElement('div');
-        div.className='pcard'+(id===curProv?' sel':'');
-        div.id='prov-'+id;
-        div.onclick=()=>selProv(id);
-        div.innerHTML=`<div class="pname">${p.emoji} ${p.name} ${p.tag?'<span class="ftag">'+p.tag+'</span>':''}</div>`+
-            `<div class="psub">${p.model}${p.isCustom?` <button class="km-btn del" onclick="event.stopPropagation();removeCustomProv('${id}')" title="Remove" style="display:inline-flex;width:18px;height:18px;vertical-align:middle;margin-left:4px;"><span class="material-symbols-outlined" style="font-size:12px;">close</span></button>`:''}</div>`;
-        grid.appendChild(div);
-    });
-}
 
 function selProv(id){
     curProv=id;
-    document.querySelectorAll('.pcard').forEach(c=>c.classList.remove('sel'));
-    const el=document.getElementById('prov-'+id);
-    if(el)el.classList.add('sel');
-    const p=getAllProvs()[id];
-    if(!p)return;
+    // Update tab active states
+    document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
+    document.getElementById('ptab-'+id).classList.add('active');
+    const p=PROVS[id];
+    // Swap key area with animation
+    const area=document.getElementById('provKeyArea');
+    area.style.animation='none';
+    void area.offsetWidth; // reflow to restart
+    area.style.animation='';
     document.getElementById('khint').innerHTML=p.hint;
     document.getElementById('klbl').textContent=p.lbl;
-    document.getElementById('akey').placeholder=p.ph;
-    document.getElementById('akey').value=_storedApiKeys[id]||'';
+    const keyEl=document.getElementById('akey');
+    keyEl.type='password'; // always password
+    keyEl.placeholder=p.ph;
+    keyEl.value=_storedApiKeys[id]||'';
     clearMsg();
     if(id==='openai')showMsg('OpenAI may block calls from local files (CORS). Use Groq or OpenRouter — both are free.','wrn');
-}
-
-// ── KEY VISIBILITY TOGGLE ──
-function toggleKeyVis(){
-    const inp=document.getElementById('akey'),icon=document.getElementById('akey-eye-icon');
-    inp.type=inp.type==='password'?'text':'password';
-    icon.textContent=inp.type==='password'?'visibility':'visibility_off';
-}
-
-// ── KEY INPUT: auto-detect provider from prefix ──
-function onKeyInput(){
-    const val=document.getElementById('akey').value.trim();
-    // Auto-switch provider if prefix matches a different one
-    const all=getAllProvs();
-    for(const [id,p] of Object.entries(all)){
-        if(p.pre && val.startsWith(p.pre) && id!==curProv && val.length>10){
-            selProv(id);
-            break;
-        }
-    }
-}
-
-// ── KEY MANAGER ──
-function toggleKeyManager(){
-    const panel=document.getElementById('km-panel');
-    const toggle=document.getElementById('km-toggle');
-    const isOpen=panel.classList.toggle('open');
-    toggle.classList.toggle('open',isOpen);
-    if(isOpen)renderKeyManager();
-}
-
-function renderKeyManager(){
-    const list=document.getElementById('km-list');
-    const all=getAllProvs();
-    const keys=Object.keys(_storedApiKeys).filter(k=>_storedApiKeys[k]);
-    document.getElementById('km-count').textContent=keys.length;
-    if(!keys.length){
-        list.innerHTML='<div class="km-empty">No keys saved yet. Paste a key above and run AI — it will be saved automatically.</div>';
-        return;
-    }
-    list.innerHTML='';
-    keys.forEach(pid=>{
-        const p=all[pid]||{name:pid,emoji:'🔑'};
-        const k=_storedApiKeys[pid];
-        const preview=k.slice(0,6)+'•••••'+k.slice(-4);
-        const row=document.createElement('div');
-        row.className='km-row';
-        row.innerHTML=
-            '<div class="km-prov-icon">'+p.emoji+'</div>'+
-            '<div class="km-prov-name">'+p.name+'</div>'+
-            '<div class="km-key-preview">'+preview+'</div>'+
-            '<div class="km-actions">'+
-              '<button class="km-btn" onclick="useKey(\''+pid+'\')" title="Use this key"><span class="material-symbols-outlined">login</span></button>'+
-              '<button class="km-btn del" onclick="deleteKey(\''+pid+'\')" title="Delete key"><span class="material-symbols-outlined">delete</span></button>'+
-            '</div>';
-        list.appendChild(row);
-    });
-}
-
-function useKey(pid){
-    selProv(pid);
-    document.getElementById('akey').value=_storedApiKeys[pid]||'';
-    toggleKeyManager(); // close panel
-    toast('Key loaded for '+((getAllProvs()[pid]||{}).name||pid),'ok');
-}
-
-function deleteKey(pid){
-    delete _storedApiKeys[pid];
-    saveApiKeys();
-    renderKeyManager();
-    if(curProv===pid) document.getElementById('akey').value='';
-    toast('Key removed','inf');
-}
-
-function saveApiKeys(){
-    localStorage.setItem('sd_api_keys',JSON.stringify(_storedApiKeys));
-    // Also sync to Drive payload
-    if(token) debSync();
-}
-
-// ── CUSTOM PROVIDER MANAGEMENT ──
-function showCustomProvForm(){
-    document.getElementById('custom-prov-form').classList.add('open');
-    document.getElementById('cp-name').focus();
-}
-function cancelCustomProv(){
-    document.getElementById('custom-prov-form').classList.remove('open');
-    ['cp-name','cp-url','cp-model','cp-prefix'].forEach(id=>document.getElementById(id).value='');
-}
-
-function addCustomProvider(){
-    const name=document.getElementById('cp-name').value.trim();
-    const url=document.getElementById('cp-url').value.trim();
-    const model=document.getElementById('cp-model').value.trim();
-    const prefix=document.getElementById('cp-prefix').value.trim();
-    if(!name||!url||!model){toast('Name, URL and Model are required','err');return;}
-    const id='custom_'+uid();
-    _customProviders.push({id,name,url,model,prefix});
-    localStorage.setItem('sd_custom_provs',JSON.stringify(_customProviders));
-    cancelCustomProv();
-    renderProvGrid();
-    selProv(id);
-    toast(name+' added as custom provider','ok');
-    if(token)debSync();
-}
-
-function removeCustomProv(id){
-    _customProviders=_customProviders.filter(p=>p.id!==id);
-    localStorage.setItem('sd_custom_provs',JSON.stringify(_customProviders));
-    if(curProv===id)selProv('groq');
-    renderProvGrid();
-    toast('Custom provider removed','inf');
 }
 
 function openModal(){
     document.getElementById('aimodal').classList.add('open');
     clearMsg();
     document.getElementById('key-save-row').style.display = token ? 'block' : 'none';
-    renderProvGrid();
-    renderKeyManager();
     const stored=_storedApiKeys[curProv];
     if(stored) document.getElementById('akey').value=stored;
     setTimeout(()=>document.getElementById('aprompt').focus(),300);
@@ -1661,10 +1282,10 @@ async function sfetch(url,opts){
 }
 
 function vKey(k,pid){
-    const p=getAllProvs()[pid];
+    const p=PROVS[pid];
     if(!k)return'No API key entered.';
     if(k.includes(' '))return'Key has spaces — re-copy carefully.';
-    if(p&&p.pre&&!k.startsWith(p.pre))return(p.name||pid)+' keys start with "'+p.pre+'" — check provider.';
+    if(p.pre&&!k.startsWith(p.pre))return p.name+' keys start with "'+p.pre+'" — check provider.';
     if(k.length<20)return'Key looks too short.';
     return null;
 }
@@ -1688,11 +1309,11 @@ async function callAI(p,key,sys,usr){
     let r;
     try{r=await sfetch(p.url,{method:'POST',headers:h,body:JSON.stringify({model:p.model,max_tokens:1500,temperature:.3,
         messages:[{role:'system',content:sys},{role:'user',content:usr}]})});}
-    catch(e){throw new Error('Cannot reach '+(p.name||'provider')+': '+e.message);}
+    catch(e){throw new Error('Cannot reach '+p.name+': '+e.message);}
     if(!r.ok){let m='HTTP '+r.status;try{const j=await r.json();m=j.error?.message||m;}catch(_){}
         if(r.status===401)throw new Error('Invalid key (401).');
         if(r.status===429)throw new Error('Rate limit (429).');
-        throw new Error((p.name||'AI')+' '+r.status+': '+m);}
+        throw new Error(p.name+' '+r.status+': '+m);}
     const d=await r.json();
     return d.choices?.[0]?.message?.content||'';
 }
@@ -1700,26 +1321,22 @@ async function callAI(p,key,sys,usr){
 async function runAI(){
     const key=document.getElementById('akey').value.trim();
     const prompt=document.getElementById('aprompt').value.trim();
-    const p=getAllProvs()[curProv];
+    const p=PROVS[curProv];
     clearMsg();
     const ke=vKey(key,curProv);
     if(ke){showMsg(ke);return;}
     if(!prompt){showMsg('Describe what you want to change.');return;}
 
-    // Always save key to memory and localStorage
-    _storedApiKeys[curProv]=key;
-    saveApiKeys();
-    // Sync to Drive if connected
+    // FEATURE 2 — Save key to Drive if checkbox checked
     const saveKeyCb=document.getElementById('saveKeyToDrive');
     if(saveKeyCb&&saveKeyCb.checked&&token){
-        // debSync will include keys in payload automatically
-        debSync();
+        _storedApiKeys[curProv]=key;
     }
 
     const btn=document.getElementById('aiBtn');
     btn.disabled=true;
     btn.innerHTML='<span style="font-size:13px;">⏳</span> Processing...';
-    setSyncUI('busy',(p.name||'AI')+'...');
+    setSyncUI('busy',p.name+'...');
     const SYS='You are a productivity planner. Return ONLY a raw JSON array (no markdown, no backticks). Each item: "id"(keep if existing,else short random),"text"(string),"time"(HH:MM 24h),"duration"(int minutes),"done"(bool),"priority"("high"|"med"|"low"),"description"(string,keep existing).';
     const USR='Tasks:\n'+JSON.stringify(tasks)+'\n\nRequest: '+prompt;
     try{
@@ -1735,12 +1352,12 @@ async function runAI(){
             priority:['high','med','low'].includes(t.priority)?t.priority:'med',
             description:t.description||''
         }));
-        render(); closeModal(); toast('Plan updated via '+(p.name||'AI'),'ok');
+        render(); closeModal(); toast('Plan updated via '+p.name,'ok');
         if(saveKeyCb&&saveKeyCb.checked&&token) toast('API key saved to Drive ✓','ok');
     }catch(e){
         console.error('[AI]',e);
-        showMsg('<strong>'+(p.name||'AI')+' error:</strong> '+e.message);
-        toast((p.name||'AI')+' failed','err');
+        showMsg('<strong>'+p.name+' error:</strong> '+e.message);
+        toast(p.name+' failed','err');
     }finally{
         btn.disabled=false;
         btn.innerHTML='<span class="material-symbols-outlined" style="font-size:15px;">auto_awesome</span> Generate Plan';
@@ -1791,8 +1408,75 @@ function toast(msg,type){
 // ════════════════════════════════════════════
 function openInfo(){document.getElementById('infomodal').classList.add('open');}
 function closeInfo(e){if(!e||e.target===document.getElementById('infomodal'))document.getElementById('infomodal').classList.remove('open');}
-function openWelcome(){document.getElementById('welcomemodal').classList.add('open');}
-function closeWelcome(){document.getElementById('welcomemodal').classList.remove('open');localStorage.setItem('sd_returning','1');}
+function openWelcome(){
+    document.getElementById('welcomemodal').classList.add('open');
+    // Pre-fill CID input if already saved
+    const wci=document.getElementById('wc-cid');
+    const saved=localStorage.getItem('sd_client_id')||'';
+    wci.value=saved;
+    wci.classList.toggle('valid', isValidCid(saved));
+    document.getElementById('wc-cid-save').disabled=!isValidCid(saved)||(saved===GOOGLE_CLIENT_ID&&!saved.startsWith('YOUR_'));
+}
+// closeWelcome(markReturning=true)
+function closeWelcome(mark){
+    document.getElementById('welcomemodal').classList.remove('open');
+    if(mark!==false) localStorage.setItem('sd_returning','1');
+}
+
+// Welcome-screen Client ID input helpers
+function onWcCidInput(){
+    const val=document.getElementById('wc-cid').value.trim();
+    document.getElementById('wc-cid').classList.toggle('valid', isValidCid(val));
+    document.getElementById('wc-cid-save').disabled=!isValidCid(val);
+}
+function saveWcClientId(){
+    const val=document.getElementById('wc-cid').value.trim();
+    if(!isValidCid(val)){toast('Invalid Client ID — check the format','err');return;}
+    localStorage.setItem('sd_client_id',val);
+    GOOGLE_CLIENT_ID=val;
+    document.getElementById('wc-cid-save').disabled=true;
+    updateSettingsBadge();
+    // Sync to settings modal input if open
+    const si=document.getElementById('cid-input');
+    if(si) si.value=val;
+    toast('Client ID saved ✓','ok');
+}
+
+// ── DATA PORTABILITY ──
+function exportLocalData(){
+    const blob=new Blob([JSON.stringify({tasks,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download='SmartDay_backup_'+new Date().toISOString().slice(0,10)+'.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('Data exported ✓','ok');
+}
+function importLocalData(e){
+    const file=e.target.files[0];
+    if(!file){return;}
+    const reader=new FileReader();
+    reader.onload=ev=>{
+        try{
+            const parsed=JSON.parse(ev.target.result);
+            // Accept both bare array and {tasks:[...]} envelope
+            const arr=Array.isArray(parsed)?parsed:(Array.isArray(parsed.tasks)?parsed.tasks:null);
+            if(!arr)throw new Error('No tasks array found in file.');
+            tasks=arr.map(t=>({
+                id:t.id||uid(),text:t.text||'Untitled',
+                time:/^\d{2}:\d{2}$/.test(t.time)?t.time:'09:00',
+                duration:parseInt(t.duration)||30,done:!!t.done,
+                priority:['high','med','low'].includes(t.priority)?t.priority:'med',
+                description:t.description||''
+            }));
+            saveLocal();render();
+            toast('Imported '+tasks.length+' tasks ✓','ok');
+        }catch(err){toast('Import failed: '+err.message,'err');}
+        finally{e.target.value='';}// reset so same file can be re-imported
+    };
+    reader.readAsText(file);
+}
 
 function openSettings(){
     document.getElementById('settingsmodal').classList.add('open');
@@ -1874,24 +1558,19 @@ document.addEventListener('DOMContentLoaded',()=>{
         }
     });
 
-    // Init provider grid on first render
-    renderProvGrid();
-
     render();
     updateSettingsBadge();
     checkFirstLaunch();
 
-    // ── AUTH: check sign-in state ──
-    initAuthScreen();
-
     // Feature 5 — Attempt silent Drive reconnect after GIS SDK loads
+    // GIS is async-deferred so we poll for readiness
     const _silentRetry = setInterval(()=>{
         if(typeof google!=='undefined'&&google.accounts&&google.accounts.oauth2){
             clearInterval(_silentRetry);
-            // Only auto-reconnect if user is signed in (not guest)
-            if(!_isGuest) trySilentReconnect();
+            trySilentReconnect();
         }
     }, 200);
+    // Give up after 8 s if SDK never loads
     setTimeout(()=>clearInterval(_silentRetry), 8000);
 });
 </script>
